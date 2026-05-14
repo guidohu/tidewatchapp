@@ -24,6 +24,12 @@ class TideWatchApp extends Application.AppBase {
     function onStart(state as Dictionary?) as Void {
     }
 
+    function onStop(state as Dictionary?) as Void {
+        if (activityTracker != null) {
+            activityTracker.deinitialize();
+        }
+    }
+
     function triggerForegroundSync() as Void {
         if (isSyncing) {
             System.println("Sync already in progress, skipping.");

@@ -1,0 +1,43 @@
+<resources>
+    <fitContributions>
+        <!-- Total Waves mapped to native num_waves (handled in code via :nativeNum) -->
+        <fitField id="2" 
+                  dataLabel="@Strings.FitTotalWaves" 
+                  sortOrder="0" 
+                  unitLabel="@Strings.UnitWaves" />
+
+        <!-- Max Wave Speed mapped to native Max Speed (handled in code via :nativeNum) -->
+        <fitField id="4" 
+                  dataLabel="@Strings.FitMaxWaveSpeed" 
+                  sortOrder="1" 
+                  precision="2" 
+                  unitLabel="@Strings.UnitMs" />
+
+        <!-- Longest Wave mapped to native Total Distance (handled in code via :nativeNum) -->
+        <fitField id="6" 
+                  dataLabel="@Strings.FitLongestWave" 
+                  sortOrder="2" 
+                  precision="2" 
+                  unitLabel="@Strings.UnitMetersShort" />
+
+        <!-- Total Wave Time mapped to native Moving Time (handled in code via :nativeNum) -->
+        <fitField id="5" 
+                  dataLabel="@Strings.FitTotalWaveTime" 
+                  sortOrder="3" 
+                  precision="0" 
+                  unitLabel="@Strings.UnitSecondsShort" />
+
+        <!-- Average Wave Speed mapped to native Average Speed (handled in code via :nativeNum) -->
+        <fitField id="7" 
+                  dataLabel="@Strings.FitAvgWaveSpeed" 
+                  sortOrder="4" 
+                  precision="2" 
+                  unitLabel="@Strings.UnitMs" />
+
+        <!-- Additional surf fields without native mapping (for Developer Fields section) -->
+        <fitField id="8" dataLabel="@Strings.FitAvgWaveLength" sortOrder="5" precision="2" unitLabel="@Strings.UnitMetersShort" />
+        <fitField id="0" dataLabel="@Strings.FitWavesSurfed" sortOrder="6" unitLabel="@Strings.UnitWaves" />
+        <fitField id="1" dataLabel="@Strings.FitPaddleStrokes" sortOrder="7" unitLabel="@Strings.UnitStrokes" />
+        <fitField id="3" dataLabel="@Strings.FitTotalStrokes" sortOrder="8" unitLabel="@Strings.UnitStrokes" />
+    </fitContributions>
+</resources>

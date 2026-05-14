@@ -49,4 +49,23 @@
     <string id="SetInConnectIQ">Set in Connect IQ</string>
     <string id="SyncTitle">Force Sync</string>
     <string id="SyncExecuting">Scheduled in 5 min</string>
+
+    <!-- FIT Field Labels -->
+    <string id="FitTotalWaves">Total Waves</string>
+    <string id="FitMaxWaveSpeed">Max Wave Speed</string>
+    <string id="FitLongestWave">Longest Wave</string>
+    <string id="FitTotalWaveTime">Total Wave Time</string>
+    <string id="FitAvgWaveSpeed">Avg Wave Speed</string>
+    <string id="FitAvgWaveLength">Avg Wave Length</string>
+    <string id="FitWavesSurfed">Waves Surfed</string>
+    <string id="FitPaddleStrokes">Paddle Strokes</string>
+    <string id="FitTotalStrokes">Total Strokes</string>
+
+    <!-- FIT Units -->
+    <string id="UnitWaves">waves</string>
+    <string id="UnitMs">m/s</string>
+    <string id="UnitMetersShort">m</string>
+    <string id="UnitSecondsShort">s</string>
+    <string id="UnitStrokes">strokes</string>
 </resources>
+

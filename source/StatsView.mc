@@ -107,12 +107,13 @@ class StatsView extends WatchUi.View {
             var minLat = 90.0; var maxLat = -90.0;
             var minLon = 180.0; var maxLon = -180.0;
             
-            for (var i = 0; i < path.size(); i++) {
-                var pt = path[i];
-                if (pt[0] < minLat) { minLat = pt[0]; }
-                if (pt[0] > maxLat) { maxLat = pt[0]; }
-                if (pt[1] < minLon) { minLon = pt[1]; }
-                if (pt[1] > maxLon) { maxLon = pt[1]; }
+            for (var i = 0; i < path.size(); i += 2) {
+                var lat = path[i];
+                var lon = path[i + 1];
+                if (lat < minLat) { minLat = lat; }
+                if (lat > maxLat) { maxLat = lat; }
+                if (lon < minLon) { minLon = lon; }
+                if (lon > maxLon) { maxLon = lon; }
             }
             
             var boxW = width * 0.6;
@@ -133,10 +134,11 @@ class StatsView extends WatchUi.View {
             
             // Adjust scaling to keep aspect ratio rough (lat/lon isn't square but it's schematic)
             var prevX = 0; var prevY = 0;
-            for (var i = 0; i < path.size(); i++) {
-                var pt = path[i];
-                var px = boxX + (pt[1] - minLon) / lonDiff * boxW;
-                var py = boxY + boxH - ((pt[0] - minLat) / latDiff * boxH); // Invert Y for latitude
+            for (var i = 0; i < path.size(); i += 2) {
+                var lat = path[i];
+                var lon = path[i + 1];
+                var px = boxX + (lon - minLon) / lonDiff * boxW;
+                var py = boxY + boxH - ((lat - minLat) / latDiff * boxH); // Invert Y for latitude
                 
                 if (i > 0) {
                     dc.drawLine(prevX, prevY, px.toNumber(), py.toNumber());

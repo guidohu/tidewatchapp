@@ -1,0 +1,120 @@
+{
+  "datafields" : [ {
+    "id" : 2,
+    "chart-visible" : false,
+    "activity-visible" : false,
+    "lap-visible" : false,
+    "chart-title-key" : null,
+    "label-key" : "FitTotalWaves",
+    "unit-label-key" : "UnitWaves",
+    "sort-order" : 0,
+    "precision" : null,
+    "fill-color" : null
+  }, {
+    "id" : 4,
+    "chart-visible" : false,
+    "activity-visible" : false,
+    "lap-visible" : false,
+    "chart-title-key" : null,
+    "label-key" : "FitMaxWaveSpeed",
+    "unit-label-key" : "UnitMs",
+    "sort-order" : 1,
+    "precision" : 2,
+    "fill-color" : null
+  }, {
+    "id" : 6,
+    "chart-visible" : false,
+    "activity-visible" : false,
+    "lap-visible" : false,
+    "chart-title-key" : null,
+    "label-key" : "FitLongestWave",
+    "unit-label-key" : "UnitMetersShort",
+    "sort-order" : 2,
+    "precision" : 2,
+    "fill-color" : null
+  }, {
+    "id" : 5,
+    "chart-visible" : false,
+    "activity-visible" : false,
+    "lap-visible" : false,
+    "chart-title-key" : null,
+    "label-key" : "FitTotalWaveTime",
+    "unit-label-key" : "UnitSecondsShort",
+    "sort-order" : 3,
+    "precision" : 0,
+    "fill-color" : null
+  }, {
+    "id" : 7,
+    "chart-visible" : false,
+    "activity-visible" : false,
+    "lap-visible" : false,
+    "chart-title-key" : null,
+    "label-key" : "FitAvgWaveSpeed",
+    "unit-label-key" : "UnitMs",
+    "sort-order" : 4,
+    "precision" : 2,
+    "fill-color" : null
+  }, {
+    "id" : 8,
+    "chart-visible" : false,
+    "activity-visible" : false,
+    "lap-visible" : false,
+    "chart-title-key" : null,
+    "label-key" : "FitAvgWaveLength",
+    "unit-label-key" : "UnitMetersShort",
+    "sort-order" : 5,
+    "precision" : 2,
+    "fill-color" : null
+  }, {
+    "id" : 0,
+    "chart-visible" : false,
+    "activity-visible" : false,
+    "lap-visible" : false,
+    "chart-title-key" : null,
+    "label-key" : "FitWavesSurfed",
+    "unit-label-key" : "UnitWaves",
+    "sort-order" : 6,
+    "precision" : null,
+    "fill-color" : null
+  }, {
+    "id" : 1,
+    "chart-visible" : false,
+    "activity-visible" : false,
+    "lap-visible" : false,
+    "chart-title-key" : null,
+    "label-key" : "FitPaddleStrokes",
+    "unit-label-key" : "UnitStrokes",
+    "sort-order" : 7,
+    "precision" : null,
+    "fill-color" : null
+  }, {
+    "id" : 3,
+    "chart-visible" : false,
+    "activity-visible" : false,
+    "lap-visible" : false,
+    "chart-title-key" : null,
+    "label-key" : "FitTotalStrokes",
+    "unit-label-key" : "UnitStrokes",
+    "sort-order" : 8,
+    "precision" : null,
+    "fill-color" : null
+  } ],
+  "strings" : {
+    "default" : {
+      "FitTotalWaves" : "Total Waves",
+      "UnitWaves" : "waves",
+      "FitMaxWaveSpeed" : "Max Wave Speed",
+      "UnitMs" : "m/s",
+      "FitLongestWave" : "Longest Wave",
+      "UnitMetersShort" : "m",
+      "FitTotalWaveTime" : "Total Wave Time",
+      "UnitSecondsShort" : "s",
+      "FitAvgWaveSpeed" : "Avg Wave Speed",
+      "FitAvgWaveLength" : "Avg Wave Length",
+      "FitWavesSurfed" : "Waves Surfed",
+      "FitPaddleStrokes" : "Paddle Strokes",
+      "UnitStrokes" : "strokes",
+      "FitTotalStrokes" : "Total Strokes"
+    }
+  }
+}

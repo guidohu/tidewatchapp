@@ -123,7 +123,6 @@ class TideWatchView extends WatchUi.View {
         }
 
         var clockTime = System.getClockTime();
-        var isMinuteChanged = (clockTime.min != mLastUpdateMin);
         mLastUpdateMin = clockTime.min;
         
         
@@ -443,7 +442,9 @@ class TideWatchView extends WatchUi.View {
     }
 
     function renderGraphToBuffer(w as Number, h as Number) as Void {
-        mGraphBuffer = new Graphics.BufferedBitmap({ :width => w, :height => h });
+        if (mGraphBuffer == null) {
+            mGraphBuffer = new Graphics.BufferedBitmap({ :width => w, :height => h });
+        }
         var bdc = mGraphBuffer.getDc();
         bdc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_BLACK);
         bdc.clear();

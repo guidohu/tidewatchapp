@@ -47,8 +47,9 @@ class ActivityTracker {
 
     // New metrics
     private var _timeStillSec as Number = 0;
-    private var _pathPoints as Array<Array<Float>> = [] as Array<Array<Float>>;
-    private var _lastLocationTime as Number = 0;
+    private var _pathPoints as Array<Float> = [] as Array<Float>;
+    private var _heartbeatCount as Number = 0;
+
     
     // Heart rate state
     private var _currentHR as Number? = null;
@@ -59,6 +60,24 @@ class ActivityTracker {
     private var _isLullMode as Boolean = false;
     private var _lullStartTime as Number = 0;
     private var _lastAccelMagnitude as Float = 0.0f;
+
+    // Smarter Wave Detection State
+    private var _lastGPSAccuracy as Number = Position.QUALITY_NOT_AVAILABLE;
+    private var _gpsGoodSignalSec as Number = 0;
+    private var _maxMotionEnergyRecent as Float = 0.0f;
+    private var _lastStoredDistance as Float = 0.0f;
+    private var _lastStoredTime as Number = 0;
+
+
+
+    function deinitialize() as Void {
+        if (_timerRunning) {
+            _timer.stop();
+            _timerRunning = false;
+        }
+        Position.enableLocationEvents(Position.LOCATION_DISABLE, null);
+        Log.info("Activity", "Resources released (GPS/Timer).");
+    }
 
     function initialize() {
         _timer = new Timer.Timer();
@@ -83,41 +102,40 @@ class ActivityTracker {
                     :units => "strokes"
                 });
 
-                // Native mapped fields for Surfing
+                // Native mapped fields for Surfing - Using general fields as workaround for 3rd party restrictions
                 _waveSessionField = _session.createField("Total Waves", 2, FitContributor.DATA_TYPE_UINT16, {
                     :mesgType => FitContributor.MESG_TYPE_SESSION, 
                     :units => "waves",
                     :nativeNum => 103
                 });
 
-                _avgWaveSpeedField = _session.createField("Avg Wave Speed", 7, FitContributor.DATA_TYPE_UINT16, {
+                _avgWaveSpeedField = _session.createField("Avg Wave Speed", 7, FitContributor.DATA_TYPE_FLOAT, {
                     :mesgType => FitContributor.MESG_TYPE_SESSION, 
                     :units => "m/s",
-                    :nativeNum => 104
+                    :nativeNum => 13
                 });
 
-                _maxWaveSpeedField = _session.createField("Max Wave Speed", 4, FitContributor.DATA_TYPE_UINT16, {
+                _maxWaveSpeedField = _session.createField("Max Wave Speed", 4, FitContributor.DATA_TYPE_FLOAT, {
                     :mesgType => FitContributor.MESG_TYPE_SESSION, 
                     :units => "m/s",
-                    :nativeNum => 105
+                    :nativeNum => 6
                 });
 
                 _totalWaveTimeField = _session.createField("Total Wave Time", 5, FitContributor.DATA_TYPE_UINT32, {
                     :mesgType => FitContributor.MESG_TYPE_SESSION, 
                     :units => "s",
-                    :nativeNum => 106
+                    :nativeNum => 8
                 });
 
-                _avgWaveLengthField = _session.createField("Avg Wave Length", 8, FitContributor.DATA_TYPE_UINT32, {
+                _avgWaveLengthField = _session.createField("Avg Wave Length", 8, FitContributor.DATA_TYPE_FLOAT, {
                     :mesgType => FitContributor.MESG_TYPE_SESSION, 
-                    :units => "m",
-                    :nativeNum => 107
+                    :units => "m"
                 });
 
-                _maxWaveLengthField = _session.createField("Max Wave Length", 6, FitContributor.DATA_TYPE_UINT32, {
+                _maxWaveLengthField = _session.createField("Max Wave Length", 6, FitContributor.DATA_TYPE_FLOAT, {
                     :mesgType => FitContributor.MESG_TYPE_SESSION, 
                     :units => "m",
-                    :nativeNum => 108
+                    :nativeNum => 5
                 });
 
                 _strokeSessionField = _session.createField("Total Strokes", 3, FitContributor.DATA_TYPE_UINT32, {
@@ -200,8 +218,8 @@ class ActivityTracker {
             _paddleStrokes = 0;
             _strokeAccumulator = 0.0f;
             _timeStillSec = 0;
-            _pathPoints = [] as Array<Array<Float>>;
-            _lastLocationTime = 0;
+            _pathPoints = [] as Array<Float>;
+
             _timeSinceLastWave = 10;
             _currentHR = null;
             _avgHR = null;
@@ -214,6 +232,10 @@ class ActivityTracker {
             _currentWaveMaxSpeed = 0.0f;
             _currentWaveDistance = 0.0f;
             _currentWaveStartDistance = 0.0f;
+            _lastStoredDistance = 0.0f;
+            _lastStoredTime = 0;
+
+
             _inWave = false;
             _highSpeedTime = 0;
         }
@@ -248,8 +270,8 @@ class ActivityTracker {
             _paddleStrokes = 0;
             _strokeAccumulator = 0.0f;
             _timeStillSec = 0;
-            _pathPoints = [] as Array<Array<Float>>;
-            _lastLocationTime = 0;
+            _pathPoints = [] as Array<Float>;
+
             _timeSinceLastWave = 10;
             _currentHR = null;
             _avgHR = null;
@@ -262,6 +284,10 @@ class ActivityTracker {
             _currentWaveMaxSpeed = 0.0f;
             _currentWaveDistance = 0.0f;
             _currentWaveStartDistance = 0.0f;
+            _lastStoredDistance = 0.0f;
+            _lastStoredTime = 0;
+
+
             _inWave = false;
             _highSpeedTime = 0;
         }
@@ -278,7 +304,7 @@ class ActivityTracker {
     function getWaveCount() as Number { return _waveCount; }
     function getPaddleStrokes() as Number { return _paddleStrokes; }
     function getTimeStillSec() as Number { return _timeStillSec; }
-    function getPathPoints() as Array<Array<Float>> { return _pathPoints; }
+    function getPathPoints() as Array<Float> { return _pathPoints; }
     function getCurrentHR() as Number? { return _currentHR; }
     function getAverageHR() as Number? { return _avgHR; }
     function getMaxHR() as Number? { return _maxHR; }
@@ -291,12 +317,40 @@ class ActivityTracker {
         
         var info = Activity.getActivityInfo();
         if (info == null) { return; }
+
+        _heartbeatCount++;
+        if (_heartbeatCount >= 60) {
+            _heartbeatCount = 0;
+            var stats = System.getSystemStats();
+            Log.info("Activity", Lang.format("Heartbeat - Mem: $1$/$2$, GPS: $3$, Lull: $4$", [stats.usedMemory, stats.totalMemory, info.currentLocationAccuracy, _isLullMode]));
+        }
         
+        // --- Motion Energy Calculation ---
+        var motionEnergy = 0.0f;
+        var mag = null;
+        var sensorInfo = Sensor.getInfo();
+        if (sensorInfo != null && sensorInfo.accel != null) {
+            var accel = sensorInfo.accel as Array<Number>;
+            mag = Math.sqrt(accel[0]*accel[0] + accel[1]*accel[1] + accel[2]*accel[2]).toFloat();
+            // Detect if units are milli-G (~1000 per G) or m/s^2 (~9.8 per G)
+            var gravityConstant = mag > 100 ? 1000.0f : 9.81f;
+            motionEnergy = (mag - gravityConstant).abs();
+            
+            if (motionEnergy > _maxMotionEnergyRecent) {
+                _maxMotionEnergyRecent = motionEnergy;
+            }
+        }
+
         // --- Wave & Speed Detection ---
         // >10km/h is approx 2.77 m/s
         var speedThreshold = 2.77f;
         var currentSpeed = info.currentSpeed != null ? info.currentSpeed : 0.0f;
         var elapsedDistance = info.elapsedDistance != null ? info.elapsedDistance : 0.0f;
+        
+        // GPS Reliability: Accuracy must be usable and signal stable for 5 seconds
+        // Use info.currentLocationAccuracy as the source of truth for the current sample
+        var currentAccuracy = info.currentLocationAccuracy != null ? info.currentLocationAccuracy : Position.QUALITY_NOT_AVAILABLE;
+        var isGPSSignalingStable = (currentAccuracy >= Position.QUALITY_USABLE) && (_gpsGoodSignalSec >= 5);
         
         // Time still: < 0.5km/h (approx 0.138 m/s)
         var stillThreshold = 0.138f;
@@ -304,10 +358,15 @@ class ActivityTracker {
             _timeStillSec++;
         }
         
-        if (currentSpeed > speedThreshold) {
+        if (currentSpeed > speedThreshold && isGPSSignalingStable) {
             _highSpeedTime++;
-            // Start wave: >10km/h for at least 2 seconds AND 10s have passed since last wave
-            if (!_inWave && _highSpeedTime >= 2 && _timeSinceLastWave >= 10) {
+            
+            // Motion verification: A wave takeoff should have at least 250mG or 2.5m/s^2 of "energy"
+            var motionThreshold = (mag != null && mag > 100) ? 250.0f : 2.5f;
+            var motionVerified = (_maxMotionEnergyRecent > motionThreshold);
+
+            // Start wave: >10km/h for at least 3 seconds AND 10s cooldown AND motion confirmed
+            if (!_inWave && _highSpeedTime >= 3 && _timeSinceLastWave >= 10 && motionVerified) {
                 _inWave = true;
                 _waveCount++;
                 
@@ -322,7 +381,7 @@ class ActivityTracker {
                 if (_waveSessionField != null) {
                     _waveSessionField.setData(_waveCount);
                 }
-                Log.info("Activity", "Wave started! Count: " + _waveCount);
+                Log.info("Activity", "Wave started! Count: " + _waveCount + " (Motion Energy: " + _maxMotionEnergyRecent.format("%.1f") + ")");
             }
         } else {
             // End wave: speed drops below threshold
@@ -330,32 +389,41 @@ class ActivityTracker {
                 _inWave = false;
                 _timeSinceLastWave = 0; // Start cooldown
                 
-                // Final update for session totals from this wave
-                _totalWaveDistance += _currentWaveDistance;
-                if (_currentWaveDistance > _maxWaveLength) {
-                    _maxWaveLength = _currentWaveDistance;
-                }
+                // Validation: Only count if wave covered at least 10 meters
+                if (_currentWaveDistance < 10.0f) {
+                    Log.info("Activity", "Wave discarded: too short (" + _currentWaveDistance.format("%.1f") + "m)");
+                    _waveCount--;
+                    // Update fields with corrected count
+                    if (_waveField != null) { _waveField.setData(_waveCount); }
+                    if (_waveSessionField != null) { _waveSessionField.setData(_waveCount); }
+                } else {
+                    // Final update for session totals from this wave
+                    _totalWaveDistance += _currentWaveDistance;
+                    if (_currentWaveDistance > _maxWaveLength) {
+                        _maxWaveLength = _currentWaveDistance;
+                    }
 
-                // Push session updates
-                if (_maxWaveSpeedField != null) {
-                    _maxWaveSpeedField.setData((_maxWaveSpeed * 1000).toNumber());
+                    // Push session updates
+                    if (_maxWaveSpeedField != null) {
+                        _maxWaveSpeedField.setData(_maxWaveSpeed);
+                    }
+                    if (_totalWaveTimeField != null) {
+                        _totalWaveTimeField.setData((_totalWaveTime * 1000).toNumber());
+                    }
+                    if (_maxWaveLengthField != null) {
+                        _maxWaveLengthField.setData(_maxWaveLength);
+                    }
+                    if (_avgWaveSpeedField != null && _totalWaveTime > 0) {
+                        _avgWaveSpeedField.setData(_totalWaveDistance / _totalWaveTime);
+                    }
+                    if (_avgWaveLengthField != null && _waveCount > 0) {
+                        _avgWaveLengthField.setData(_totalWaveDistance / _waveCount);
+                    }
+                    Log.info("Activity", "Wave ended. Dist: " + _currentWaveDistance.format("%.1f") + "m");
                 }
-                if (_totalWaveTimeField != null) {
-                    _totalWaveTimeField.setData((_totalWaveTime * 1000).toNumber());
-                }
-                if (_maxWaveLengthField != null) {
-                    _maxWaveLengthField.setData((_maxWaveLength * 100).toNumber());
-                }
-                if (_avgWaveSpeedField != null && _totalWaveTime > 0) {
-                    _avgWaveSpeedField.setData(((_totalWaveDistance / _totalWaveTime) * 1000).toNumber());
-                }
-                if (_avgWaveLengthField != null && _waveCount > 0) {
-                    _avgWaveLengthField.setData(((_totalWaveDistance / _waveCount) * 100).toNumber());
-                }
-
-                Log.info("Activity", "Wave ended. Dist: " + _currentWaveDistance + "m");
             }
             _highSpeedTime = 0;
+            _maxMotionEnergyRecent = 0.0f; // Reset motion peak while waiting for next potential wave
         }
 
         // Track metrics while in wave
@@ -375,31 +443,29 @@ class ActivityTracker {
             _timeSinceLastWave++;
         }
         
-        // --- Path Tracking ---
-        if (info.currentLocation != null) {
+        // --- Path Tracking (Smarter Distance-Based Sampling) ---
+        if (currentAccuracy >= Position.QUALITY_USABLE && info.currentLocation != null) {
             var now = Time.now().value();
-            var interval = 2; 
-            var size = _pathPoints.size();
-            
-            if (size > 150) { interval = 8; } 
-            else if (size > 100) { interval = 4; }
+            var distMoved = (elapsedDistance - _lastStoredDistance).abs();
+            var timeSinceLast = now - _lastStoredTime;
 
-            if (now - _lastLocationTime >= interval) {
+            // Store if moved > 10m OR if it's been 30s and we've moved > 2m
+            if (distMoved > 10.0f || (timeSinceLast > 30 && distMoved > 2.0f)) {
                 var pos = info.currentLocation.toDegrees();
                 if (pos != null && pos.size() == 2) {
-                    _pathPoints.add([pos[0].toFloat(), pos[1].toFloat()] as Array<Float>);
-                    _lastLocationTime = now;
+                    _pathPoints.add(pos[0].toFloat());
+                    _pathPoints.add(pos[1].toFloat());
+                    _lastStoredDistance = elapsedDistance;
+                    _lastStoredTime = now;
                     
-                    if (_pathPoints.size() > 200) {
-                        var newPoints = [] as Array<Array<Float>>;
-                        for (var i = 0; i < _pathPoints.size(); i += 2) {
-                            newPoints.add(_pathPoints[i] as Array<Float>);
-                        }
-                        _pathPoints = newPoints;
+                    // Keep memory in check (soft limit of 200 points = 400 floats)
+                    if (_pathPoints.size() > 400) {
+                        _pathPoints = _pathPoints.slice(2, null) as Array<Float>;
                     }
                 }
             }
         }
+
         
         // --- Heart Rate ---
         _currentHR = info.currentHeartRate;
@@ -421,10 +487,9 @@ class ActivityTracker {
         }
 
         // --- Adaptive GPS Logic ---
-        var sensorInfo = Sensor.getInfo();
         if (sensorInfo != null && sensorInfo.accel != null) {
             var accel = sensorInfo.accel as Array<Number>;
-            var mag = Math.sqrt(accel[0]*accel[0] + accel[1]*accel[1] + accel[2]*accel[2]).toFloat();
+            mag = Math.sqrt(accel[0]*accel[0] + accel[1]*accel[1] + accel[2]*accel[2]).toFloat();
             
             // Detect burst (take-off): acceleration magnitude > 1.5G (approx 15000 in raw if unit is milli-G)
             // Monkey C raw accel units depend on device, but often it's milli-G. 
@@ -462,7 +527,11 @@ class ActivityTracker {
     }
 
     function onPosition(info as Position.Info) as Void {
-        // We use Activity.getActivityInfo() in onTimerTick for consistency,
-        // but this callback ensures the GPS engine stays active for the app.
+        _lastGPSAccuracy = info.accuracy;
+        if (_lastGPSAccuracy >= Position.QUALITY_USABLE) {
+            _gpsGoodSignalSec++;
+        } else {
+            _gpsGoodSignalSec = 0;
+        }
     }
 }
