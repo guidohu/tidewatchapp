@@ -1,0 +1,31 @@
+# Skill: Compiling the TideWatch Garmin Application
+
+This skill provides the exact command and environment settings required to compile the TideWatch application for Garmin devices.
+
+## Compilation Command
+
+To compile the application, use the following command in the terminal:
+
+```bash
+/Library/Java/JavaVirtualMachines/openjdk.jdk/Contents/Home/bin/java \
+    -Xms1g \
+    -Dfile.encoding=UTF-8 \
+    -Dapple.awt.UIElement=true \
+    -jar "/Users/guido/Library/Application Support/Garmin/ConnectIQ/Sdks/connectiq-sdk-mac-9.1.0-2026-03-09-6a872a80b/bin/monkeybrains.jar" \
+    -o "bin/tide_watch_app.prg" \
+    -f "/Users/guido/Git/tide_watch_app/monkey.jungle" \
+    -y "/Users/guido/Git/tide_watch/developer_key" \
+    -d venu \
+    -w
+```
+
+## Troubleshooting Compilation Errors
+
+If compilation fails:
+1. **Undefined symbols**: Check for missing imports or variable declarations (especially in `ActivityTracker.mc` or `StatsView.mc`).
+2. **Background annotations**: Ensure that any code used in `TideWatchApp.mc` or `TideWatchBackground.mc` has the `(:background)` annotation if it's accessed during a background event.
+3. **Resource Errors**: Ensure all strings and icons referenced in the code are present in `resources/`.
+
+## Execution
+
+When asked to "compile and fix", run the command above and iterate on any errors reported by the `monkeybrains` compiler.
