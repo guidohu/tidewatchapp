@@ -1,0 +1,1786 @@
+[ @file = "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc"; @line = 1; @symbol_importdef<0> = [Toybox,1,7,13]; @symbol_importdef<1> = [WatchUi,1,14,21]; ]
+import Toybox.WatchUi;
+[ @file = "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc"; @line = 2; @symbol_importdef<0> = [Toybox,2,7,13]; @symbol_importdef<1> = [System,2,14,20]; ]
+import Toybox.System;
+[ @file = "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc"; @line = 3; @symbol_importdef<0> = [Toybox,3,7,13]; @symbol_importdef<1> = [Graphics,3,14,22]; ]
+import Toybox.Graphics;
+[ @file = "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc"; @line = 4; @symbol_importdef<0> = [Toybox,4,7,13]; @symbol_importdef<1> = [Lang,4,14,18]; ]
+import Toybox.Lang;
+[ @file = "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc"; @line = 6; @symbol_classdef = [StartActivityView,6,6,23]; @symbol_extends<0> = [WatchUi,6,32,39]; @symbol_extends<1> = [View,6,40,44]; ]
+class StartActivityView extends WatchUi.View {
+    [ @file = "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc"; @line = 6; ]
+    <init> {
+    }
+    [ @file = "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc"; @line = 6; ]
+    static
+    <init> {
+    }
+    [ @file = "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc"; @line = 7; @symbol_functiondef = [initialize,7,13,23]; ]
+    function initialize() as Void {
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_7_26_9_4_start:
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 8 8 ]
+        symbol [ View %tmp.2 8 8 12 ];
+        %tmp.2 = getv ? :View;
+        symbol [ initialize %tmp.3 8 13 23 ];
+        %tmp.3 = getv function %tmp.2 :initialize;
+        invoke %tmp.2 %tmp.3();
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_7_26_9_4_stop:
+    }
+    [ @file = "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc"; @line = 11; @symbol_functiondef = [onUpdate,11,13,21]; @symbol_param<0> = [dc,11,22,24]; ]
+    function onUpdate(dc) as Void {
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_11_34_38_4_start:
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 12 8 ]
+        [ "_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_11_34_38_4_start" "_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_11_34_38_4_stop" ]
+        %width.1 = local;
+        symbol [ width %width.1 12 12 17 ];
+        %tmp.1 = lgetv %dc;
+        symbol [ dc %tmp.1 12 20 22 ];
+        symbol [ getWidth %tmp.2 12 23 31 ];
+        %tmp.2 = getv function %tmp.1 :getWidth;
+        %tmp.3 = invoke %tmp.1 %tmp.2();
+        lputv %width.1 %tmp.3;
+        symbol [ width %width.1 12 12 17 ];
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 13 8 ]
+        [ "_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_11_34_38_4_start" "_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_11_34_38_4_stop" ]
+        %height.2 = local;
+        symbol [ height %height.2 13 12 18 ];
+        %tmp.4 = lgetv %dc;
+        symbol [ dc %tmp.4 13 21 23 ];
+        symbol [ getHeight %tmp.5 13 24 33 ];
+        %tmp.5 = getv function %tmp.4 :getHeight;
+        %tmp.6 = invoke %tmp.4 %tmp.5();
+        lputv %height.2 %tmp.6;
+        symbol [ height %height.2 13 12 18 ];
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 16 8 ]
+        %tmp.7 = lgetv %dc;
+        symbol [ dc %tmp.7 16 8 10 ];
+        symbol [ setColor %tmp.8 16 11 19 ];
+        %tmp.8 = getv function %tmp.7 :setColor;
+        symbol [ Graphics %tmp.9 16 20 28 ];
+        %tmp.9 = getm $.Toybox.Graphics;
+        symbol [ COLOR_BLACK %tmp.10 16 29 40 ];
+        %tmp.10 = getv %tmp.9 :COLOR_BLACK;
+        symbol [ Graphics %tmp.11 16 42 50 ];
+        %tmp.11 = getm $.Toybox.Graphics;
+        symbol [ COLOR_BLACK %tmp.12 16 51 62 ];
+        %tmp.12 = getv %tmp.11 :COLOR_BLACK;
+        invoke %tmp.7 %tmp.8(%tmp.10, %tmp.12);
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 17 8 ]
+        %tmp.13 = lgetv %dc;
+        symbol [ dc %tmp.13 17 8 10 ];
+        symbol [ clear %tmp.14 17 11 16 ];
+        %tmp.14 = getv function %tmp.13 :clear;
+        invoke %tmp.13 %tmp.14();
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 20 8 ]
+        %tmp.15 = lgetv %dc;
+        symbol [ dc %tmp.15 20 8 10 ];
+        symbol [ setColor %tmp.16 20 11 19 ];
+        %tmp.16 = getv function %tmp.15 :setColor;
+        symbol [ Graphics %tmp.17 20 20 28 ];
+        %tmp.17 = getm $.Toybox.Graphics;
+        symbol [ COLOR_DK_GREEN %tmp.18 20 29 43 ];
+        %tmp.18 = getv %tmp.17 :COLOR_DK_GREEN;
+        symbol [ Graphics %tmp.19 20 45 53 ];
+        %tmp.19 = getm $.Toybox.Graphics;
+        symbol [ COLOR_TRANSPARENT %tmp.20 20 54 71 ];
+        %tmp.20 = getv %tmp.19 :COLOR_TRANSPARENT;
+        invoke %tmp.15 %tmp.16(%tmp.18, %tmp.20);
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 21 8 ]
+        %tmp.21 = lgetv %dc;
+        symbol [ dc %tmp.21 21 8 10 ];
+        symbol [ fillRectangle %tmp.22 21 11 24 ];
+        %tmp.22 = getv function %tmp.21 :fillRectangle;
+        %tmp.23 = 0;
+        %tmp.24 = 0;
+        %tmp.25 = lgetv %width.1;
+        symbol [ width %tmp.25 21 31 36 ];
+        %tmp.26 = lgetv %height.2;
+        symbol [ height %tmp.26 21 38 44 ];
+        %tmp.27 = 2;
+        %tmp.28 = div %tmp.26 %tmp.27;
+        invoke %tmp.21 %tmp.22(%tmp.23, %tmp.24, %tmp.25, %tmp.28);
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 22 8 ]
+        %tmp.29 = lgetv %dc;
+        symbol [ dc %tmp.29 22 8 10 ];
+        symbol [ setColor %tmp.30 22 11 19 ];
+        %tmp.30 = getv function %tmp.29 :setColor;
+        symbol [ Graphics %tmp.31 22 20 28 ];
+        %tmp.31 = getm $.Toybox.Graphics;
+        symbol [ COLOR_WHITE %tmp.32 22 29 40 ];
+        %tmp.32 = getv %tmp.31 :COLOR_WHITE;
+        symbol [ Graphics %tmp.33 22 42 50 ];
+        %tmp.33 = getm $.Toybox.Graphics;
+        symbol [ COLOR_TRANSPARENT %tmp.34 22 51 68 ];
+        %tmp.34 = getv %tmp.33 :COLOR_TRANSPARENT;
+        invoke %tmp.29 %tmp.30(%tmp.32, %tmp.34);
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 23 8 ]
+        %tmp.35 = lgetv %dc;
+        symbol [ dc %tmp.35 23 8 10 ];
+        symbol [ drawText %tmp.36 23 11 19 ];
+        %tmp.36 = getv function %tmp.35 :drawText;
+        %tmp.37 = lgetv %width.1;
+        symbol [ width %tmp.37 23 20 25 ];
+        %tmp.38 = 2;
+        %tmp.39 = div %tmp.37 %tmp.38;
+        %tmp.40 = lgetv %height.2;
+        symbol [ height %tmp.40 23 31 37 ];
+        %tmp.41 = 4;
+        %tmp.42 = div %tmp.40 %tmp.41;
+        symbol [ Graphics %tmp.43 23 43 51 ];
+        %tmp.43 = getm $.Toybox.Graphics;
+        symbol [ FONT_MEDIUM %tmp.44 23 52 63 ];
+        %tmp.44 = getv %tmp.43 :FONT_MEDIUM;
+        %tmp.45 = "Confirm";
+        symbol [ Graphics %tmp.46 23 76 84 ];
+        %tmp.46 = getm $.Toybox.Graphics;
+        symbol [ TEXT_JUSTIFY_CENTER %tmp.47 23 85 104 ];
+        %tmp.47 = getv %tmp.46 :TEXT_JUSTIFY_CENTER;
+        symbol [ Graphics %tmp.48 23 107 115 ];
+        %tmp.48 = getm $.Toybox.Graphics;
+        symbol [ TEXT_JUSTIFY_VCENTER %tmp.49 23 116 136 ];
+        %tmp.49 = getv %tmp.48 :TEXT_JUSTIFY_VCENTER;
+        %tmp.50 = bitor %tmp.47 %tmp.49;
+        invoke %tmp.35 %tmp.36(%tmp.39, %tmp.42, %tmp.44, %tmp.45, %tmp.50);
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 26 8 ]
+        %tmp.51 = lgetv %dc;
+        symbol [ dc %tmp.51 26 8 10 ];
+        symbol [ setColor %tmp.52 26 11 19 ];
+        %tmp.52 = getv function %tmp.51 :setColor;
+        symbol [ Graphics %tmp.53 26 20 28 ];
+        %tmp.53 = getm $.Toybox.Graphics;
+        symbol [ COLOR_DK_RED %tmp.54 26 29 41 ];
+        %tmp.54 = getv %tmp.53 :COLOR_DK_RED;
+        symbol [ Graphics %tmp.55 26 43 51 ];
+        %tmp.55 = getm $.Toybox.Graphics;
+        symbol [ COLOR_TRANSPARENT %tmp.56 26 52 69 ];
+        %tmp.56 = getv %tmp.55 :COLOR_TRANSPARENT;
+        invoke %tmp.51 %tmp.52(%tmp.54, %tmp.56);
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 27 8 ]
+        %tmp.57 = lgetv %dc;
+        symbol [ dc %tmp.57 27 8 10 ];
+        symbol [ fillRectangle %tmp.58 27 11 24 ];
+        %tmp.58 = getv function %tmp.57 :fillRectangle;
+        %tmp.59 = 0;
+        %tmp.60 = lgetv %height.2;
+        symbol [ height %tmp.60 27 28 34 ];
+        %tmp.61 = 2;
+        %tmp.62 = div %tmp.60 %tmp.61;
+        %tmp.63 = lgetv %width.1;
+        symbol [ width %tmp.63 27 40 45 ];
+        %tmp.64 = lgetv %height.2;
+        symbol [ height %tmp.64 27 47 53 ];
+        %tmp.65 = 2;
+        %tmp.66 = div %tmp.64 %tmp.65;
+        invoke %tmp.57 %tmp.58(%tmp.59, %tmp.62, %tmp.63, %tmp.66);
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 28 8 ]
+        %tmp.67 = lgetv %dc;
+        symbol [ dc %tmp.67 28 8 10 ];
+        symbol [ setColor %tmp.68 28 11 19 ];
+        %tmp.68 = getv function %tmp.67 :setColor;
+        symbol [ Graphics %tmp.69 28 20 28 ];
+        %tmp.69 = getm $.Toybox.Graphics;
+        symbol [ COLOR_WHITE %tmp.70 28 29 40 ];
+        %tmp.70 = getv %tmp.69 :COLOR_WHITE;
+        symbol [ Graphics %tmp.71 28 42 50 ];
+        %tmp.71 = getm $.Toybox.Graphics;
+        symbol [ COLOR_TRANSPARENT %tmp.72 28 51 68 ];
+        %tmp.72 = getv %tmp.71 :COLOR_TRANSPARENT;
+        invoke %tmp.67 %tmp.68(%tmp.70, %tmp.72);
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 29 8 ]
+        %tmp.73 = lgetv %dc;
+        symbol [ dc %tmp.73 29 8 10 ];
+        symbol [ drawText %tmp.74 29 11 19 ];
+        %tmp.74 = getv function %tmp.73 :drawText;
+        %tmp.75 = lgetv %width.1;
+        symbol [ width %tmp.75 29 20 25 ];
+        %tmp.76 = 2;
+        %tmp.77 = div %tmp.75 %tmp.76;
+        %tmp.78 = lgetv %height.2;
+        symbol [ height %tmp.78 29 31 37 ];
+        %tmp.79 = 3;
+        %tmp.80 = mul %tmp.78 %tmp.79;
+        %tmp.81 = 4;
+        %tmp.82 = div %tmp.80 %tmp.81;
+        symbol [ Graphics %tmp.83 29 47 55 ];
+        %tmp.83 = getm $.Toybox.Graphics;
+        symbol [ FONT_MEDIUM %tmp.84 29 56 67 ];
+        %tmp.84 = getv %tmp.83 :FONT_MEDIUM;
+        %tmp.85 = "Cancel";
+        symbol [ Graphics %tmp.86 29 79 87 ];
+        %tmp.86 = getm $.Toybox.Graphics;
+        symbol [ TEXT_JUSTIFY_CENTER %tmp.87 29 88 107 ];
+        %tmp.87 = getv %tmp.86 :TEXT_JUSTIFY_CENTER;
+        symbol [ Graphics %tmp.88 29 110 118 ];
+        %tmp.88 = getm $.Toybox.Graphics;
+        symbol [ TEXT_JUSTIFY_VCENTER %tmp.89 29 119 139 ];
+        %tmp.89 = getv %tmp.88 :TEXT_JUSTIFY_VCENTER;
+        %tmp.90 = bitor %tmp.87 %tmp.89;
+        invoke %tmp.73 %tmp.74(%tmp.77, %tmp.82, %tmp.84, %tmp.85, %tmp.90);
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 32 8 ]
+        %tmp.91 = lgetv %dc;
+        symbol [ dc %tmp.91 32 8 10 ];
+        symbol [ setColor %tmp.92 32 11 19 ];
+        %tmp.92 = getv function %tmp.91 :setColor;
+        symbol [ Graphics %tmp.93 32 20 28 ];
+        %tmp.93 = getm $.Toybox.Graphics;
+        symbol [ COLOR_BLACK %tmp.94 32 29 40 ];
+        %tmp.94 = getv %tmp.93 :COLOR_BLACK;
+        symbol [ Graphics %tmp.95 32 42 50 ];
+        %tmp.95 = getm $.Toybox.Graphics;
+        symbol [ COLOR_BLACK %tmp.96 32 51 62 ];
+        %tmp.96 = getv %tmp.95 :COLOR_BLACK;
+        invoke %tmp.91 %tmp.92(%tmp.94, %tmp.96);
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 33 8 ]
+        [ "_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_11_34_38_4_start" "_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_11_34_38_4_stop" ]
+        %text.3 = local;
+        symbol [ text %text.3 33 12 16 ];
+        %tmp.97 = "Start Surfing?";
+        lputv %text.3 %tmp.97;
+        symbol [ text %text.3 33 12 16 ];
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 34 8 ]
+        [ "_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_11_34_38_4_start" "_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_11_34_38_4_stop" ]
+        %dims.4 = local;
+        symbol [ dims %dims.4 34 12 16 ];
+        %tmp.98 = lgetv %dc;
+        symbol [ dc %tmp.98 34 19 21 ];
+        symbol [ getTextDimensions %tmp.99 34 22 39 ];
+        %tmp.99 = getv function %tmp.98 :getTextDimensions;
+        %tmp.100 = lgetv %text.3;
+        symbol [ text %tmp.100 34 40 44 ];
+        symbol [ Graphics %tmp.101 34 46 54 ];
+        %tmp.101 = getm $.Toybox.Graphics;
+        symbol [ FONT_SMALL %tmp.102 34 55 65 ];
+        %tmp.102 = getv %tmp.101 :FONT_SMALL;
+        %tmp.103 = invoke %tmp.98 %tmp.99(%tmp.100, %tmp.102);
+        lputv %dims.4 %tmp.103;
+        symbol [ dims %dims.4 34 12 16 ];
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 35 8 ]
+        %tmp.104 = lgetv %dc;
+        symbol [ dc %tmp.104 35 8 10 ];
+        symbol [ fillRectangle %tmp.105 35 11 24 ];
+        %tmp.105 = getv function %tmp.104 :fillRectangle;
+        %tmp.106 = 0;
+        %tmp.107 = lgetv %height.2;
+        symbol [ height %tmp.107 35 29 35 ];
+        %tmp.108 = lgetv %dims.4;
+        symbol [ dims %tmp.108 35 38 42 ];
+        %tmp.109 = 1;
+        %tmp.110 = agetv %tmp.108 %tmp.109;
+        %tmp.111 = sub %tmp.107 %tmp.110;
+        %tmp.112 = 2;
+        %tmp.113 = div %tmp.111 %tmp.112;
+        %tmp.114 = 5;
+        %tmp.115 = sub %tmp.113 %tmp.114;
+        %tmp.116 = lgetv %width.1;
+        symbol [ width %tmp.116 35 56 61 ];
+        %tmp.117 = lgetv %dims.4;
+        symbol [ dims %tmp.117 35 63 67 ];
+        %tmp.118 = 1;
+        %tmp.119 = agetv %tmp.117 %tmp.118;
+        %tmp.120 = 10;
+        %tmp.121 = add %tmp.119 %tmp.120;
+        invoke %tmp.104 %tmp.105(%tmp.106, %tmp.115, %tmp.116, %tmp.121);
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 36 8 ]
+        %tmp.122 = lgetv %dc;
+        symbol [ dc %tmp.122 36 8 10 ];
+        symbol [ setColor %tmp.123 36 11 19 ];
+        %tmp.123 = getv function %tmp.122 :setColor;
+        symbol [ Graphics %tmp.124 36 20 28 ];
+        %tmp.124 = getm $.Toybox.Graphics;
+        symbol [ COLOR_WHITE %tmp.125 36 29 40 ];
+        %tmp.125 = getv %tmp.124 :COLOR_WHITE;
+        symbol [ Graphics %tmp.126 36 42 50 ];
+        %tmp.126 = getm $.Toybox.Graphics;
+        symbol [ COLOR_TRANSPARENT %tmp.127 36 51 68 ];
+        %tmp.127 = getv %tmp.126 :COLOR_TRANSPARENT;
+        invoke %tmp.122 %tmp.123(%tmp.125, %tmp.127);
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 37 8 ]
+        %tmp.128 = lgetv %dc;
+        symbol [ dc %tmp.128 37 8 10 ];
+        symbol [ drawText %tmp.129 37 11 19 ];
+        %tmp.129 = getv function %tmp.128 :drawText;
+        %tmp.130 = lgetv %width.1;
+        symbol [ width %tmp.130 37 20 25 ];
+        %tmp.131 = 2;
+        %tmp.132 = div %tmp.130 %tmp.131;
+        %tmp.133 = lgetv %height.2;
+        symbol [ height %tmp.133 37 31 37 ];
+        %tmp.134 = 2;
+        %tmp.135 = div %tmp.133 %tmp.134;
+        symbol [ Graphics %tmp.136 37 43 51 ];
+        %tmp.136 = getm $.Toybox.Graphics;
+        symbol [ FONT_SMALL %tmp.137 37 52 62 ];
+        %tmp.137 = getv %tmp.136 :FONT_SMALL;
+        %tmp.138 = lgetv %text.3;
+        symbol [ text %tmp.138 37 64 68 ];
+        symbol [ Graphics %tmp.139 37 70 78 ];
+        %tmp.139 = getm $.Toybox.Graphics;
+        symbol [ TEXT_JUSTIFY_CENTER %tmp.140 37 79 98 ];
+        %tmp.140 = getv %tmp.139 :TEXT_JUSTIFY_CENTER;
+        symbol [ Graphics %tmp.141 37 101 109 ];
+        %tmp.141 = getm $.Toybox.Graphics;
+        symbol [ TEXT_JUSTIFY_VCENTER %tmp.142 37 110 130 ];
+        %tmp.142 = getv %tmp.141 :TEXT_JUSTIFY_VCENTER;
+        %tmp.143 = bitor %tmp.140 %tmp.142;
+        invoke %tmp.128 %tmp.129(%tmp.132, %tmp.135, %tmp.137, %tmp.138, %tmp.143);
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_11_34_38_4_stop:
+    }
+}
+[ @file = "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc"; @line = 41; @symbol_classdef = [StartActivityDelegate,41,6,27]; @symbol_extends<0> = [WatchUi,41,36,43]; @symbol_extends<1> = [BehaviorDelegate,41,44,60]; ]
+class StartActivityDelegate extends WatchUi.BehaviorDelegate {
+    [ @file = "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc"; @line = 41; ]
+    <init> {
+    }
+    [ @file = "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc"; @line = 41; ]
+    static
+    <init> {
+    }
+    [ @file = "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc"; @line = 42; @symbol_functiondef = [initialize,42,13,23]; ]
+    function initialize() as Void {
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_42_26_44_4_start:
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 43 8 ]
+        symbol [ BehaviorDelegate %tmp.2 43 8 24 ];
+        %tmp.2 = getv ? :BehaviorDelegate;
+        symbol [ initialize %tmp.3 43 25 35 ];
+        %tmp.3 = getv function %tmp.2 :initialize;
+        invoke %tmp.2 %tmp.3();
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_42_26_44_4_stop:
+    }
+    [ @file = "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc"; @line = 46; @symbol_functiondef = [onTap,46,13,18]; @symbol_param<0> = [evt,46,19,22]; @symbol_param<0>_type<0> = [WatchUi,46,26,33]; @symbol_param<0>_type<1> = [ClickEvent,46,34,44]; @symbol_return<0> = [Boolean,46,49,56]; ]
+    function onTap(evt as WatchUi.ClickEvent) as Boolean {
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_46_57_57_4_start:
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 47 8 ]
+        [ "_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_46_57_57_4_start" "_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_46_57_57_4_stop" ]
+        %coords.1 = local;
+        symbol [ coords %coords.1 47 12 18 ];
+        %tmp.1 = lgetv %evt;
+        symbol [ evt %tmp.1 47 21 24 ];
+        symbol [ getCoordinates %tmp.2 47 25 39 ];
+        %tmp.2 = getv function %tmp.1 :getCoordinates;
+        %tmp.3 = invoke %tmp.1 %tmp.2();
+        lputv %coords.1 %tmp.3;
+        symbol [ coords %coords.1 47 12 18 ];
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 48 8 ]
+        [ "_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_46_57_57_4_start" "_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_46_57_57_4_stop" ]
+        %y.2 = local;
+        symbol [ y %y.2 48 12 13 ];
+        %tmp.4 = lgetv %coords.1;
+        symbol [ coords %tmp.4 48 16 22 ];
+        %tmp.5 = 1;
+        %tmp.6 = agetv %tmp.4 %tmp.5;
+        lputv %y.2 %tmp.6;
+        symbol [ y %y.2 48 12 13 ];
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 49 8 ]
+        [ "_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_46_57_57_4_start" "_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_46_57_57_4_stop" ]
+        %screenHeight.3 = local;
+        symbol [ screenHeight %screenHeight.3 49 12 24 ];
+        symbol [ System %tmp.7 49 27 33 ];
+        %tmp.7 = getm $.Toybox.System;
+        symbol [ getDeviceSettings %tmp.8 49 34 51 ];
+        %tmp.8 = getv function %tmp.7 :getDeviceSettings;
+        %tmp.9 = invoke %tmp.7 %tmp.8();
+        symbol [ screenHeight %tmp.10 49 54 66 ];
+        %tmp.10 = getv %tmp.9 :screenHeight;
+        lputv %screenHeight.3 %tmp.10;
+        symbol [ screenHeight %screenHeight.3 49 12 24 ];
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 51 8 ]
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_51_8_55_8_if_stmt:
+        %tmp.11 = lgetv %y.2;
+        symbol [ y %tmp.11 51 12 13 ];
+        %tmp.12 = lgetv %screenHeight.3;
+        symbol [ screenHeight %tmp.12 51 16 28 ];
+        %tmp.13 = 2;
+        %tmp.14 = div %tmp.12 %tmp.13;
+        %tmp.15 = lt %tmp.11 %tmp.14;
+        bf %tmp.15 @_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_51_8_55_8_if_else_false;
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_51_8_55_8_if_true:
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_51_34_53_8_start:
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 52 12 ]
+        %tmp.16 = self;
+        symbol [ confirm %tmp.17 52 12 19 ];
+        %tmp.17 = getv function %tmp.16 :confirm;
+        invoke %tmp.16 %tmp.17();
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_51_34_53_8_stop:
+        goto @_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_51_8_55_8_if_end;
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_51_8_55_8_if_else_false:
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_53_15_55_8_start:
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 54 12 ]
+        %tmp.18 = self;
+        symbol [ cancel %tmp.19 54 12 18 ];
+        %tmp.19 = getv function %tmp.18 :cancel;
+        invoke %tmp.18 %tmp.19();
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_53_15_55_8_stop:
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_51_8_55_8_if_end:
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 56 8 ]
+        %tmp.20 = true;
+        ret %tmp.20;
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_46_57_57_4_stop:
+    }
+    [ @file = "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc"; @line = 59; @symbol_functiondef = [onKey,59,13,18]; @symbol_param<0> = [evt,59,19,22]; @symbol_param<0>_type<0> = [WatchUi,59,26,33]; @symbol_param<0>_type<1> = [KeyEvent,59,34,42]; @symbol_return<0> = [Boolean,59,47,54]; ]
+    function onKey(evt as WatchUi.KeyEvent) as Boolean {
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_59_55_69_4_start:
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 60 8 ]
+        [ "_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_59_55_69_4_start" "_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_59_55_69_4_stop" ]
+        %key.1 = local;
+        symbol [ key %key.1 60 12 15 ];
+        %tmp.1 = lgetv %evt;
+        symbol [ evt %tmp.1 60 18 21 ];
+        symbol [ getKey %tmp.2 60 22 28 ];
+        %tmp.2 = getv function %tmp.1 :getKey;
+        %tmp.3 = invoke %tmp.1 %tmp.2();
+        lputv %key.1 %tmp.3;
+        symbol [ key %key.1 60 12 15 ];
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 61 8 ]
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_61_8_67_8_if_stmt:
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_61_12_61_55_begin:
+        %tmp.4 = lgetv %key.1;
+        symbol [ key %tmp.4 61 12 15 ];
+        symbol [ WatchUi %tmp.5 61 19 26 ];
+        %tmp.5 = getm $.Toybox.WatchUi;
+        symbol [ KEY_ENTER %tmp.6 61 27 36 ];
+        %tmp.6 = getv %tmp.5 :KEY_ENTER;
+        %tmp.7 = eq %tmp.4 %tmp.6;
+        bt %tmp.7 @_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_61_8_67_8_if_true;
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_61_40_61_55_false:
+        %tmp.8 = lgetv %key.1;
+        symbol [ key %tmp.8 61 40 43 ];
+        symbol [ WatchUi %tmp.9 61 47 54 ];
+        %tmp.9 = getm $.Toybox.WatchUi;
+        symbol [ KEY_START %tmp.10 61 55 64 ];
+        %tmp.10 = getv %tmp.9 :KEY_START;
+        %tmp.11 = eq %tmp.8 %tmp.10;
+        push %tmp.11;
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_61_40_61_55_end:
+        %tmp.12 = phi [%tmp.7 @_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_61_12_61_55_begin] [%tmp.11 @_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_61_40_61_55_false] [%tmp.12 @_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_61_40_61_55_end];
+        bf %tmp.12 @_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_61_8_67_8_if_false;
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_61_8_67_8_if_true:
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_61_66_64_8_start:
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 62 12 ]
+        %tmp.13 = self;
+        symbol [ confirm %tmp.14 62 12 19 ];
+        %tmp.14 = getv function %tmp.13 :confirm;
+        invoke %tmp.13 %tmp.14();
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 63 12 ]
+        %tmp.15 = true;
+        ret %tmp.15;
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_61_66_64_8_stop:
+        goto @_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_61_8_67_8_if_end;
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_61_8_67_8_if_false:
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 64 15 ]
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_64_15_67_8_if_stmt:
+        %tmp.16 = lgetv %key.1;
+        symbol [ key %tmp.16 64 19 22 ];
+        symbol [ WatchUi %tmp.17 64 26 33 ];
+        %tmp.17 = getm $.Toybox.WatchUi;
+        symbol [ KEY_ESC %tmp.18 64 34 41 ];
+        %tmp.18 = getv %tmp.17 :KEY_ESC;
+        %tmp.19 = eq %tmp.16 %tmp.18;
+        bf %tmp.19 @_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_64_15_67_8_if_end;
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_64_15_67_8_if_true:
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_64_43_67_8_start:
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 65 12 ]
+        %tmp.20 = self;
+        symbol [ cancel %tmp.21 65 12 18 ];
+        %tmp.21 = getv function %tmp.20 :cancel;
+        invoke %tmp.20 %tmp.21();
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 66 12 ]
+        %tmp.22 = true;
+        ret %tmp.22;
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_64_43_67_8_stop:
+        goto @_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_64_15_67_8_if_end;
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_64_15_67_8_if_end:
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_61_8_67_8_if_end:
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 68 8 ]
+        %tmp.23 = false;
+        ret %tmp.23;
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_59_55_69_4_stop:
+    }
+    [ @file = "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc"; @line = 71; @symbol_functiondef = [onBack,71,13,19]; @symbol_return<0> = [Boolean,71,25,32]; ]
+    function onBack() as Boolean {
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_71_33_74_4_start:
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 72 8 ]
+        %tmp.1 = self;
+        symbol [ cancel %tmp.2 72 8 14 ];
+        %tmp.2 = getv function %tmp.1 :cancel;
+        invoke %tmp.1 %tmp.2();
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 73 8 ]
+        %tmp.3 = true;
+        ret %tmp.3;
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_71_33_74_4_stop:
+    }
+    [ @file = "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc"; @line = 76; @symbol_functiondef = [confirm,76,21,28]; ]
+    private
+    function confirm() as Void {
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_76_39_83_4_start:
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 77 8 ]
+        [ "_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_76_39_83_4_start" "_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_76_39_83_4_stop" ]
+        %app.1 = local;
+        symbol [ app %app.1 77 12 15 ];
+        %tmp.1 = self;
+        symbol [ getApp %tmp.2 77 18 24 ];
+        %tmp.2 = getv function %tmp.1 :getApp;
+        %tmp.3 = invoke %tmp.1 %tmp.2();
+        lputv %app.1 %tmp.3;
+        symbol [ app %app.1 77 12 15 ];
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 78 8 ]
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_78_8_80_8_if_stmt:
+        %tmp.4 = lgetv %app.1;
+        symbol [ app %tmp.4 78 12 15 ];
+        symbol [ activityTracker %tmp.5 78 16 31 ];
+        %tmp.5 = getv %tmp.4 :activityTracker;
+        %tmp.6 = null;
+        %tmp.7 = ne %tmp.5 %tmp.6;
+        bf %tmp.7 @_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_78_8_80_8_if_end;
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_78_8_80_8_if_true:
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_78_41_80_8_start:
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 79 12 ]
+        %tmp.8 = lgetv %app.1;
+        symbol [ app %tmp.8 79 12 15 ];
+        symbol [ activityTracker %tmp.9 79 16 31 ];
+        %tmp.9 = getv %tmp.8 :activityTracker;
+        symbol [ startRecording %tmp.10 79 32 46 ];
+        %tmp.10 = getv function %tmp.9 :startRecording;
+        invoke %tmp.9 %tmp.10();
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_78_41_80_8_stop:
+        goto @_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_78_8_80_8_if_end;
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_78_8_80_8_if_end:
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 81 8 ]
+        symbol [ WatchUi %tmp.11 81 8 15 ];
+        %tmp.11 = getm $.Toybox.WatchUi;
+        symbol [ popView %tmp.12 81 16 23 ];
+        %tmp.12 = getv function %tmp.11 :popView;
+        symbol [ WatchUi %tmp.13 81 24 31 ];
+        %tmp.13 = getm $.Toybox.WatchUi;
+        symbol [ SLIDE_DOWN %tmp.14 81 32 42 ];
+        %tmp.14 = getv %tmp.13 :SLIDE_DOWN;
+        invoke %tmp.11 %tmp.12(%tmp.14);
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 82 8 ]
+        symbol [ WatchUi %tmp.15 82 8 15 ];
+        %tmp.15 = getm $.Toybox.WatchUi;
+        symbol [ requestUpdate %tmp.16 82 16 29 ];
+        %tmp.16 = getv function %tmp.15 :requestUpdate;
+        invoke %tmp.15 %tmp.16();
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_76_39_83_4_stop:
+    }
+    [ @file = "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc"; @line = 85; @symbol_functiondef = [cancel,85,21,27]; ]
+    private
+    function cancel() as Void {
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_85_38_88_4_start:
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 86 8 ]
+        symbol [ WatchUi %tmp.1 86 8 15 ];
+        %tmp.1 = getm $.Toybox.WatchUi;
+        symbol [ popView %tmp.2 86 16 23 ];
+        %tmp.2 = getv function %tmp.1 :popView;
+        symbol [ WatchUi %tmp.3 86 24 31 ];
+        %tmp.3 = getm $.Toybox.WatchUi;
+        symbol [ SLIDE_DOWN %tmp.4 86 32 42 ];
+        %tmp.4 = getv %tmp.3 :SLIDE_DOWN;
+        invoke %tmp.1 %tmp.2(%tmp.4);
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 87 8 ]
+        symbol [ WatchUi %tmp.5 87 8 15 ];
+        %tmp.5 = getm $.Toybox.WatchUi;
+        symbol [ requestUpdate %tmp.6 87 16 29 ];
+        %tmp.6 = getv function %tmp.5 :requestUpdate;
+        invoke %tmp.5 %tmp.6();
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_85_38_88_4_stop:
+    }
+}
+[ @file = "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc"; @line = 91; @symbol_classdef = [SaveActivityView,91,6,22]; @symbol_extends<0> = [WatchUi,91,31,38]; @symbol_extends<1> = [View,91,39,43]; ]
+class SaveActivityView extends WatchUi.View {
+    [ @file = "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc"; @line = 91; ]
+    <init> {
+    }
+    [ @file = "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc"; @line = 91; ]
+    static
+    <init> {
+    }
+    [ @file = "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc"; @line = 92; @symbol_functiondef = [initialize,92,13,23]; ]
+    function initialize() as Void {
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_92_26_94_4_start:
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 93 8 ]
+        symbol [ View %tmp.2 93 8 12 ];
+        %tmp.2 = getv ? :View;
+        symbol [ initialize %tmp.3 93 13 23 ];
+        %tmp.3 = getv function %tmp.2 :initialize;
+        invoke %tmp.2 %tmp.3();
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_92_26_94_4_stop:
+    }
+    [ @file = "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc"; @line = 96; @symbol_functiondef = [onUpdate,96,13,21]; @symbol_param<0> = [dc,96,22,24]; ]
+    function onUpdate(dc) as Void {
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_96_34_122_4_start:
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 97 8 ]
+        [ "_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_96_34_122_4_start" "_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_96_34_122_4_stop" ]
+        %width.1 = local;
+        symbol [ width %width.1 97 12 17 ];
+        %tmp.1 = lgetv %dc;
+        symbol [ dc %tmp.1 97 20 22 ];
+        symbol [ getWidth %tmp.2 97 23 31 ];
+        %tmp.2 = getv function %tmp.1 :getWidth;
+        %tmp.3 = invoke %tmp.1 %tmp.2();
+        lputv %width.1 %tmp.3;
+        symbol [ width %width.1 97 12 17 ];
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 98 8 ]
+        [ "_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_96_34_122_4_start" "_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_96_34_122_4_stop" ]
+        %height.2 = local;
+        symbol [ height %height.2 98 12 18 ];
+        %tmp.4 = lgetv %dc;
+        symbol [ dc %tmp.4 98 21 23 ];
+        symbol [ getHeight %tmp.5 98 24 33 ];
+        %tmp.5 = getv function %tmp.4 :getHeight;
+        %tmp.6 = invoke %tmp.4 %tmp.5();
+        lputv %height.2 %tmp.6;
+        symbol [ height %height.2 98 12 18 ];
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 100 8 ]
+        %tmp.7 = lgetv %dc;
+        symbol [ dc %tmp.7 100 8 10 ];
+        symbol [ setColor %tmp.8 100 11 19 ];
+        %tmp.8 = getv function %tmp.7 :setColor;
+        symbol [ Graphics %tmp.9 100 20 28 ];
+        %tmp.9 = getm $.Toybox.Graphics;
+        symbol [ COLOR_BLACK %tmp.10 100 29 40 ];
+        %tmp.10 = getv %tmp.9 :COLOR_BLACK;
+        symbol [ Graphics %tmp.11 100 42 50 ];
+        %tmp.11 = getm $.Toybox.Graphics;
+        symbol [ COLOR_BLACK %tmp.12 100 51 62 ];
+        %tmp.12 = getv %tmp.11 :COLOR_BLACK;
+        invoke %tmp.7 %tmp.8(%tmp.10, %tmp.12);
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 101 8 ]
+        %tmp.13 = lgetv %dc;
+        symbol [ dc %tmp.13 101 8 10 ];
+        symbol [ clear %tmp.14 101 11 16 ];
+        %tmp.14 = getv function %tmp.13 :clear;
+        invoke %tmp.13 %tmp.14();
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 104 8 ]
+        %tmp.15 = lgetv %dc;
+        symbol [ dc %tmp.15 104 8 10 ];
+        symbol [ setColor %tmp.16 104 11 19 ];
+        %tmp.16 = getv function %tmp.15 :setColor;
+        symbol [ Graphics %tmp.17 104 20 28 ];
+        %tmp.17 = getm $.Toybox.Graphics;
+        symbol [ COLOR_DK_GRAY %tmp.18 104 29 42 ];
+        %tmp.18 = getv %tmp.17 :COLOR_DK_GRAY;
+        symbol [ Graphics %tmp.19 104 44 52 ];
+        %tmp.19 = getm $.Toybox.Graphics;
+        symbol [ COLOR_TRANSPARENT %tmp.20 104 53 70 ];
+        %tmp.20 = getv %tmp.19 :COLOR_TRANSPARENT;
+        invoke %tmp.15 %tmp.16(%tmp.18, %tmp.20);
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 105 8 ]
+        %tmp.21 = lgetv %dc;
+        symbol [ dc %tmp.21 105 8 10 ];
+        symbol [ fillRectangle %tmp.22 105 11 24 ];
+        %tmp.22 = getv function %tmp.21 :fillRectangle;
+        %tmp.23 = 0;
+        %tmp.24 = 0;
+        %tmp.25 = lgetv %width.1;
+        symbol [ width %tmp.25 105 31 36 ];
+        %tmp.26 = lgetv %height.2;
+        symbol [ height %tmp.26 105 38 44 ];
+        %tmp.27 = 2;
+        %tmp.28 = div %tmp.26 %tmp.27;
+        invoke %tmp.21 %tmp.22(%tmp.23, %tmp.24, %tmp.25, %tmp.28);
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 106 8 ]
+        %tmp.29 = lgetv %dc;
+        symbol [ dc %tmp.29 106 8 10 ];
+        symbol [ setColor %tmp.30 106 11 19 ];
+        %tmp.30 = getv function %tmp.29 :setColor;
+        symbol [ Graphics %tmp.31 106 20 28 ];
+        %tmp.31 = getm $.Toybox.Graphics;
+        symbol [ COLOR_WHITE %tmp.32 106 29 40 ];
+        %tmp.32 = getv %tmp.31 :COLOR_WHITE;
+        symbol [ Graphics %tmp.33 106 42 50 ];
+        %tmp.33 = getm $.Toybox.Graphics;
+        symbol [ COLOR_TRANSPARENT %tmp.34 106 51 68 ];
+        %tmp.34 = getv %tmp.33 :COLOR_TRANSPARENT;
+        invoke %tmp.29 %tmp.30(%tmp.32, %tmp.34);
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 107 8 ]
+        %tmp.35 = lgetv %dc;
+        symbol [ dc %tmp.35 107 8 10 ];
+        symbol [ drawText %tmp.36 107 11 19 ];
+        %tmp.36 = getv function %tmp.35 :drawText;
+        %tmp.37 = lgetv %width.1;
+        symbol [ width %tmp.37 107 20 25 ];
+        %tmp.38 = 2;
+        %tmp.39 = div %tmp.37 %tmp.38;
+        %tmp.40 = lgetv %height.2;
+        symbol [ height %tmp.40 107 31 37 ];
+        %tmp.41 = 4;
+        %tmp.42 = div %tmp.40 %tmp.41;
+        symbol [ Graphics %tmp.43 107 43 51 ];
+        %tmp.43 = getm $.Toybox.Graphics;
+        symbol [ FONT_MEDIUM %tmp.44 107 52 63 ];
+        %tmp.44 = getv %tmp.43 :FONT_MEDIUM;
+        %tmp.45 = "Resume";
+        symbol [ Graphics %tmp.46 107 75 83 ];
+        %tmp.46 = getm $.Toybox.Graphics;
+        symbol [ TEXT_JUSTIFY_CENTER %tmp.47 107 84 103 ];
+        %tmp.47 = getv %tmp.46 :TEXT_JUSTIFY_CENTER;
+        symbol [ Graphics %tmp.48 107 106 114 ];
+        %tmp.48 = getm $.Toybox.Graphics;
+        symbol [ TEXT_JUSTIFY_VCENTER %tmp.49 107 115 135 ];
+        %tmp.49 = getv %tmp.48 :TEXT_JUSTIFY_VCENTER;
+        %tmp.50 = bitor %tmp.47 %tmp.49;
+        invoke %tmp.35 %tmp.36(%tmp.39, %tmp.42, %tmp.44, %tmp.45, %tmp.50);
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 110 8 ]
+        %tmp.51 = lgetv %dc;
+        symbol [ dc %tmp.51 110 8 10 ];
+        symbol [ setColor %tmp.52 110 11 19 ];
+        %tmp.52 = getv function %tmp.51 :setColor;
+        symbol [ Graphics %tmp.53 110 20 28 ];
+        %tmp.53 = getm $.Toybox.Graphics;
+        symbol [ COLOR_DK_GREEN %tmp.54 110 29 43 ];
+        %tmp.54 = getv %tmp.53 :COLOR_DK_GREEN;
+        symbol [ Graphics %tmp.55 110 45 53 ];
+        %tmp.55 = getm $.Toybox.Graphics;
+        symbol [ COLOR_TRANSPARENT %tmp.56 110 54 71 ];
+        %tmp.56 = getv %tmp.55 :COLOR_TRANSPARENT;
+        invoke %tmp.51 %tmp.52(%tmp.54, %tmp.56);
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 111 8 ]
+        %tmp.57 = lgetv %dc;
+        symbol [ dc %tmp.57 111 8 10 ];
+        symbol [ fillRectangle %tmp.58 111 11 24 ];
+        %tmp.58 = getv function %tmp.57 :fillRectangle;
+        %tmp.59 = 0;
+        %tmp.60 = lgetv %height.2;
+        symbol [ height %tmp.60 111 28 34 ];
+        %tmp.61 = 2;
+        %tmp.62 = div %tmp.60 %tmp.61;
+        %tmp.63 = lgetv %width.1;
+        symbol [ width %tmp.63 111 40 45 ];
+        %tmp.64 = lgetv %height.2;
+        symbol [ height %tmp.64 111 47 53 ];
+        %tmp.65 = 2;
+        %tmp.66 = div %tmp.64 %tmp.65;
+        invoke %tmp.57 %tmp.58(%tmp.59, %tmp.62, %tmp.63, %tmp.66);
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 112 8 ]
+        %tmp.67 = lgetv %dc;
+        symbol [ dc %tmp.67 112 8 10 ];
+        symbol [ setColor %tmp.68 112 11 19 ];
+        %tmp.68 = getv function %tmp.67 :setColor;
+        symbol [ Graphics %tmp.69 112 20 28 ];
+        %tmp.69 = getm $.Toybox.Graphics;
+        symbol [ COLOR_WHITE %tmp.70 112 29 40 ];
+        %tmp.70 = getv %tmp.69 :COLOR_WHITE;
+        symbol [ Graphics %tmp.71 112 42 50 ];
+        %tmp.71 = getm $.Toybox.Graphics;
+        symbol [ COLOR_TRANSPARENT %tmp.72 112 51 68 ];
+        %tmp.72 = getv %tmp.71 :COLOR_TRANSPARENT;
+        invoke %tmp.67 %tmp.68(%tmp.70, %tmp.72);
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 113 8 ]
+        %tmp.73 = lgetv %dc;
+        symbol [ dc %tmp.73 113 8 10 ];
+        symbol [ drawText %tmp.74 113 11 19 ];
+        %tmp.74 = getv function %tmp.73 :drawText;
+        %tmp.75 = lgetv %width.1;
+        symbol [ width %tmp.75 113 20 25 ];
+        %tmp.76 = 2;
+        %tmp.77 = div %tmp.75 %tmp.76;
+        %tmp.78 = lgetv %height.2;
+        symbol [ height %tmp.78 113 31 37 ];
+        %tmp.79 = 3;
+        %tmp.80 = mul %tmp.78 %tmp.79;
+        %tmp.81 = 4;
+        %tmp.82 = div %tmp.80 %tmp.81;
+        symbol [ Graphics %tmp.83 113 47 55 ];
+        %tmp.83 = getm $.Toybox.Graphics;
+        symbol [ FONT_MEDIUM %tmp.84 113 56 67 ];
+        %tmp.84 = getv %tmp.83 :FONT_MEDIUM;
+        %tmp.85 = "Save";
+        symbol [ Graphics %tmp.86 113 77 85 ];
+        %tmp.86 = getm $.Toybox.Graphics;
+        symbol [ TEXT_JUSTIFY_CENTER %tmp.87 113 86 105 ];
+        %tmp.87 = getv %tmp.86 :TEXT_JUSTIFY_CENTER;
+        symbol [ Graphics %tmp.88 113 108 116 ];
+        %tmp.88 = getm $.Toybox.Graphics;
+        symbol [ TEXT_JUSTIFY_VCENTER %tmp.89 113 117 137 ];
+        %tmp.89 = getv %tmp.88 :TEXT_JUSTIFY_VCENTER;
+        %tmp.90 = bitor %tmp.87 %tmp.89;
+        invoke %tmp.73 %tmp.74(%tmp.77, %tmp.82, %tmp.84, %tmp.85, %tmp.90);
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 116 8 ]
+        %tmp.91 = lgetv %dc;
+        symbol [ dc %tmp.91 116 8 10 ];
+        symbol [ setColor %tmp.92 116 11 19 ];
+        %tmp.92 = getv function %tmp.91 :setColor;
+        symbol [ Graphics %tmp.93 116 20 28 ];
+        %tmp.93 = getm $.Toybox.Graphics;
+        symbol [ COLOR_BLACK %tmp.94 116 29 40 ];
+        %tmp.94 = getv %tmp.93 :COLOR_BLACK;
+        symbol [ Graphics %tmp.95 116 42 50 ];
+        %tmp.95 = getm $.Toybox.Graphics;
+        symbol [ COLOR_BLACK %tmp.96 116 51 62 ];
+        %tmp.96 = getv %tmp.95 :COLOR_BLACK;
+        invoke %tmp.91 %tmp.92(%tmp.94, %tmp.96);
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 117 8 ]
+        [ "_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_96_34_122_4_start" "_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_96_34_122_4_stop" ]
+        %text.3 = local;
+        symbol [ text %text.3 117 12 16 ];
+        %tmp.97 = "Save Activity?";
+        lputv %text.3 %tmp.97;
+        symbol [ text %text.3 117 12 16 ];
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 118 8 ]
+        [ "_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_96_34_122_4_start" "_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_96_34_122_4_stop" ]
+        %dims.4 = local;
+        symbol [ dims %dims.4 118 12 16 ];
+        %tmp.98 = lgetv %dc;
+        symbol [ dc %tmp.98 118 19 21 ];
+        symbol [ getTextDimensions %tmp.99 118 22 39 ];
+        %tmp.99 = getv function %tmp.98 :getTextDimensions;
+        %tmp.100 = lgetv %text.3;
+        symbol [ text %tmp.100 118 40 44 ];
+        symbol [ Graphics %tmp.101 118 46 54 ];
+        %tmp.101 = getm $.Toybox.Graphics;
+        symbol [ FONT_SMALL %tmp.102 118 55 65 ];
+        %tmp.102 = getv %tmp.101 :FONT_SMALL;
+        %tmp.103 = invoke %tmp.98 %tmp.99(%tmp.100, %tmp.102);
+        lputv %dims.4 %tmp.103;
+        symbol [ dims %dims.4 118 12 16 ];
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 119 8 ]
+        %tmp.104 = lgetv %dc;
+        symbol [ dc %tmp.104 119 8 10 ];
+        symbol [ fillRectangle %tmp.105 119 11 24 ];
+        %tmp.105 = getv function %tmp.104 :fillRectangle;
+        %tmp.106 = 0;
+        %tmp.107 = lgetv %height.2;
+        symbol [ height %tmp.107 119 29 35 ];
+        %tmp.108 = lgetv %dims.4;
+        symbol [ dims %tmp.108 119 38 42 ];
+        %tmp.109 = 1;
+        %tmp.110 = agetv %tmp.108 %tmp.109;
+        %tmp.111 = sub %tmp.107 %tmp.110;
+        %tmp.112 = 2;
+        %tmp.113 = div %tmp.111 %tmp.112;
+        %tmp.114 = 5;
+        %tmp.115 = sub %tmp.113 %tmp.114;
+        %tmp.116 = lgetv %width.1;
+        symbol [ width %tmp.116 119 56 61 ];
+        %tmp.117 = lgetv %dims.4;
+        symbol [ dims %tmp.117 119 63 67 ];
+        %tmp.118 = 1;
+        %tmp.119 = agetv %tmp.117 %tmp.118;
+        %tmp.120 = 10;
+        %tmp.121 = add %tmp.119 %tmp.120;
+        invoke %tmp.104 %tmp.105(%tmp.106, %tmp.115, %tmp.116, %tmp.121);
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 120 8 ]
+        %tmp.122 = lgetv %dc;
+        symbol [ dc %tmp.122 120 8 10 ];
+        symbol [ setColor %tmp.123 120 11 19 ];
+        %tmp.123 = getv function %tmp.122 :setColor;
+        symbol [ Graphics %tmp.124 120 20 28 ];
+        %tmp.124 = getm $.Toybox.Graphics;
+        symbol [ COLOR_WHITE %tmp.125 120 29 40 ];
+        %tmp.125 = getv %tmp.124 :COLOR_WHITE;
+        symbol [ Graphics %tmp.126 120 42 50 ];
+        %tmp.126 = getm $.Toybox.Graphics;
+        symbol [ COLOR_TRANSPARENT %tmp.127 120 51 68 ];
+        %tmp.127 = getv %tmp.126 :COLOR_TRANSPARENT;
+        invoke %tmp.122 %tmp.123(%tmp.125, %tmp.127);
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 121 8 ]
+        %tmp.128 = lgetv %dc;
+        symbol [ dc %tmp.128 121 8 10 ];
+        symbol [ drawText %tmp.129 121 11 19 ];
+        %tmp.129 = getv function %tmp.128 :drawText;
+        %tmp.130 = lgetv %width.1;
+        symbol [ width %tmp.130 121 20 25 ];
+        %tmp.131 = 2;
+        %tmp.132 = div %tmp.130 %tmp.131;
+        %tmp.133 = lgetv %height.2;
+        symbol [ height %tmp.133 121 31 37 ];
+        %tmp.134 = 2;
+        %tmp.135 = div %tmp.133 %tmp.134;
+        symbol [ Graphics %tmp.136 121 43 51 ];
+        %tmp.136 = getm $.Toybox.Graphics;
+        symbol [ FONT_SMALL %tmp.137 121 52 62 ];
+        %tmp.137 = getv %tmp.136 :FONT_SMALL;
+        %tmp.138 = lgetv %text.3;
+        symbol [ text %tmp.138 121 64 68 ];
+        symbol [ Graphics %tmp.139 121 70 78 ];
+        %tmp.139 = getm $.Toybox.Graphics;
+        symbol [ TEXT_JUSTIFY_CENTER %tmp.140 121 79 98 ];
+        %tmp.140 = getv %tmp.139 :TEXT_JUSTIFY_CENTER;
+        symbol [ Graphics %tmp.141 121 101 109 ];
+        %tmp.141 = getm $.Toybox.Graphics;
+        symbol [ TEXT_JUSTIFY_VCENTER %tmp.142 121 110 130 ];
+        %tmp.142 = getv %tmp.141 :TEXT_JUSTIFY_VCENTER;
+        %tmp.143 = bitor %tmp.140 %tmp.142;
+        invoke %tmp.128 %tmp.129(%tmp.132, %tmp.135, %tmp.137, %tmp.138, %tmp.143);
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_96_34_122_4_stop:
+    }
+}
+[ @file = "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc"; @line = 125; @symbol_classdef = [SaveActivityDelegate,125,6,26]; @symbol_extends<0> = [WatchUi,125,35,42]; @symbol_extends<1> = [BehaviorDelegate,125,43,59]; ]
+class SaveActivityDelegate extends WatchUi.BehaviorDelegate {
+    [ @file = "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc"; @line = 125; ]
+    <init> {
+    }
+    [ @file = "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc"; @line = 125; ]
+    static
+    <init> {
+    }
+    [ @file = "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc"; @line = 126; @symbol_functiondef = [initialize,126,13,23]; ]
+    function initialize() as Void {
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_126_26_128_4_start:
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 127 8 ]
+        symbol [ BehaviorDelegate %tmp.2 127 8 24 ];
+        %tmp.2 = getv ? :BehaviorDelegate;
+        symbol [ initialize %tmp.3 127 25 35 ];
+        %tmp.3 = getv function %tmp.2 :initialize;
+        invoke %tmp.2 %tmp.3();
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_126_26_128_4_stop:
+    }
+    [ @file = "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc"; @line = 130; @symbol_functiondef = [onTap,130,13,18]; @symbol_param<0> = [evt,130,19,22]; @symbol_param<0>_type<0> = [WatchUi,130,26,33]; @symbol_param<0>_type<1> = [ClickEvent,130,34,44]; @symbol_return<0> = [Boolean,130,49,56]; ]
+    function onTap(evt as WatchUi.ClickEvent) as Boolean {
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_130_57_141_4_start:
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 131 8 ]
+        [ "_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_130_57_141_4_start" "_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_130_57_141_4_stop" ]
+        %coords.1 = local;
+        symbol [ coords %coords.1 131 12 18 ];
+        %tmp.1 = lgetv %evt;
+        symbol [ evt %tmp.1 131 21 24 ];
+        symbol [ getCoordinates %tmp.2 131 25 39 ];
+        %tmp.2 = getv function %tmp.1 :getCoordinates;
+        %tmp.3 = invoke %tmp.1 %tmp.2();
+        lputv %coords.1 %tmp.3;
+        symbol [ coords %coords.1 131 12 18 ];
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 132 8 ]
+        [ "_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_130_57_141_4_start" "_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_130_57_141_4_stop" ]
+        %y.2 = local;
+        symbol [ y %y.2 132 12 13 ];
+        %tmp.4 = lgetv %coords.1;
+        symbol [ coords %tmp.4 132 16 22 ];
+        %tmp.5 = 1;
+        %tmp.6 = agetv %tmp.4 %tmp.5;
+        lputv %y.2 %tmp.6;
+        symbol [ y %y.2 132 12 13 ];
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 133 8 ]
+        [ "_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_130_57_141_4_start" "_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_130_57_141_4_stop" ]
+        %screenHeight.3 = local;
+        symbol [ screenHeight %screenHeight.3 133 12 24 ];
+        symbol [ System %tmp.7 133 27 33 ];
+        %tmp.7 = getm $.Toybox.System;
+        symbol [ getDeviceSettings %tmp.8 133 34 51 ];
+        %tmp.8 = getv function %tmp.7 :getDeviceSettings;
+        %tmp.9 = invoke %tmp.7 %tmp.8();
+        symbol [ screenHeight %tmp.10 133 54 66 ];
+        %tmp.10 = getv %tmp.9 :screenHeight;
+        lputv %screenHeight.3 %tmp.10;
+        symbol [ screenHeight %screenHeight.3 133 12 24 ];
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 135 8 ]
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_135_8_139_8_if_stmt:
+        %tmp.11 = lgetv %y.2;
+        symbol [ y %tmp.11 135 12 13 ];
+        %tmp.12 = lgetv %screenHeight.3;
+        symbol [ screenHeight %tmp.12 135 16 28 ];
+        %tmp.13 = 2;
+        %tmp.14 = div %tmp.12 %tmp.13;
+        %tmp.15 = lt %tmp.11 %tmp.14;
+        bf %tmp.15 @_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_135_8_139_8_if_else_false;
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_135_8_139_8_if_true:
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_135_34_137_8_start:
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 136 12 ]
+        %tmp.16 = self;
+        symbol [ resume %tmp.17 136 12 18 ];
+        %tmp.17 = getv function %tmp.16 :resume;
+        invoke %tmp.16 %tmp.17();
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_135_34_137_8_stop:
+        goto @_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_135_8_139_8_if_end;
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_135_8_139_8_if_else_false:
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_137_15_139_8_start:
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 138 12 ]
+        %tmp.18 = self;
+        symbol [ save %tmp.19 138 12 16 ];
+        %tmp.19 = getv function %tmp.18 :save;
+        invoke %tmp.18 %tmp.19();
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_137_15_139_8_stop:
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_135_8_139_8_if_end:
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 140 8 ]
+        %tmp.20 = true;
+        ret %tmp.20;
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_130_57_141_4_stop:
+    }
+    [ @file = "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc"; @line = 143; @symbol_functiondef = [onKey,143,13,18]; @symbol_param<0> = [evt,143,19,22]; @symbol_param<0>_type<0> = [WatchUi,143,26,33]; @symbol_param<0>_type<1> = [KeyEvent,143,34,42]; @symbol_return<0> = [Boolean,143,47,54]; ]
+    function onKey(evt as WatchUi.KeyEvent) as Boolean {
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_143_55_153_4_start:
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 144 8 ]
+        [ "_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_143_55_153_4_start" "_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_143_55_153_4_stop" ]
+        %key.1 = local;
+        symbol [ key %key.1 144 12 15 ];
+        %tmp.1 = lgetv %evt;
+        symbol [ evt %tmp.1 144 18 21 ];
+        symbol [ getKey %tmp.2 144 22 28 ];
+        %tmp.2 = getv function %tmp.1 :getKey;
+        %tmp.3 = invoke %tmp.1 %tmp.2();
+        lputv %key.1 %tmp.3;
+        symbol [ key %key.1 144 12 15 ];
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 145 8 ]
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_145_8_151_8_if_stmt:
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_145_12_145_55_begin:
+        %tmp.4 = lgetv %key.1;
+        symbol [ key %tmp.4 145 12 15 ];
+        symbol [ WatchUi %tmp.5 145 19 26 ];
+        %tmp.5 = getm $.Toybox.WatchUi;
+        symbol [ KEY_ENTER %tmp.6 145 27 36 ];
+        %tmp.6 = getv %tmp.5 :KEY_ENTER;
+        %tmp.7 = eq %tmp.4 %tmp.6;
+        bt %tmp.7 @_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_145_8_151_8_if_true;
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_145_40_145_55_false:
+        %tmp.8 = lgetv %key.1;
+        symbol [ key %tmp.8 145 40 43 ];
+        symbol [ WatchUi %tmp.9 145 47 54 ];
+        %tmp.9 = getm $.Toybox.WatchUi;
+        symbol [ KEY_START %tmp.10 145 55 64 ];
+        %tmp.10 = getv %tmp.9 :KEY_START;
+        %tmp.11 = eq %tmp.8 %tmp.10;
+        push %tmp.11;
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_145_40_145_55_end:
+        %tmp.12 = phi [%tmp.7 @_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_145_12_145_55_begin] [%tmp.11 @_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_145_40_145_55_false] [%tmp.12 @_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_145_40_145_55_end];
+        bf %tmp.12 @_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_145_8_151_8_if_false;
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_145_8_151_8_if_true:
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_145_66_148_8_start:
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 146 12 ]
+        %tmp.13 = self;
+        symbol [ resume %tmp.14 146 12 18 ];
+        %tmp.14 = getv function %tmp.13 :resume;
+        invoke %tmp.13 %tmp.14();
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 147 12 ]
+        %tmp.15 = true;
+        ret %tmp.15;
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_145_66_148_8_stop:
+        goto @_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_145_8_151_8_if_end;
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_145_8_151_8_if_false:
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 148 15 ]
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_148_15_151_8_if_stmt:
+        %tmp.16 = lgetv %key.1;
+        symbol [ key %tmp.16 148 19 22 ];
+        symbol [ WatchUi %tmp.17 148 26 33 ];
+        %tmp.17 = getm $.Toybox.WatchUi;
+        symbol [ KEY_ESC %tmp.18 148 34 41 ];
+        %tmp.18 = getv %tmp.17 :KEY_ESC;
+        %tmp.19 = eq %tmp.16 %tmp.18;
+        bf %tmp.19 @_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_148_15_151_8_if_end;
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_148_15_151_8_if_true:
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_148_43_151_8_start:
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 149 12 ]
+        %tmp.20 = self;
+        symbol [ save %tmp.21 149 12 16 ];
+        %tmp.21 = getv function %tmp.20 :save;
+        invoke %tmp.20 %tmp.21();
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 150 12 ]
+        %tmp.22 = true;
+        ret %tmp.22;
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_148_43_151_8_stop:
+        goto @_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_148_15_151_8_if_end;
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_148_15_151_8_if_end:
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_145_8_151_8_if_end:
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 152 8 ]
+        %tmp.23 = false;
+        ret %tmp.23;
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_143_55_153_4_stop:
+    }
+    [ @file = "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc"; @line = 155; @symbol_functiondef = [save,155,21,25]; ]
+    private
+    function save() as Void {
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_155_36_162_4_start:
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 156 8 ]
+        [ "_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_155_36_162_4_start" "_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_155_36_162_4_stop" ]
+        %app.1 = local;
+        symbol [ app %app.1 156 12 15 ];
+        %tmp.1 = self;
+        symbol [ getApp %tmp.2 156 18 24 ];
+        %tmp.2 = getv function %tmp.1 :getApp;
+        %tmp.3 = invoke %tmp.1 %tmp.2();
+        lputv %app.1 %tmp.3;
+        symbol [ app %app.1 156 12 15 ];
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 157 8 ]
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_157_8_159_8_if_stmt:
+        %tmp.4 = lgetv %app.1;
+        symbol [ app %tmp.4 157 12 15 ];
+        symbol [ activityTracker %tmp.5 157 16 31 ];
+        %tmp.5 = getv %tmp.4 :activityTracker;
+        %tmp.6 = null;
+        %tmp.7 = ne %tmp.5 %tmp.6;
+        bf %tmp.7 @_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_157_8_159_8_if_end;
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_157_8_159_8_if_true:
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_157_41_159_8_start:
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 158 12 ]
+        %tmp.8 = lgetv %app.1;
+        symbol [ app %tmp.8 158 12 15 ];
+        symbol [ activityTracker %tmp.9 158 16 31 ];
+        %tmp.9 = getv %tmp.8 :activityTracker;
+        symbol [ saveSession %tmp.10 158 32 43 ];
+        %tmp.10 = getv function %tmp.9 :saveSession;
+        invoke %tmp.9 %tmp.10();
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_157_41_159_8_stop:
+        goto @_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_157_8_159_8_if_end;
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_157_8_159_8_if_end:
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 160 8 ]
+        symbol [ WatchUi %tmp.11 160 8 15 ];
+        %tmp.11 = getm $.Toybox.WatchUi;
+        symbol [ popView %tmp.12 160 16 23 ];
+        %tmp.12 = getv function %tmp.11 :popView;
+        symbol [ WatchUi %tmp.13 160 24 31 ];
+        %tmp.13 = getm $.Toybox.WatchUi;
+        symbol [ SLIDE_DOWN %tmp.14 160 32 42 ];
+        %tmp.14 = getv %tmp.13 :SLIDE_DOWN;
+        invoke %tmp.11 %tmp.12(%tmp.14);
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 161 8 ]
+        symbol [ WatchUi %tmp.15 161 8 15 ];
+        %tmp.15 = getm $.Toybox.WatchUi;
+        symbol [ requestUpdate %tmp.16 161 16 29 ];
+        %tmp.16 = getv function %tmp.15 :requestUpdate;
+        invoke %tmp.15 %tmp.16();
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_155_36_162_4_stop:
+    }
+    [ @file = "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc"; @line = 164; @symbol_functiondef = [resume,164,21,27]; ]
+    private
+    function resume() as Void {
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_164_38_171_4_start:
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 165 8 ]
+        [ "_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_164_38_171_4_start" "_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_164_38_171_4_stop" ]
+        %app.1 = local;
+        symbol [ app %app.1 165 12 15 ];
+        %tmp.1 = self;
+        symbol [ getApp %tmp.2 165 18 24 ];
+        %tmp.2 = getv function %tmp.1 :getApp;
+        %tmp.3 = invoke %tmp.1 %tmp.2();
+        lputv %app.1 %tmp.3;
+        symbol [ app %app.1 165 12 15 ];
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 166 8 ]
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_166_8_168_8_if_stmt:
+        %tmp.4 = lgetv %app.1;
+        symbol [ app %tmp.4 166 12 15 ];
+        symbol [ activityTracker %tmp.5 166 16 31 ];
+        %tmp.5 = getv %tmp.4 :activityTracker;
+        %tmp.6 = null;
+        %tmp.7 = ne %tmp.5 %tmp.6;
+        bf %tmp.7 @_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_166_8_168_8_if_end;
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_166_8_168_8_if_true:
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_166_41_168_8_start:
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 167 12 ]
+        %tmp.8 = lgetv %app.1;
+        symbol [ app %tmp.8 167 12 15 ];
+        symbol [ activityTracker %tmp.9 167 16 31 ];
+        %tmp.9 = getv %tmp.8 :activityTracker;
+        symbol [ startRecording %tmp.10 167 32 46 ];
+        %tmp.10 = getv function %tmp.9 :startRecording;
+        invoke %tmp.9 %tmp.10();
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_166_41_168_8_stop:
+        goto @_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_166_8_168_8_if_end;
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_166_8_168_8_if_end:
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 169 8 ]
+        symbol [ WatchUi %tmp.11 169 8 15 ];
+        %tmp.11 = getm $.Toybox.WatchUi;
+        symbol [ popView %tmp.12 169 16 23 ];
+        %tmp.12 = getv function %tmp.11 :popView;
+        symbol [ WatchUi %tmp.13 169 24 31 ];
+        %tmp.13 = getm $.Toybox.WatchUi;
+        symbol [ SLIDE_DOWN %tmp.14 169 32 42 ];
+        %tmp.14 = getv %tmp.13 :SLIDE_DOWN;
+        invoke %tmp.11 %tmp.12(%tmp.14);
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 170 8 ]
+        symbol [ WatchUi %tmp.15 170 8 15 ];
+        %tmp.15 = getm $.Toybox.WatchUi;
+        symbol [ requestUpdate %tmp.16 170 16 29 ];
+        %tmp.16 = getv function %tmp.15 :requestUpdate;
+        invoke %tmp.15 %tmp.16();
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_164_38_171_4_stop:
+    }
+}
+[ @file = "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc"; @line = 174; @symbol_classdef = [DiscardActivityView,174,6,25]; @symbol_extends<0> = [WatchUi,174,34,41]; @symbol_extends<1> = [View,174,42,46]; ]
+class DiscardActivityView extends WatchUi.View {
+    [ @file = "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc"; @line = 174; ]
+    <init> {
+    }
+    [ @file = "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc"; @line = 174; ]
+    static
+    <init> {
+    }
+    [ @file = "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc"; @line = 175; @symbol_functiondef = [initialize,175,13,23]; ]
+    function initialize() as Void {
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_175_26_177_4_start:
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 176 8 ]
+        symbol [ View %tmp.2 176 8 12 ];
+        %tmp.2 = getv ? :View;
+        symbol [ initialize %tmp.3 176 13 23 ];
+        %tmp.3 = getv function %tmp.2 :initialize;
+        invoke %tmp.2 %tmp.3();
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_175_26_177_4_stop:
+    }
+    [ @file = "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc"; @line = 179; @symbol_functiondef = [onUpdate,179,13,21]; @symbol_param<0> = [dc,179,22,24]; ]
+    function onUpdate(dc) as Void {
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_179_34_205_4_start:
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 180 8 ]
+        [ "_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_179_34_205_4_start" "_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_179_34_205_4_stop" ]
+        %width.1 = local;
+        symbol [ width %width.1 180 12 17 ];
+        %tmp.1 = lgetv %dc;
+        symbol [ dc %tmp.1 180 20 22 ];
+        symbol [ getWidth %tmp.2 180 23 31 ];
+        %tmp.2 = getv function %tmp.1 :getWidth;
+        %tmp.3 = invoke %tmp.1 %tmp.2();
+        lputv %width.1 %tmp.3;
+        symbol [ width %width.1 180 12 17 ];
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 181 8 ]
+        [ "_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_179_34_205_4_start" "_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_179_34_205_4_stop" ]
+        %height.2 = local;
+        symbol [ height %height.2 181 12 18 ];
+        %tmp.4 = lgetv %dc;
+        symbol [ dc %tmp.4 181 21 23 ];
+        symbol [ getHeight %tmp.5 181 24 33 ];
+        %tmp.5 = getv function %tmp.4 :getHeight;
+        %tmp.6 = invoke %tmp.4 %tmp.5();
+        lputv %height.2 %tmp.6;
+        symbol [ height %height.2 181 12 18 ];
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 183 8 ]
+        %tmp.7 = lgetv %dc;
+        symbol [ dc %tmp.7 183 8 10 ];
+        symbol [ setColor %tmp.8 183 11 19 ];
+        %tmp.8 = getv function %tmp.7 :setColor;
+        symbol [ Graphics %tmp.9 183 20 28 ];
+        %tmp.9 = getm $.Toybox.Graphics;
+        symbol [ COLOR_BLACK %tmp.10 183 29 40 ];
+        %tmp.10 = getv %tmp.9 :COLOR_BLACK;
+        symbol [ Graphics %tmp.11 183 42 50 ];
+        %tmp.11 = getm $.Toybox.Graphics;
+        symbol [ COLOR_BLACK %tmp.12 183 51 62 ];
+        %tmp.12 = getv %tmp.11 :COLOR_BLACK;
+        invoke %tmp.7 %tmp.8(%tmp.10, %tmp.12);
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 184 8 ]
+        %tmp.13 = lgetv %dc;
+        symbol [ dc %tmp.13 184 8 10 ];
+        symbol [ clear %tmp.14 184 11 16 ];
+        %tmp.14 = getv function %tmp.13 :clear;
+        invoke %tmp.13 %tmp.14();
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 187 8 ]
+        %tmp.15 = lgetv %dc;
+        symbol [ dc %tmp.15 187 8 10 ];
+        symbol [ setColor %tmp.16 187 11 19 ];
+        %tmp.16 = getv function %tmp.15 :setColor;
+        symbol [ Graphics %tmp.17 187 20 28 ];
+        %tmp.17 = getm $.Toybox.Graphics;
+        symbol [ COLOR_DK_RED %tmp.18 187 29 41 ];
+        %tmp.18 = getv %tmp.17 :COLOR_DK_RED;
+        symbol [ Graphics %tmp.19 187 43 51 ];
+        %tmp.19 = getm $.Toybox.Graphics;
+        symbol [ COLOR_TRANSPARENT %tmp.20 187 52 69 ];
+        %tmp.20 = getv %tmp.19 :COLOR_TRANSPARENT;
+        invoke %tmp.15 %tmp.16(%tmp.18, %tmp.20);
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 188 8 ]
+        %tmp.21 = lgetv %dc;
+        symbol [ dc %tmp.21 188 8 10 ];
+        symbol [ fillRectangle %tmp.22 188 11 24 ];
+        %tmp.22 = getv function %tmp.21 :fillRectangle;
+        %tmp.23 = 0;
+        %tmp.24 = 0;
+        %tmp.25 = lgetv %width.1;
+        symbol [ width %tmp.25 188 31 36 ];
+        %tmp.26 = lgetv %height.2;
+        symbol [ height %tmp.26 188 38 44 ];
+        %tmp.27 = 2;
+        %tmp.28 = div %tmp.26 %tmp.27;
+        invoke %tmp.21 %tmp.22(%tmp.23, %tmp.24, %tmp.25, %tmp.28);
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 189 8 ]
+        %tmp.29 = lgetv %dc;
+        symbol [ dc %tmp.29 189 8 10 ];
+        symbol [ setColor %tmp.30 189 11 19 ];
+        %tmp.30 = getv function %tmp.29 :setColor;
+        symbol [ Graphics %tmp.31 189 20 28 ];
+        %tmp.31 = getm $.Toybox.Graphics;
+        symbol [ COLOR_WHITE %tmp.32 189 29 40 ];
+        %tmp.32 = getv %tmp.31 :COLOR_WHITE;
+        symbol [ Graphics %tmp.33 189 42 50 ];
+        %tmp.33 = getm $.Toybox.Graphics;
+        symbol [ COLOR_TRANSPARENT %tmp.34 189 51 68 ];
+        %tmp.34 = getv %tmp.33 :COLOR_TRANSPARENT;
+        invoke %tmp.29 %tmp.30(%tmp.32, %tmp.34);
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 190 8 ]
+        %tmp.35 = lgetv %dc;
+        symbol [ dc %tmp.35 190 8 10 ];
+        symbol [ drawText %tmp.36 190 11 19 ];
+        %tmp.36 = getv function %tmp.35 :drawText;
+        %tmp.37 = lgetv %width.1;
+        symbol [ width %tmp.37 190 20 25 ];
+        %tmp.38 = 2;
+        %tmp.39 = div %tmp.37 %tmp.38;
+        %tmp.40 = lgetv %height.2;
+        symbol [ height %tmp.40 190 31 37 ];
+        %tmp.41 = 4;
+        %tmp.42 = div %tmp.40 %tmp.41;
+        symbol [ Graphics %tmp.43 190 43 51 ];
+        %tmp.43 = getm $.Toybox.Graphics;
+        symbol [ FONT_MEDIUM %tmp.44 190 52 63 ];
+        %tmp.44 = getv %tmp.43 :FONT_MEDIUM;
+        %tmp.45 = "Discard";
+        symbol [ Graphics %tmp.46 190 76 84 ];
+        %tmp.46 = getm $.Toybox.Graphics;
+        symbol [ TEXT_JUSTIFY_CENTER %tmp.47 190 85 104 ];
+        %tmp.47 = getv %tmp.46 :TEXT_JUSTIFY_CENTER;
+        symbol [ Graphics %tmp.48 190 107 115 ];
+        %tmp.48 = getm $.Toybox.Graphics;
+        symbol [ TEXT_JUSTIFY_VCENTER %tmp.49 190 116 136 ];
+        %tmp.49 = getv %tmp.48 :TEXT_JUSTIFY_VCENTER;
+        %tmp.50 = bitor %tmp.47 %tmp.49;
+        invoke %tmp.35 %tmp.36(%tmp.39, %tmp.42, %tmp.44, %tmp.45, %tmp.50);
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 193 8 ]
+        %tmp.51 = lgetv %dc;
+        symbol [ dc %tmp.51 193 8 10 ];
+        symbol [ setColor %tmp.52 193 11 19 ];
+        %tmp.52 = getv function %tmp.51 :setColor;
+        symbol [ Graphics %tmp.53 193 20 28 ];
+        %tmp.53 = getm $.Toybox.Graphics;
+        symbol [ COLOR_DK_GRAY %tmp.54 193 29 42 ];
+        %tmp.54 = getv %tmp.53 :COLOR_DK_GRAY;
+        symbol [ Graphics %tmp.55 193 44 52 ];
+        %tmp.55 = getm $.Toybox.Graphics;
+        symbol [ COLOR_TRANSPARENT %tmp.56 193 53 70 ];
+        %tmp.56 = getv %tmp.55 :COLOR_TRANSPARENT;
+        invoke %tmp.51 %tmp.52(%tmp.54, %tmp.56);
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 194 8 ]
+        %tmp.57 = lgetv %dc;
+        symbol [ dc %tmp.57 194 8 10 ];
+        symbol [ fillRectangle %tmp.58 194 11 24 ];
+        %tmp.58 = getv function %tmp.57 :fillRectangle;
+        %tmp.59 = 0;
+        %tmp.60 = lgetv %height.2;
+        symbol [ height %tmp.60 194 28 34 ];
+        %tmp.61 = 2;
+        %tmp.62 = div %tmp.60 %tmp.61;
+        %tmp.63 = lgetv %width.1;
+        symbol [ width %tmp.63 194 40 45 ];
+        %tmp.64 = lgetv %height.2;
+        symbol [ height %tmp.64 194 47 53 ];
+        %tmp.65 = 2;
+        %tmp.66 = div %tmp.64 %tmp.65;
+        invoke %tmp.57 %tmp.58(%tmp.59, %tmp.62, %tmp.63, %tmp.66);
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 195 8 ]
+        %tmp.67 = lgetv %dc;
+        symbol [ dc %tmp.67 195 8 10 ];
+        symbol [ setColor %tmp.68 195 11 19 ];
+        %tmp.68 = getv function %tmp.67 :setColor;
+        symbol [ Graphics %tmp.69 195 20 28 ];
+        %tmp.69 = getm $.Toybox.Graphics;
+        symbol [ COLOR_WHITE %tmp.70 195 29 40 ];
+        %tmp.70 = getv %tmp.69 :COLOR_WHITE;
+        symbol [ Graphics %tmp.71 195 42 50 ];
+        %tmp.71 = getm $.Toybox.Graphics;
+        symbol [ COLOR_TRANSPARENT %tmp.72 195 51 68 ];
+        %tmp.72 = getv %tmp.71 :COLOR_TRANSPARENT;
+        invoke %tmp.67 %tmp.68(%tmp.70, %tmp.72);
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 196 8 ]
+        %tmp.73 = lgetv %dc;
+        symbol [ dc %tmp.73 196 8 10 ];
+        symbol [ drawText %tmp.74 196 11 19 ];
+        %tmp.74 = getv function %tmp.73 :drawText;
+        %tmp.75 = lgetv %width.1;
+        symbol [ width %tmp.75 196 20 25 ];
+        %tmp.76 = 2;
+        %tmp.77 = div %tmp.75 %tmp.76;
+        %tmp.78 = lgetv %height.2;
+        symbol [ height %tmp.78 196 31 37 ];
+        %tmp.79 = 3;
+        %tmp.80 = mul %tmp.78 %tmp.79;
+        %tmp.81 = 4;
+        %tmp.82 = div %tmp.80 %tmp.81;
+        symbol [ Graphics %tmp.83 196 47 55 ];
+        %tmp.83 = getm $.Toybox.Graphics;
+        symbol [ FONT_MEDIUM %tmp.84 196 56 67 ];
+        %tmp.84 = getv %tmp.83 :FONT_MEDIUM;
+        %tmp.85 = "Resume";
+        symbol [ Graphics %tmp.86 196 79 87 ];
+        %tmp.86 = getm $.Toybox.Graphics;
+        symbol [ TEXT_JUSTIFY_CENTER %tmp.87 196 88 107 ];
+        %tmp.87 = getv %tmp.86 :TEXT_JUSTIFY_CENTER;
+        symbol [ Graphics %tmp.88 196 110 118 ];
+        %tmp.88 = getm $.Toybox.Graphics;
+        symbol [ TEXT_JUSTIFY_VCENTER %tmp.89 196 119 139 ];
+        %tmp.89 = getv %tmp.88 :TEXT_JUSTIFY_VCENTER;
+        %tmp.90 = bitor %tmp.87 %tmp.89;
+        invoke %tmp.73 %tmp.74(%tmp.77, %tmp.82, %tmp.84, %tmp.85, %tmp.90);
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 199 8 ]
+        %tmp.91 = lgetv %dc;
+        symbol [ dc %tmp.91 199 8 10 ];
+        symbol [ setColor %tmp.92 199 11 19 ];
+        %tmp.92 = getv function %tmp.91 :setColor;
+        symbol [ Graphics %tmp.93 199 20 28 ];
+        %tmp.93 = getm $.Toybox.Graphics;
+        symbol [ COLOR_BLACK %tmp.94 199 29 40 ];
+        %tmp.94 = getv %tmp.93 :COLOR_BLACK;
+        symbol [ Graphics %tmp.95 199 42 50 ];
+        %tmp.95 = getm $.Toybox.Graphics;
+        symbol [ COLOR_BLACK %tmp.96 199 51 62 ];
+        %tmp.96 = getv %tmp.95 :COLOR_BLACK;
+        invoke %tmp.91 %tmp.92(%tmp.94, %tmp.96);
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 200 8 ]
+        [ "_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_179_34_205_4_start" "_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_179_34_205_4_stop" ]
+        %text.3 = local;
+        symbol [ text %text.3 200 12 16 ];
+        %tmp.97 = "Discard Activity?";
+        lputv %text.3 %tmp.97;
+        symbol [ text %text.3 200 12 16 ];
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 201 8 ]
+        [ "_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_179_34_205_4_start" "_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_179_34_205_4_stop" ]
+        %dims.4 = local;
+        symbol [ dims %dims.4 201 12 16 ];
+        %tmp.98 = lgetv %dc;
+        symbol [ dc %tmp.98 201 19 21 ];
+        symbol [ getTextDimensions %tmp.99 201 22 39 ];
+        %tmp.99 = getv function %tmp.98 :getTextDimensions;
+        %tmp.100 = lgetv %text.3;
+        symbol [ text %tmp.100 201 40 44 ];
+        symbol [ Graphics %tmp.101 201 46 54 ];
+        %tmp.101 = getm $.Toybox.Graphics;
+        symbol [ FONT_SMALL %tmp.102 201 55 65 ];
+        %tmp.102 = getv %tmp.101 :FONT_SMALL;
+        %tmp.103 = invoke %tmp.98 %tmp.99(%tmp.100, %tmp.102);
+        lputv %dims.4 %tmp.103;
+        symbol [ dims %dims.4 201 12 16 ];
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 202 8 ]
+        %tmp.104 = lgetv %dc;
+        symbol [ dc %tmp.104 202 8 10 ];
+        symbol [ fillRectangle %tmp.105 202 11 24 ];
+        %tmp.105 = getv function %tmp.104 :fillRectangle;
+        %tmp.106 = 0;
+        %tmp.107 = lgetv %height.2;
+        symbol [ height %tmp.107 202 29 35 ];
+        %tmp.108 = lgetv %dims.4;
+        symbol [ dims %tmp.108 202 38 42 ];
+        %tmp.109 = 1;
+        %tmp.110 = agetv %tmp.108 %tmp.109;
+        %tmp.111 = sub %tmp.107 %tmp.110;
+        %tmp.112 = 2;
+        %tmp.113 = div %tmp.111 %tmp.112;
+        %tmp.114 = 5;
+        %tmp.115 = sub %tmp.113 %tmp.114;
+        %tmp.116 = lgetv %width.1;
+        symbol [ width %tmp.116 202 56 61 ];
+        %tmp.117 = lgetv %dims.4;
+        symbol [ dims %tmp.117 202 63 67 ];
+        %tmp.118 = 1;
+        %tmp.119 = agetv %tmp.117 %tmp.118;
+        %tmp.120 = 10;
+        %tmp.121 = add %tmp.119 %tmp.120;
+        invoke %tmp.104 %tmp.105(%tmp.106, %tmp.115, %tmp.116, %tmp.121);
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 203 8 ]
+        %tmp.122 = lgetv %dc;
+        symbol [ dc %tmp.122 203 8 10 ];
+        symbol [ setColor %tmp.123 203 11 19 ];
+        %tmp.123 = getv function %tmp.122 :setColor;
+        symbol [ Graphics %tmp.124 203 20 28 ];
+        %tmp.124 = getm $.Toybox.Graphics;
+        symbol [ COLOR_WHITE %tmp.125 203 29 40 ];
+        %tmp.125 = getv %tmp.124 :COLOR_WHITE;
+        symbol [ Graphics %tmp.126 203 42 50 ];
+        %tmp.126 = getm $.Toybox.Graphics;
+        symbol [ COLOR_TRANSPARENT %tmp.127 203 51 68 ];
+        %tmp.127 = getv %tmp.126 :COLOR_TRANSPARENT;
+        invoke %tmp.122 %tmp.123(%tmp.125, %tmp.127);
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 204 8 ]
+        %tmp.128 = lgetv %dc;
+        symbol [ dc %tmp.128 204 8 10 ];
+        symbol [ drawText %tmp.129 204 11 19 ];
+        %tmp.129 = getv function %tmp.128 :drawText;
+        %tmp.130 = lgetv %width.1;
+        symbol [ width %tmp.130 204 20 25 ];
+        %tmp.131 = 2;
+        %tmp.132 = div %tmp.130 %tmp.131;
+        %tmp.133 = lgetv %height.2;
+        symbol [ height %tmp.133 204 31 37 ];
+        %tmp.134 = 2;
+        %tmp.135 = div %tmp.133 %tmp.134;
+        symbol [ Graphics %tmp.136 204 43 51 ];
+        %tmp.136 = getm $.Toybox.Graphics;
+        symbol [ FONT_SMALL %tmp.137 204 52 62 ];
+        %tmp.137 = getv %tmp.136 :FONT_SMALL;
+        %tmp.138 = lgetv %text.3;
+        symbol [ text %tmp.138 204 64 68 ];
+        symbol [ Graphics %tmp.139 204 70 78 ];
+        %tmp.139 = getm $.Toybox.Graphics;
+        symbol [ TEXT_JUSTIFY_CENTER %tmp.140 204 79 98 ];
+        %tmp.140 = getv %tmp.139 :TEXT_JUSTIFY_CENTER;
+        symbol [ Graphics %tmp.141 204 101 109 ];
+        %tmp.141 = getm $.Toybox.Graphics;
+        symbol [ TEXT_JUSTIFY_VCENTER %tmp.142 204 110 130 ];
+        %tmp.142 = getv %tmp.141 :TEXT_JUSTIFY_VCENTER;
+        %tmp.143 = bitor %tmp.140 %tmp.142;
+        invoke %tmp.128 %tmp.129(%tmp.132, %tmp.135, %tmp.137, %tmp.138, %tmp.143);
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_179_34_205_4_stop:
+    }
+}
+[ @file = "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc"; @line = 208; @symbol_classdef = [DiscardActivityDelegate,208,6,29]; @symbol_extends<0> = [WatchUi,208,38,45]; @symbol_extends<1> = [BehaviorDelegate,208,46,62]; ]
+class DiscardActivityDelegate extends WatchUi.BehaviorDelegate {
+    [ @file = "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc"; @line = 208; ]
+    <init> {
+    }
+    [ @file = "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc"; @line = 208; ]
+    static
+    <init> {
+    }
+    [ @file = "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc"; @line = 209; @symbol_functiondef = [initialize,209,13,23]; ]
+    function initialize() as Void {
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_209_26_211_4_start:
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 210 8 ]
+        symbol [ BehaviorDelegate %tmp.2 210 8 24 ];
+        %tmp.2 = getv ? :BehaviorDelegate;
+        symbol [ initialize %tmp.3 210 25 35 ];
+        %tmp.3 = getv function %tmp.2 :initialize;
+        invoke %tmp.2 %tmp.3();
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_209_26_211_4_stop:
+    }
+    [ @file = "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc"; @line = 213; @symbol_functiondef = [onTap,213,13,18]; @symbol_param<0> = [evt,213,19,22]; @symbol_param<0>_type<0> = [WatchUi,213,26,33]; @symbol_param<0>_type<1> = [ClickEvent,213,34,44]; @symbol_return<0> = [Boolean,213,49,56]; ]
+    function onTap(evt as WatchUi.ClickEvent) as Boolean {
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_213_57_224_4_start:
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 214 8 ]
+        [ "_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_213_57_224_4_start" "_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_213_57_224_4_stop" ]
+        %coords.1 = local;
+        symbol [ coords %coords.1 214 12 18 ];
+        %tmp.1 = lgetv %evt;
+        symbol [ evt %tmp.1 214 21 24 ];
+        symbol [ getCoordinates %tmp.2 214 25 39 ];
+        %tmp.2 = getv function %tmp.1 :getCoordinates;
+        %tmp.3 = invoke %tmp.1 %tmp.2();
+        lputv %coords.1 %tmp.3;
+        symbol [ coords %coords.1 214 12 18 ];
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 215 8 ]
+        [ "_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_213_57_224_4_start" "_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_213_57_224_4_stop" ]
+        %y.2 = local;
+        symbol [ y %y.2 215 12 13 ];
+        %tmp.4 = lgetv %coords.1;
+        symbol [ coords %tmp.4 215 16 22 ];
+        %tmp.5 = 1;
+        %tmp.6 = agetv %tmp.4 %tmp.5;
+        lputv %y.2 %tmp.6;
+        symbol [ y %y.2 215 12 13 ];
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 216 8 ]
+        [ "_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_213_57_224_4_start" "_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_213_57_224_4_stop" ]
+        %screenHeight.3 = local;
+        symbol [ screenHeight %screenHeight.3 216 12 24 ];
+        symbol [ System %tmp.7 216 27 33 ];
+        %tmp.7 = getm $.Toybox.System;
+        symbol [ getDeviceSettings %tmp.8 216 34 51 ];
+        %tmp.8 = getv function %tmp.7 :getDeviceSettings;
+        %tmp.9 = invoke %tmp.7 %tmp.8();
+        symbol [ screenHeight %tmp.10 216 54 66 ];
+        %tmp.10 = getv %tmp.9 :screenHeight;
+        lputv %screenHeight.3 %tmp.10;
+        symbol [ screenHeight %screenHeight.3 216 12 24 ];
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 218 8 ]
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_218_8_222_8_if_stmt:
+        %tmp.11 = lgetv %y.2;
+        symbol [ y %tmp.11 218 12 13 ];
+        %tmp.12 = lgetv %screenHeight.3;
+        symbol [ screenHeight %tmp.12 218 16 28 ];
+        %tmp.13 = 2;
+        %tmp.14 = div %tmp.12 %tmp.13;
+        %tmp.15 = lt %tmp.11 %tmp.14;
+        bf %tmp.15 @_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_218_8_222_8_if_else_false;
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_218_8_222_8_if_true:
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_218_34_220_8_start:
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 219 12 ]
+        %tmp.16 = self;
+        symbol [ discard %tmp.17 219 12 19 ];
+        %tmp.17 = getv function %tmp.16 :discard;
+        invoke %tmp.16 %tmp.17();
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_218_34_220_8_stop:
+        goto @_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_218_8_222_8_if_end;
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_218_8_222_8_if_else_false:
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_220_15_222_8_start:
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 221 12 ]
+        %tmp.18 = self;
+        symbol [ resume %tmp.19 221 12 18 ];
+        %tmp.19 = getv function %tmp.18 :resume;
+        invoke %tmp.18 %tmp.19();
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_220_15_222_8_stop:
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_218_8_222_8_if_end:
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 223 8 ]
+        %tmp.20 = true;
+        ret %tmp.20;
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_213_57_224_4_stop:
+    }
+    [ @file = "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc"; @line = 226; @symbol_functiondef = [onKey,226,13,18]; @symbol_param<0> = [evt,226,19,22]; @symbol_param<0>_type<0> = [WatchUi,226,26,33]; @symbol_param<0>_type<1> = [KeyEvent,226,34,42]; @symbol_return<0> = [Boolean,226,47,54]; ]
+    function onKey(evt as WatchUi.KeyEvent) as Boolean {
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_226_55_236_4_start:
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 227 8 ]
+        [ "_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_226_55_236_4_start" "_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_226_55_236_4_stop" ]
+        %key.1 = local;
+        symbol [ key %key.1 227 12 15 ];
+        %tmp.1 = lgetv %evt;
+        symbol [ evt %tmp.1 227 18 21 ];
+        symbol [ getKey %tmp.2 227 22 28 ];
+        %tmp.2 = getv function %tmp.1 :getKey;
+        %tmp.3 = invoke %tmp.1 %tmp.2();
+        lputv %key.1 %tmp.3;
+        symbol [ key %key.1 227 12 15 ];
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 228 8 ]
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_228_8_234_8_if_stmt:
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_228_12_228_55_begin:
+        %tmp.4 = lgetv %key.1;
+        symbol [ key %tmp.4 228 12 15 ];
+        symbol [ WatchUi %tmp.5 228 19 26 ];
+        %tmp.5 = getm $.Toybox.WatchUi;
+        symbol [ KEY_ENTER %tmp.6 228 27 36 ];
+        %tmp.6 = getv %tmp.5 :KEY_ENTER;
+        %tmp.7 = eq %tmp.4 %tmp.6;
+        bt %tmp.7 @_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_228_8_234_8_if_true;
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_228_40_228_55_false:
+        %tmp.8 = lgetv %key.1;
+        symbol [ key %tmp.8 228 40 43 ];
+        symbol [ WatchUi %tmp.9 228 47 54 ];
+        %tmp.9 = getm $.Toybox.WatchUi;
+        symbol [ KEY_START %tmp.10 228 55 64 ];
+        %tmp.10 = getv %tmp.9 :KEY_START;
+        %tmp.11 = eq %tmp.8 %tmp.10;
+        push %tmp.11;
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_228_40_228_55_end:
+        %tmp.12 = phi [%tmp.7 @_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_228_12_228_55_begin] [%tmp.11 @_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_228_40_228_55_false] [%tmp.12 @_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_228_40_228_55_end];
+        bf %tmp.12 @_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_228_8_234_8_if_false;
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_228_8_234_8_if_true:
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_228_66_231_8_start:
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 229 12 ]
+        %tmp.13 = self;
+        symbol [ discard %tmp.14 229 12 19 ];
+        %tmp.14 = getv function %tmp.13 :discard;
+        invoke %tmp.13 %tmp.14();
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 230 12 ]
+        %tmp.15 = true;
+        ret %tmp.15;
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_228_66_231_8_stop:
+        goto @_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_228_8_234_8_if_end;
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_228_8_234_8_if_false:
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 231 15 ]
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_231_15_234_8_if_stmt:
+        %tmp.16 = lgetv %key.1;
+        symbol [ key %tmp.16 231 19 22 ];
+        symbol [ WatchUi %tmp.17 231 26 33 ];
+        %tmp.17 = getm $.Toybox.WatchUi;
+        symbol [ KEY_ESC %tmp.18 231 34 41 ];
+        %tmp.18 = getv %tmp.17 :KEY_ESC;
+        %tmp.19 = eq %tmp.16 %tmp.18;
+        bf %tmp.19 @_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_231_15_234_8_if_end;
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_231_15_234_8_if_true:
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_231_43_234_8_start:
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 232 12 ]
+        %tmp.20 = self;
+        symbol [ resume %tmp.21 232 12 18 ];
+        %tmp.21 = getv function %tmp.20 :resume;
+        invoke %tmp.20 %tmp.21();
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 233 12 ]
+        %tmp.22 = true;
+        ret %tmp.22;
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_231_43_234_8_stop:
+        goto @_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_231_15_234_8_if_end;
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_231_15_234_8_if_end:
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_228_8_234_8_if_end:
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 235 8 ]
+        %tmp.23 = false;
+        ret %tmp.23;
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_226_55_236_4_stop:
+    }
+    [ @file = "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc"; @line = 238; @symbol_functiondef = [discard,238,21,28]; ]
+    private
+    function discard() as Void {
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_238_39_245_4_start:
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 239 8 ]
+        [ "_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_238_39_245_4_start" "_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_238_39_245_4_stop" ]
+        %app.1 = local;
+        symbol [ app %app.1 239 12 15 ];
+        %tmp.1 = self;
+        symbol [ getApp %tmp.2 239 18 24 ];
+        %tmp.2 = getv function %tmp.1 :getApp;
+        %tmp.3 = invoke %tmp.1 %tmp.2();
+        lputv %app.1 %tmp.3;
+        symbol [ app %app.1 239 12 15 ];
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 240 8 ]
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_240_8_242_8_if_stmt:
+        %tmp.4 = lgetv %app.1;
+        symbol [ app %tmp.4 240 12 15 ];
+        symbol [ activityTracker %tmp.5 240 16 31 ];
+        %tmp.5 = getv %tmp.4 :activityTracker;
+        %tmp.6 = null;
+        %tmp.7 = ne %tmp.5 %tmp.6;
+        bf %tmp.7 @_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_240_8_242_8_if_end;
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_240_8_242_8_if_true:
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_240_41_242_8_start:
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 241 12 ]
+        %tmp.8 = lgetv %app.1;
+        symbol [ app %tmp.8 241 12 15 ];
+        symbol [ activityTracker %tmp.9 241 16 31 ];
+        %tmp.9 = getv %tmp.8 :activityTracker;
+        symbol [ discardSession %tmp.10 241 32 46 ];
+        %tmp.10 = getv function %tmp.9 :discardSession;
+        invoke %tmp.9 %tmp.10();
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_240_41_242_8_stop:
+        goto @_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_240_8_242_8_if_end;
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_240_8_242_8_if_end:
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 243 8 ]
+        symbol [ WatchUi %tmp.11 243 8 15 ];
+        %tmp.11 = getm $.Toybox.WatchUi;
+        symbol [ popView %tmp.12 243 16 23 ];
+        %tmp.12 = getv function %tmp.11 :popView;
+        symbol [ WatchUi %tmp.13 243 24 31 ];
+        %tmp.13 = getm $.Toybox.WatchUi;
+        symbol [ SLIDE_DOWN %tmp.14 243 32 42 ];
+        %tmp.14 = getv %tmp.13 :SLIDE_DOWN;
+        invoke %tmp.11 %tmp.12(%tmp.14);
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 244 8 ]
+        symbol [ WatchUi %tmp.15 244 8 15 ];
+        %tmp.15 = getm $.Toybox.WatchUi;
+        symbol [ requestUpdate %tmp.16 244 16 29 ];
+        %tmp.16 = getv function %tmp.15 :requestUpdate;
+        invoke %tmp.15 %tmp.16();
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_238_39_245_4_stop:
+    }
+    [ @file = "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc"; @line = 247; @symbol_functiondef = [resume,247,21,27]; ]
+    private
+    function resume() as Void {
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_247_38_254_4_start:
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 248 8 ]
+        [ "_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_247_38_254_4_start" "_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_247_38_254_4_stop" ]
+        %app.1 = local;
+        symbol [ app %app.1 248 12 15 ];
+        %tmp.1 = self;
+        symbol [ getApp %tmp.2 248 18 24 ];
+        %tmp.2 = getv function %tmp.1 :getApp;
+        %tmp.3 = invoke %tmp.1 %tmp.2();
+        lputv %app.1 %tmp.3;
+        symbol [ app %app.1 248 12 15 ];
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 249 8 ]
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_249_8_251_8_if_stmt:
+        %tmp.4 = lgetv %app.1;
+        symbol [ app %tmp.4 249 12 15 ];
+        symbol [ activityTracker %tmp.5 249 16 31 ];
+        %tmp.5 = getv %tmp.4 :activityTracker;
+        %tmp.6 = null;
+        %tmp.7 = ne %tmp.5 %tmp.6;
+        bf %tmp.7 @_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_249_8_251_8_if_end;
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_249_8_251_8_if_true:
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_249_41_251_8_start:
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 250 12 ]
+        %tmp.8 = lgetv %app.1;
+        symbol [ app %tmp.8 250 12 15 ];
+        symbol [ activityTracker %tmp.9 250 16 31 ];
+        %tmp.9 = getv %tmp.8 :activityTracker;
+        symbol [ startRecording %tmp.10 250 32 46 ];
+        %tmp.10 = getv function %tmp.9 :startRecording;
+        invoke %tmp.9 %tmp.10();
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_249_41_251_8_stop:
+        goto @_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_249_8_251_8_if_end;
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_249_8_251_8_if_end:
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 252 8 ]
+        symbol [ WatchUi %tmp.11 252 8 15 ];
+        %tmp.11 = getm $.Toybox.WatchUi;
+        symbol [ popView %tmp.12 252 16 23 ];
+        %tmp.12 = getv function %tmp.11 :popView;
+        symbol [ WatchUi %tmp.13 252 24 31 ];
+        %tmp.13 = getm $.Toybox.WatchUi;
+        symbol [ SLIDE_DOWN %tmp.14 252 32 42 ];
+        %tmp.14 = getv %tmp.13 :SLIDE_DOWN;
+        invoke %tmp.11 %tmp.12(%tmp.14);
+[ "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc" 253 8 ]
+        symbol [ WatchUi %tmp.15 253 8 15 ];
+        %tmp.15 = getm $.Toybox.WatchUi;
+        symbol [ requestUpdate %tmp.16 253 16 29 ];
+        %tmp.16 = getv function %tmp.15 :requestUpdate;
+        invoke %tmp.15 %tmp.16();
+_Users_guido_Git_tide_watch_app_source_ActivityDialogs_mc_247_38_254_4_stop:
+    }
+}
+[ @file = "/Users/guido/Git/tide_watch_app/source/ActivityDialogs.mc"; @line = 1; ]
+<init> {
+}

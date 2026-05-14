@@ -43,7 +43,6 @@ class ActivityTracker {
     
     // Current Wave State
     private var _currentWaveMaxSpeed as Float = 0.0f;
-    private var _currentWaveStartDistance as Float = 0.0f;
     private var _currentWaveDistance as Float = 0.0f;
 
     // New metrics
@@ -68,6 +67,8 @@ class ActivityTracker {
     private var _maxMotionEnergyRecent as Float = 0.0f;
     private var _lastStoredDistance as Float = 0.0f;
     private var _lastStoredTime as Number = 0;
+    private var _lastValidGPSDistance as Float = 0.0f;
+    private var _lastValidGPSTime as Number = 0;
 
 
 
@@ -161,6 +162,14 @@ class ActivityTracker {
             
             _isRecording = true;
             _timerRunning = true;
+            
+            // Initialize GPS baseline
+            var info = Activity.getActivityInfo();
+            if (info != null && info.elapsedDistance != null) {
+                _lastValidGPSDistance = info.elapsedDistance.toFloat();
+            }
+            _lastValidGPSTime = Time.now().value();
+            
             System.println("Activity started.");
         }
     }
@@ -243,9 +252,10 @@ class ActivityTracker {
             _totalWaveDistance = 0.0f;
             _currentWaveMaxSpeed = 0.0f;
             _currentWaveDistance = 0.0f;
-            _currentWaveStartDistance = 0.0f;
             _lastStoredDistance = 0.0f;
             _lastStoredTime = 0;
+            _lastValidGPSDistance = 0.0f;
+            _lastValidGPSTime = 0;
 
 
             _inWave = false;
@@ -296,9 +306,10 @@ class ActivityTracker {
             _totalWaveDistance = 0.0f;
             _currentWaveMaxSpeed = 0.0f;
             _currentWaveDistance = 0.0f;
-            _currentWaveStartDistance = 0.0f;
             _lastStoredDistance = 0.0f;
             _lastStoredTime = 0;
+            _lastValidGPSDistance = 0.0f;
+            _lastValidGPSTime = 0;
 
 
             _inWave = false;
@@ -324,6 +335,13 @@ class ActivityTracker {
     function getMaxWaveSpeed() as Float { return _maxWaveSpeed; }
     function getMaxWaveLength() as Float { return _maxWaveLength; }
     function getTotalWaveTime() as Number { return _totalWaveTime; }
+    function getTotalWaveDistance() as Float { return _totalWaveDistance; }
+    function getAvgWaveLength() as Float {
+        if (_waveCount > 0) {
+            return _totalWaveDistance / _waveCount;
+        }
+        return 0.0f;
+    }
 
     function onTimerTick() as Void {
         if (!_isRecording) { return; }
@@ -361,17 +379,45 @@ class ActivityTracker {
         var elapsedDistance = info.elapsedDistance != null ? info.elapsedDistance : 0.0f;
         
         // GPS Reliability: Accuracy must be usable and signal stable for 5 seconds
-        // Use info.currentLocationAccuracy as the source of truth for the current sample
         var currentAccuracy = info.currentLocationAccuracy != null ? info.currentLocationAccuracy : Position.QUALITY_NOT_AVAILABLE;
         var isGPSSignalingStable = (currentAccuracy >= Position.QUALITY_USABLE) && (_gpsGoodSignalSec >= 5);
         
+        // --- GPS Jump Protection & Metric Updates ---
+        var now = Time.now().value();
+        var deltaDist = (elapsedDistance - _lastValidGPSDistance).abs();
+        var deltaTime = now - _lastValidGPSTime;
+        var isSaneUpdate = false;
+
+        if (isGPSSignalingStable) {
+            if (deltaTime > 0) {
+                var avgSpeed = deltaDist / deltaTime;
+                // Sanity check: speed must be < 25m/s (90km/h) for both instant and average
+                if (avgSpeed < 25.0f && currentSpeed < 25.0f) {
+                    isSaneUpdate = true;
+                    if (_inWave) {
+                        _currentWaveDistance += deltaDist;
+                        if (currentSpeed > _currentWaveMaxSpeed) {
+                            _currentWaveMaxSpeed = currentSpeed;
+                        }
+                        if (currentSpeed > _maxWaveSpeed) {
+                            _maxWaveSpeed = currentSpeed;
+                        }
+                    }
+                } else {
+                    Log.info("Activity", Lang.format("GPS Jump suppressed: avg $1$m/s, inst $2$m/s", [avgSpeed.format("%.1f"), currentSpeed.format("%.1f")]));
+                }
+            }
+            _lastValidGPSDistance = elapsedDistance;
+            _lastValidGPSTime = now;
+        }
+
         // Time still: < 0.5km/h (approx 0.138 m/s)
         var stillThreshold = 0.138f;
         if (currentSpeed < stillThreshold) {
             _timeStillSec++;
         }
         
-        if (currentSpeed > speedThreshold && isGPSSignalingStable) {
+        if (currentSpeed > speedThreshold && isGPSSignalingStable && isSaneUpdate) {
             _highSpeedTime++;
             
             // Motion verification: A wave takeoff should have at least 250mG or 2.5m/s^2 of "energy"
@@ -385,8 +431,7 @@ class ActivityTracker {
                 
                 // Reset current wave metrics
                 _currentWaveMaxSpeed = currentSpeed;
-                _currentWaveStartDistance = elapsedDistance;
-                _currentWaveDistance = 0.0f;
+                _currentWaveDistance = 0.0f; // Reset to 0, will accumulate from next stable sample
 
                 if (_waveField != null) {
                     _waveField.setData(_waveCount);
@@ -445,13 +490,7 @@ class ActivityTracker {
         // Track metrics while in wave
         if (_inWave) {
             _totalWaveTime++; // Increment wave duration
-            if (currentSpeed > _currentWaveMaxSpeed) {
-                _currentWaveMaxSpeed = currentSpeed;
-            }
-            if (currentSpeed > _maxWaveSpeed) {
-                _maxWaveSpeed = currentSpeed;
-            }
-            _currentWaveDistance = elapsedDistance - _currentWaveStartDistance;
+            // Max speed and distance now handled above in the jump protection block
         }
 
         // Increment cooldown timer if not in a wave
@@ -461,7 +500,6 @@ class ActivityTracker {
         
         // --- Path Tracking (Smarter Distance-Based Sampling) ---
         if (currentAccuracy >= Position.QUALITY_USABLE && info.currentLocation != null) {
-            var now = Time.now().value();
             var distMoved = (elapsedDistance - _lastStoredDistance).abs();
             var timeSinceLast = now - _lastStoredTime;
 

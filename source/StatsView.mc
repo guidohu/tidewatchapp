@@ -3,11 +3,21 @@ import Toybox.Graphics;
 import Toybox.System;
 import Toybox.Application;
 import Toybox.Lang;
+import Toybox.Time;
 
 class StatsView extends WatchUi.View {
+    private var _pageIndex as Number = 0;
 
     function initialize() {
         View.initialize();
+    }
+
+    function setPage(index as Number) as Void {
+        _pageIndex = index;
+    }
+
+    function getPage() as Number {
+        return _pageIndex;
     }
 
     function onUpdate(dc) as Void {
@@ -19,159 +29,196 @@ class StatsView extends WatchUi.View {
         dc.clear();
         
         var app = getApp();
-        if (app.activityTracker == null) {
-            return;
-        }
-        
+        if (app.activityTracker == null) { return; }
         var tracker = app.activityTracker;
         
+        // --- Draw Indicator ---
+        drawIndicator(dc);
+
+        dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
+        var scale = width / 416.0;
+        var startY = (height * 0.15).toNumber();
+        var lh = dc.getFontHeight(Graphics.FONT_XTINY) + (4 * scale).toNumber();
+
+        if (_pageIndex == 0) {
+            drawPage0(dc, tracker, startY, lh, distUnitProp, scale);
+        } else {
+            drawPage1(dc, tracker, startY, lh, distUnitProp, scale);
+        }
+    }
+
+    private function drawIndicator(dc as Graphics.Dc) as Void {
+        var height = dc.getHeight();
+        var barW = 4;
+        var barH = height * 0.2;
+        var barX = 10;
+        var barY = (_pageIndex == 0) ? (height * 0.3) : (height * 0.5);
+        
+        dc.setColor(Graphics.COLOR_DK_GRAY, Graphics.COLOR_TRANSPARENT);
+        dc.fillRectangle(barX, height * 0.3, barW, height * 0.4); // Background bar
+        
+        dc.setColor(Graphics.COLOR_BLUE, Graphics.COLOR_TRANSPARENT);
+        dc.fillRoundedRectangle(barX - 1, barY, barW + 2, barH, 2);
+    }
+
+    private function drawPage0(dc as Graphics.Dc, tracker as ActivityTracker, startY as Number, lh as Number, distUnitProp as Object?, scale as Float) as Void {
+        var width = dc.getWidth();
+        
+        dc.setColor(Graphics.COLOR_BLUE, Graphics.COLOR_TRANSPARENT);
+        dc.drawText(width / 2, startY, Graphics.FONT_TINY, "WAVE STATS", Graphics.TEXT_JUSTIFY_CENTER);
+        startY += lh * 1.5;
+
         dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
         
-        var scale = width / 416.0;
-        var startY = (height * 0.1).toNumber();
-        var lh = dc.getFontHeight(Graphics.FONT_XTINY);
-        
-        // HR
-        var curHR = tracker.getCurrentHR();
-        var avgHR = tracker.getAverageHR();
-        var maxHR = tracker.getMaxHR();
-        var hrStr = "HR: ";
-        hrStr += (curHR != null) ? curHR.toString() + " cur, " : "-- cur, ";
-        hrStr += (avgHR != null) ? avgHR.toString() + " avg, " : "-- avg, ";
-        hrStr += (maxHR != null) ? maxHR.toString() + " max" : "-- max";
-        
-        dc.drawText(width / 2, startY, Graphics.FONT_XTINY, hrStr, Graphics.TEXT_JUSTIFY_CENTER);
-        startY += lh;
-        
-        // Waves
+        // Total Waves
         var waveCount = tracker.getWaveCount();
-        var waveStr = "Waves: " + waveCount.toString();
-        dc.drawText(width / 2, startY, Graphics.FONT_XTINY, waveStr, Graphics.TEXT_JUSTIFY_CENTER);
+        dc.drawText(width / 2, startY, Graphics.FONT_XTINY, "Total Waves: " + waveCount, Graphics.TEXT_JUSTIFY_CENTER);
         startY += lh;
 
-        if (waveCount > 0) {
-            // Max Wave Speed (converted to km/h or mph)
-            var maxSpeedMs = tracker.getMaxWaveSpeed();
-            var speedVal = maxSpeedMs * 3.6f; // km/h
-            var sUnit = "km/h";
-            if (distUnitProp != null && (distUnitProp as Number) == DataKeys.SETTING_DISTANCE_UNIT_MILES) {
-                speedVal = maxSpeedMs * 2.23694f; // mph
-                sUnit = "mph";
-            }
-            var speedStr = "Max Speed: " + speedVal.format("%.1f") + " " + sUnit;
-            dc.drawText(width / 2, startY, Graphics.FONT_XTINY, speedStr, Graphics.TEXT_JUSTIFY_CENTER);
-            startY += lh;
+        // Longest Wave
+        var maxLen = tracker.getMaxWaveLength();
+        dc.drawText(width / 2, startY, Graphics.FONT_XTINY, "Longest Wave: " + maxLen.format("%.0f") + "m", Graphics.TEXT_JUSTIFY_CENTER);
+        startY += lh;
 
-            // Longest Wave
-            var maxLen = tracker.getMaxWaveLength();
-            var lenStr = "Longest: " + maxLen.format("%.0f") + "m";
-            dc.drawText(width / 2, startY, Graphics.FONT_XTINY, lenStr, Graphics.TEXT_JUSTIFY_CENTER);
-            startY += lh;
-
-            // Total Wave Time
-            var surfSec = tracker.getTotalWaveTime();
-            var surfMin = surfSec / 60;
-            var surfS = surfSec % 60;
-            var surfStr = "Surf Time: " + surfMin.toString() + ":" + surfS.format("%02d");
-            dc.drawText(width / 2, startY, Graphics.FONT_XTINY, surfStr, Graphics.TEXT_JUSTIFY_CENTER);
-            startY += lh;
+        // Max Speed
+        var maxSpeedMs = tracker.getMaxWaveSpeed();
+        var speedVal = maxSpeedMs * 3.6f; // km/h
+        var sUnit = "km/h";
+        if (distUnitProp != null && (distUnitProp as Number) == 1) { // Miles
+            speedVal = maxSpeedMs * 2.23694f;
+            sUnit = "mph";
         }
-        
-        // Strokes
-        var strokeStr = "Strokes: " + tracker.getPaddleStrokes().toString();
-        dc.drawText(width / 2, startY, Graphics.FONT_XTINY, strokeStr, Graphics.TEXT_JUSTIFY_CENTER);
+        dc.drawText(width / 2, startY, Graphics.FONT_XTINY, "Max Speed: " + speedVal.format("%.1f") + " " + sUnit, Graphics.TEXT_JUSTIFY_CENTER);
         startY += lh;
+
+        // Surf Time (Moving Time on waves)
+        var surfSec = tracker.getTotalWaveTime();
+        var surfStr = formatDuration(surfSec);
+        dc.drawText(width / 2, startY, Graphics.FONT_XTINY, "Surf Time: " + surfStr, Graphics.TEXT_JUSTIFY_CENTER);
+    }
+
+    private function drawPage1(dc as Graphics.Dc, tracker as ActivityTracker, startY as Number, lh as Number, distUnitProp as Object?, scale as Float) as Void {
+        var width = dc.getWidth();
+        var height = dc.getHeight();
         
-        // Distance
+        dc.setColor(Graphics.COLOR_BLUE, Graphics.COLOR_TRANSPARENT);
+        dc.drawText(width / 2, startY, Graphics.FONT_TINY, "SESSION & PATH", Graphics.TEXT_JUSTIFY_CENTER);
+        startY += (lh * 1.2).toNumber();
+
+        dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
+
+        // Session Time
+        var info = Activity.getActivityInfo();
+        var elapsedMs = (info != null && info.elapsedTime != null) ? info.elapsedTime : 0;
+        dc.drawText(width / 2, startY, Graphics.FONT_XTINY, "Session: " + formatDuration(elapsedMs / 1000), Graphics.TEXT_JUSTIFY_CENTER);
+        startY += lh;
+
+        // Total Distance
         var distVal = tracker.getDistance() / 1000.0f;
         var dUnit = "km";
-        if (distUnitProp != null && (distUnitProp as Number) == DataKeys.SETTING_DISTANCE_UNIT_MILES) {
+        if (distUnitProp != null && (distUnitProp as Number) == 1) {
             distVal = tracker.getDistance() * 0.000621371f;
             dUnit = "mi";
         }
-        var distStr = "Distance: " + distVal.format("%.2f") + " " + dUnit;
-        dc.drawText(width / 2, startY, Graphics.FONT_XTINY, distStr, Graphics.TEXT_JUSTIFY_CENTER);
+        dc.drawText(width / 2, startY, Graphics.FONT_XTINY, "Distance: " + distVal.format("%.2f") + dUnit, Graphics.TEXT_JUSTIFY_CENTER);
         startY += lh;
-        
-        // Time Still
-        var stillSec = tracker.getTimeStillSec();
-        var stillMin = stillSec / 60;
-        var stillS = stillSec % 60;
-        var stillStr = "Time Still: " + stillMin.toString() + ":" + stillS.format("%02d");
-        dc.drawText(width / 2, startY, Graphics.FONT_XTINY, stillStr, Graphics.TEXT_JUSTIFY_CENTER);
+
+        // Average Wave Length
+        var avgLen = tracker.getAvgWaveLength();
+        dc.drawText(width / 2, startY, Graphics.FONT_XTINY, "Avg Wave: " + avgLen.format("%.0f") + "m", Graphics.TEXT_JUSTIFY_CENTER);
+        startY += lh;
+
+        // Paddle Strokes
+        dc.drawText(width / 2, startY, Graphics.FONT_XTINY, "Strokes: " + tracker.getPaddleStrokes(), Graphics.TEXT_JUSTIFY_CENTER);
         startY += lh + (10 * scale).toNumber();
-        
-        // Schematic Path
+
+        // Mini Map
+        drawPath(dc, tracker, startY, (width * 0.4).toNumber(), (height * 0.15).toNumber(), scale);
+    }
+
+    private function drawPath(dc as Graphics.Dc, tracker as ActivityTracker, y as Number, boxW as Number, boxH as Number, scale as Float) as Void {
+        var width = dc.getWidth();
         var path = tracker.getPathPoints();
-        if (path.size() > 1) {
-            var minLat = 90.0; var maxLat = -90.0;
-            var minLon = 180.0; var maxLon = -180.0;
-            
-            for (var i = 0; i < path.size(); i += 2) {
-                var lat = path[i];
-                var lon = path[i + 1];
-                if (lat < minLat) { minLat = lat; }
-                if (lat > maxLat) { maxLat = lat; }
-                if (lon < minLon) { minLon = lon; }
-                if (lon > maxLon) { maxLon = lon; }
-            }
-            
-            var boxW = width * 0.6;
-            var boxH = height * 0.3;
-            var boxX = (width - boxW) / 2;
-            var boxY = startY;
-            
-            dc.setColor(Graphics.COLOR_DK_GRAY, Graphics.COLOR_TRANSPARENT);
-            dc.drawRectangle(boxX, boxY, boxW, boxH);
-            
-            dc.setColor(Graphics.COLOR_GREEN, Graphics.COLOR_TRANSPARENT);
-            dc.setPenWidth((2 * scale).toNumber());
-            
-            var latDiff = maxLat - minLat;
-            var lonDiff = maxLon - minLon;
-            if (latDiff == 0.0) { latDiff = 0.0001; }
-            if (lonDiff == 0.0) { lonDiff = 0.0001; }
-            
-            // Adjust scaling to keep aspect ratio rough (lat/lon isn't square but it's schematic)
-            var prevX = 0; var prevY = 0;
-            for (var i = 0; i < path.size(); i += 2) {
-                var lat = path[i];
-                var lon = path[i + 1];
-                var px = boxX + (lon - minLon) / lonDiff * boxW;
-                var py = boxY + boxH - ((lat - minLat) / latDiff * boxH); // Invert Y for latitude
-                
-                if (i > 0) {
-                    dc.drawLine(prevX, prevY, px.toNumber(), py.toNumber());
-                }
-                prevX = px.toNumber();
-                prevY = py.toNumber();
-            }
-            
-            // Draw current position indicator
-            dc.setColor(Graphics.COLOR_RED, Graphics.COLOR_TRANSPARENT);
-            dc.fillCircle(prevX, prevY, (3 * scale).toNumber());
-            
-        } else {
-            dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
-            dc.drawText(width / 2, startY + (20 * scale).toNumber(), Graphics.FONT_XTINY, "No path data yet", Graphics.TEXT_JUSTIFY_CENTER);
+        if (path.size() < 2) { return; }
+
+        var minLat = 90.0; var maxLat = -90.0;
+        var minLon = 180.0; var maxLon = -180.0;
+        for (var i = 0; i < path.size(); i += 2) {
+            var lat = path[i]; var lon = path[i + 1];
+            if (lat < minLat) { minLat = lat; } if (lat > maxLat) { maxLat = lat; }
+            if (lon < minLon) { minLon = lon; } if (lon > maxLon) { maxLon = lon; }
         }
+
+        var boxX = (width - boxW) / 2;
+        dc.setColor(Graphics.COLOR_DK_GRAY, Graphics.COLOR_TRANSPARENT);
+        dc.drawRectangle(boxX, y, boxW, boxH);
+        
+        var latDiff = maxLat - minLat;
+        var lonDiff = maxLon - minLon;
+        if (latDiff == 0.0) { latDiff = 0.0001; }
+        if (lonDiff == 0.0) { lonDiff = 0.0001; }
+
+        dc.setColor(Graphics.COLOR_GREEN, Graphics.COLOR_TRANSPARENT);
+        dc.setPenWidth(2);
+        var prevX = 0; var prevY = 0;
+        for (var i = 0; i < path.size(); i += 2) {
+            var px = boxX + (path[i+1] - minLon) / lonDiff * boxW;
+            var py = y + boxH - ((path[i] - minLat) / latDiff * boxH);
+            if (i > 0) { dc.drawLine(prevX, prevY, px.toNumber(), py.toNumber()); }
+            prevX = px.toNumber(); prevY = py.toNumber();
+        }
+        dc.setColor(Graphics.COLOR_RED, Graphics.COLOR_TRANSPARENT);
+        dc.fillCircle(prevX, prevY, 3);
+    }
+
+    private function formatDuration(seconds as Number) as String {
+        var h = seconds / 3600;
+        var m = (seconds % 3600) / 60;
+        var s = seconds % 60;
+        if (h > 0) {
+            return Lang.format("$1$:$2$:$3$", [h, m.format("%02d"), s.format("%02d")]);
+        }
+        return Lang.format("$1$:$2$", [m, s.format("%02d")]);
     }
 }
 
 class StatsDelegate extends WatchUi.BehaviorDelegate {
-    function initialize() {
+    private var _view as StatsView;
+
+    function initialize(view as StatsView) {
         BehaviorDelegate.initialize();
+        _view = view;
     }
 
     function onSwipe(evt as WatchUi.SwipeEvent) as Boolean {
-        if (evt.getDirection() == WatchUi.SWIPE_UP) {
-            WatchUi.popView(WatchUi.SLIDE_UP);
-            return true;
+        var dir = evt.getDirection();
+        var currentPage = _view.getPage();
+
+        if (dir == WatchUi.SWIPE_DOWN) {
+            if (currentPage == 0) {
+                _view.setPage(1);
+                WatchUi.requestUpdate();
+                return true;
+            }
+        } else if (dir == WatchUi.SWIPE_UP) {
+            if (currentPage == 1) {
+                _view.setPage(0);
+                WatchUi.requestUpdate();
+                return true;
+            } else {
+                WatchUi.popView(WatchUi.SLIDE_UP);
+                return true;
+            }
         }
         return false;
     }
 
     function onBack() as Boolean {
+        if (_view.getPage() == 1) {
+            _view.setPage(0);
+            WatchUi.requestUpdate();
+            return true;
+        }
         WatchUi.popView(WatchUi.SLIDE_UP);
         return true;
     }

@@ -42,7 +42,8 @@ class TideWatchDelegate extends WatchUi.BehaviorDelegate {
     function onSwipe(swipeEvent as WatchUi.SwipeEvent) as Boolean {
         if (checkWake()) { return true; }
         if (swipeEvent.getDirection() == WatchUi.SWIPE_DOWN) {
-            WatchUi.pushView(new StatsView(), new StatsDelegate(), WatchUi.SLIDE_DOWN);
+            var view = new StatsView();
+            WatchUi.pushView(view, new StatsDelegate(view), WatchUi.SLIDE_DOWN);
             return true;
         }
         return false;

@@ -1,0 +1,78 @@
+[ @file = "/Users/guido/Git/tide_watch_app/source/DataKeys.mc"; @line = 1; @symbol_importdef<0> = [Toybox,1,7,13]; @symbol_importdef<1> = [Lang,1,14,18]; ]
+import Toybox.Lang;
+[ @file = "/Users/guido/Git/tide_watch_app/source/DataKeys.mc"; @line = 4; background = true; @symbol_moduledef = [DataKeys,4,7,15]; ]
+module DataKeys {
+    [ @file = "/Users/guido/Git/tide_watch_app/source/DataKeys.mc"; @line = 4; ]
+    <init> {
+    }
+    [ @file = "/Users/guido/Git/tide_watch_app/source/DataKeys.mc"; @line = 5; ]
+    enum {
+        [ @file = "/Users/guido/Git/tide_watch_app/source/DataKeys.mc"; @line = 6; @position = 8; @symbol_enumdec = [TIDE_TYPE_HIGH,6,8,22]; ]
+        TIDE_TYPE_HIGH = 10,
+        [ @file = "/Users/guido/Git/tide_watch_app/source/DataKeys.mc"; @line = 7; @position = 8; @symbol_enumdec = [TIDE_TYPE_LOW,7,8,21]; ]
+        TIDE_TYPE_LOW = 11,
+        [ @file = "/Users/guido/Git/tide_watch_app/source/DataKeys.mc"; @line = 8; @position = 8; @symbol_enumdec = [UNIT_METER,8,8,18]; ]
+        UNIT_METER = 18,
+        [ @file = "/Users/guido/Git/tide_watch_app/source/DataKeys.mc"; @line = 9; @position = 8; @symbol_enumdec = [UNIT_FEET,9,8,17]; ]
+        UNIT_FEET = 19,
+        [ @file = "/Users/guido/Git/tide_watch_app/source/DataKeys.mc"; @line = 10; @position = 8; @symbol_enumdec = [ERROR_QUOTA_EXCEEDED,10,8,28]; ]
+        ERROR_QUOTA_EXCEEDED = -429,
+        [ @file = "/Users/guido/Git/tide_watch_app/source/DataKeys.mc"; @line = 11; @position = 8; @symbol_enumdec = [ERROR_NO_DATA,11,8,21]; ]
+        ERROR_NO_DATA = -404,
+        [ @file = "/Users/guido/Git/tide_watch_app/source/DataKeys.mc"; @line = 12; @position = 8; @symbol_enumdec = [ERROR_PHONE_CONN_MIN,12,8,28]; ]
+        ERROR_PHONE_CONN_MIN = -200,
+        [ @file = "/Users/guido/Git/tide_watch_app/source/DataKeys.mc"; @line = 13; @position = 8; @symbol_enumdec = [ERROR_PHONE_CONN_MAX,13,8,28]; ]
+        ERROR_PHONE_CONN_MAX = -100,
+        [ @file = "/Users/guido/Git/tide_watch_app/source/DataKeys.mc"; @line = 14; @position = 8; @symbol_enumdec = [ERROR_INVALID_KEY,14,8,25]; ]
+        ERROR_INVALID_KEY = -401,
+        [ @file = "/Users/guido/Git/tide_watch_app/source/DataKeys.mc"; @line = 15; @position = 8; @symbol_enumdec = [ERROR_OTHER,15,8,19]; ]
+        ERROR_OTHER = -1,
+        [ @file = "/Users/guido/Git/tide_watch_app/source/DataKeys.mc"; @line = 17; @position = 8; @symbol_enumdec = [SETTING_UNIT_METERS,17,8,27]; ]
+        SETTING_UNIT_METERS = 0,
+        [ @file = "/Users/guido/Git/tide_watch_app/source/DataKeys.mc"; @line = 18; @position = 8; @symbol_enumdec = [SETTING_UNIT_FEET,18,8,25]; ]
+        SETTING_UNIT_FEET = 1,
+        [ @file = "/Users/guido/Git/tide_watch_app/source/DataKeys.mc"; @line = 19; @position = 8; @symbol_enumdec = [SETTING_DISTANCE_UNIT_KM,19,8,32]; ]
+        SETTING_DISTANCE_UNIT_KM = 0,
+        [ @file = "/Users/guido/Git/tide_watch_app/source/DataKeys.mc"; @line = 20; @position = 8; @symbol_enumdec = [SETTING_DISTANCE_UNIT_MILES,20,8,35]; ]
+        SETTING_DISTANCE_UNIT_MILES = 1,
+        [ @file = "/Users/guido/Git/tide_watch_app/source/DataKeys.mc"; @line = 22; @position = 8; @symbol_enumdec = [SETTING_COLOR_PINK,22,8,26]; ]
+        SETTING_COLOR_PINK = 1,
+        [ @file = "/Users/guido/Git/tide_watch_app/source/DataKeys.mc"; @line = 23; @position = 8; @symbol_enumdec = [SETTING_COLOR_RED,23,8,25]; ]
+        SETTING_COLOR_RED = 2,
+        [ @file = "/Users/guido/Git/tide_watch_app/source/DataKeys.mc"; @line = 24; @position = 8; @symbol_enumdec = [SETTING_COLOR_GREEN,24,8,27]; ]
+        SETTING_COLOR_GREEN = 3,
+        [ @file = "/Users/guido/Git/tide_watch_app/source/DataKeys.mc"; @line = 25; @position = 8; @symbol_enumdec = [SETTING_COLOR_WHITE,25,8,27]; ]
+        SETTING_COLOR_WHITE = 4,
+        [ @file = "/Users/guido/Git/tide_watch_app/source/DataKeys.mc"; @line = 26; @position = 8; @symbol_enumdec = [SETTING_COLOR_YELLOW,26,8,28]; ]
+        SETTING_COLOR_YELLOW = 5,
+        [ @file = "/Users/guido/Git/tide_watch_app/source/DataKeys.mc"; @line = 27; @position = 8; @symbol_enumdec = [SETTING_COLOR_ORANGE,27,8,28]; ]
+        SETTING_COLOR_ORANGE = 6,
+        [ @file = "/Users/guido/Git/tide_watch_app/source/DataKeys.mc"; @line = 28; @position = 8; @symbol_enumdec = [SETTING_COLOR_PURPLE,28,8,28]; ]
+        SETTING_COLOR_PURPLE = 7,
+        [ @file = "/Users/guido/Git/tide_watch_app/source/DataKeys.mc"; @line = 29; @position = 8; @symbol_enumdec = [SETTING_COLOR_LT_GRAY,29,8,29]; ]
+        SETTING_COLOR_LT_GRAY = 8,
+        [ @file = "/Users/guido/Git/tide_watch_app/source/DataKeys.mc"; @line = 30; @position = 8; @symbol_enumdec = [SETTING_COLOR_DK_GRAY,30,8,29]; ]
+        SETTING_COLOR_DK_GRAY = 9,
+        [ @file = "/Users/guido/Git/tide_watch_app/source/DataKeys.mc"; @line = 31; @position = 8; @symbol_enumdec = [SETTING_COLOR_LIGHT_BLUE,31,8,32]; ]
+        SETTING_COLOR_LIGHT_BLUE = 10,
+        [ @file = "/Users/guido/Git/tide_watch_app/source/DataKeys.mc"; @line = 32; @position = 8; @symbol_enumdec = [SETTING_COLOR_PETROL,32,8,28]; ]
+        SETTING_COLOR_PETROL = 11,
+        [ @file = "/Users/guido/Git/tide_watch_app/source/DataKeys.mc"; @line = 33; @position = 8; @symbol_enumdec = [SETTING_COLOR_TURQUOISE,33,8,31]; ]
+        SETTING_COLOR_TURQUOISE = 12,
+        [ @file = "/Users/guido/Git/tide_watch_app/source/DataKeys.mc"; @line = 35; @position = 8; @symbol_enumdec = [TIME_FORMAT_24_H,35,8,24]; ]
+        TIME_FORMAT_24_H = 0,
+        [ @file = "/Users/guido/Git/tide_watch_app/source/DataKeys.mc"; @line = 36; @position = 8; @symbol_enumdec = [TIME_FORMAT_12_H,36,8,24]; ]
+        TIME_FORMAT_12_H = 1,
+        [ @file = "/Users/guido/Git/tide_watch_app/source/DataKeys.mc"; @line = 38; @position = 8; @symbol_enumdec = [DATUM_STATION_DEFAULT,38,8,29]; ]
+        DATUM_STATION_DEFAULT = 0,
+        [ @file = "/Users/guido/Git/tide_watch_app/source/DataKeys.mc"; @line = 39; @position = 8; @symbol_enumdec = [DATUM_MSL,39,8,17]; ]
+        DATUM_MSL = 1,
+        [ @file = "/Users/guido/Git/tide_watch_app/source/DataKeys.mc"; @line = 40; @position = 8; @symbol_enumdec = [DATUM_MLLW,40,8,18]; ]
+        DATUM_MLLW = 2,
+        [ @file = "/Users/guido/Git/tide_watch_app/source/DataKeys.mc"; @line = 41; @position = 8; @symbol_enumdec = [DATUM_LAT,41,8,17]; ]
+        DATUM_LAT = 3
+    }
+}
+[ @file = "/Users/guido/Git/tide_watch_app/source/DataKeys.mc"; @line = 1; ]
+<init> {
+}

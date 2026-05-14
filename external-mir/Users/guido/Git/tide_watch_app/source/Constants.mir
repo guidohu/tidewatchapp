@@ -1,0 +1,23 @@
+[ @file = "/Users/guido/Git/tide_watch_app/source/Constants.mc"; @line = 1; @symbol_importdef<0> = [Toybox,1,7,13]; @symbol_importdef<1> = [Lang,1,14,18]; ]
+import Toybox.Lang;
+[ @file = "/Users/guido/Git/tide_watch_app/source/Constants.mc"; @line = 4; background = true; @symbol_moduledef = [Constants,4,7,16]; ]
+module Constants {
+    [ @file = "/Users/guido/Git/tide_watch_app/source/Constants.mc"; @line = 4; ]
+    <init> {
+    }
+    [ @file = "/Users/guido/Git/tide_watch_app/source/Constants.mc"; @line = 5; @position = 10; @symbol_constdef = [SECONDS_IN_HOUR,5,10,25]; ]
+    const SECONDS_IN_HOUR = 3600;
+    [ @file = "/Users/guido/Git/tide_watch_app/source/Constants.mc"; @line = 6; @position = 10; @symbol_constdef = [DATA_UPDATE_INTERVAL_SEC,6,10,34]; ]
+    const DATA_UPDATE_INTERVAL_SEC = 300;
+    [ @file = "/Users/guido/Git/tide_watch_app/source/Constants.mc"; @line = 7; @position = 10; @symbol_constdef = [SYNC_INTERVAL_SUCCESS_SEC,7,10,35]; ]
+    const SYNC_INTERVAL_SUCCESS_SEC = 1800;
+    [ @file = "/Users/guido/Git/tide_watch_app/source/Constants.mc"; @line = 8; @position = 10; @symbol_constdef = [SYNC_INTERVAL_RETRY_SEC,8,10,33]; ]
+    const SYNC_INTERVAL_RETRY_SEC = 300;
+    [ @file = "/Users/guido/Git/tide_watch_app/source/Constants.mc"; @line = 9; @position = 10; @symbol_constdef = [FAST_SYNC_FRESHNESS_THRESHOLD_SEC,9,10,43]; ]
+    const FAST_SYNC_FRESHNESS_THRESHOLD_SEC = 1800;
+    [ @file = "/Users/guido/Git/tide_watch_app/source/Constants.mc"; @line = 10; @position = 10; @symbol_constdef = [SLOW_SYNC_FRESHNESS_THRESHOLD_SEC,10,10,43]; ]
+    const SLOW_SYNC_FRESHNESS_THRESHOLD_SEC = 21600;
+}
+[ @file = "/Users/guido/Git/tide_watch_app/source/Constants.mc"; @line = 1; ]
+<init> {
+}
