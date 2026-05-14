@@ -447,41 +447,32 @@ class ActivityTracker {
                 _inWave = false;
                 _timeSinceLastWave = 0; // Start cooldown
                 
-                // Validation: Only count if wave covered at least 10 meters
-                if (_currentWaveDistance < 10.0f) {
-                    Log.info("Activity", "Wave discarded: too short (" + _currentWaveDistance.format("%.1f") + "m)");
-                    _waveCount--;
-                    // Update fields with corrected count
-                    if (_waveField != null) { _waveField.setData(_waveCount); }
-                    if (_waveSessionField != null) { _waveSessionField.setData(_waveCount); }
-                } else {
-                    // Final update for session totals from this wave
-                    _totalWaveDistance += _currentWaveDistance;
-                    if (_currentWaveDistance > _maxWaveLength) {
-                        _maxWaveLength = _currentWaveDistance;
-                    }
-
-                    // Push session updates
-                    if (_maxWaveSpeedField != null) {
-                        _maxWaveSpeedField.setData(_maxWaveSpeed);
-                    }
-                    if (_totalWaveTimeField != null) {
-                        _totalWaveTimeField.setData(_totalWaveTime.toNumber());
-                    }
-                    if (_maxWaveLengthField != null) {
-                        _maxWaveLengthField.setData(_maxWaveLength);
-                    }
-                    if (_totalWaveDistanceField != null) {
-                        _totalWaveDistanceField.setData(_totalWaveDistance);
-                    }
-                    if (_avgWaveSpeedField != null && _totalWaveTime > 0) {
-                        _avgWaveSpeedField.setData(_totalWaveDistance / _totalWaveTime);
-                    }
-                    if (_avgWaveLengthField != null && _waveCount > 0) {
-                        _avgWaveLengthField.setData(_totalWaveDistance / _waveCount);
-                    }
-                    Log.info("Activity", "Wave ended. Dist: " + _currentWaveDistance.format("%.1f") + "m");
+                // Final update for session totals from this wave
+                _totalWaveDistance += _currentWaveDistance;
+                if (_currentWaveDistance > _maxWaveLength) {
+                    _maxWaveLength = _currentWaveDistance;
                 }
+
+                // Push session updates
+                if (_maxWaveSpeedField != null) {
+                    _maxWaveSpeedField.setData(_maxWaveSpeed);
+                }
+                if (_totalWaveTimeField != null) {
+                    _totalWaveTimeField.setData(_totalWaveTime.toNumber());
+                }
+                if (_maxWaveLengthField != null) {
+                    _maxWaveLengthField.setData(_maxWaveLength);
+                }
+                if (_totalWaveDistanceField != null) {
+                    _totalWaveDistanceField.setData(_totalWaveDistance);
+                }
+                if (_avgWaveSpeedField != null && _totalWaveTime > 0) {
+                    _avgWaveSpeedField.setData(_totalWaveDistance / _totalWaveTime);
+                }
+                if (_avgWaveLengthField != null && _waveCount > 0) {
+                    _avgWaveLengthField.setData(_totalWaveDistance / _waveCount);
+                }
+                Log.info("Activity", "Wave ended. Dist: " + _currentWaveDistance.format("%.1f") + "m");
             }
             _highSpeedTime = 0;
             _maxMotionEnergyRecent = 0.0f; // Reset motion peak while waiting for next potential wave
