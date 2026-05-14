@@ -57,6 +57,7 @@
     <string id="FitTotalWaveTime">Total Wave Time</string>
     <string id="FitAvgWaveSpeed">Avg Wave Speed</string>
     <string id="FitAvgWaveLength">Avg Wave Length</string>
+    <string id="FitTotalWaveDistance">Total Wave Distance</string>
     <string id="FitWavesSurfed">Waves Surfed</string>
     <string id="FitPaddleStrokes">Paddle Strokes</string>
     <string id="FitTotalStrokes">Total Strokes</string>

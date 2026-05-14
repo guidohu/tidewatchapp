@@ -1,43 +1,56 @@
 <resources>
     <fitContributions>
-        <!-- Total Waves mapped to native num_waves (handled in code via :nativeNum) -->
+        <!-- Custom Developer Fields for Surfing -->
         <fitField id="2" 
+                  displayInActivitySummary="true"
                   dataLabel="@Strings.FitTotalWaves" 
                   sortOrder="0" 
                   unitLabel="@Strings.UnitWaves" />
 
-        <!-- Max Wave Speed mapped to native Max Speed (handled in code via :nativeNum) -->
         <fitField id="4" 
+                  displayInActivitySummary="true"
                   dataLabel="@Strings.FitMaxWaveSpeed" 
                   sortOrder="1" 
                   precision="2" 
                   unitLabel="@Strings.UnitMs" />
 
-        <!-- Longest Wave mapped to native Total Distance (handled in code via :nativeNum) -->
         <fitField id="6" 
+                  displayInActivitySummary="true"
                   dataLabel="@Strings.FitLongestWave" 
                   sortOrder="2" 
                   precision="2" 
                   unitLabel="@Strings.UnitMetersShort" />
 
-        <!-- Total Wave Time mapped to native Moving Time (handled in code via :nativeNum) -->
         <fitField id="5" 
+                  displayInActivitySummary="true"
                   dataLabel="@Strings.FitTotalWaveTime" 
                   sortOrder="3" 
                   precision="0" 
                   unitLabel="@Strings.UnitSecondsShort" />
 
-        <!-- Average Wave Speed mapped to native Average Speed (handled in code via :nativeNum) -->
         <fitField id="7" 
+                  displayInActivitySummary="true"
                   dataLabel="@Strings.FitAvgWaveSpeed" 
                   sortOrder="4" 
                   precision="2" 
                   unitLabel="@Strings.UnitMs" />
 
-        <!-- Additional surf fields without native mapping (for Developer Fields section) -->
-        <fitField id="8" dataLabel="@Strings.FitAvgWaveLength" sortOrder="5" precision="2" unitLabel="@Strings.UnitMetersShort" />
-        <fitField id="0" dataLabel="@Strings.FitWavesSurfed" sortOrder="6" unitLabel="@Strings.UnitWaves" />
-        <fitField id="1" dataLabel="@Strings.FitPaddleStrokes" sortOrder="7" unitLabel="@Strings.UnitStrokes" />
-        <fitField id="3" dataLabel="@Strings.FitTotalStrokes" sortOrder="8" unitLabel="@Strings.UnitStrokes" />
+        <fitField id="8" 
+                  displayInActivitySummary="true"
+                  dataLabel="@Strings.FitAvgWaveLength" 
+                  sortOrder="5" 
+                  precision="2" 
+                  unitLabel="@Strings.UnitMetersShort" />
+
+        <fitField id="9" 
+                  displayInActivitySummary="true"
+                  dataLabel="@Strings.FitTotalWaveDistance" 
+                  sortOrder="6" 
+                  precision="2" 
+                  unitLabel="@Strings.UnitMetersShort" />
+
+        <fitField id="0" dataLabel="@Strings.FitWavesSurfed" sortOrder="7" unitLabel="@Strings.UnitWaves" />
+        <fitField id="1" dataLabel="@Strings.FitPaddleStrokes" sortOrder="8" unitLabel="@Strings.UnitStrokes" />
+        <fitField id="3" dataLabel="@Strings.FitTotalStrokes" sortOrder="9" unitLabel="@Strings.UnitStrokes" />
     </fitContributions>
 </resources>

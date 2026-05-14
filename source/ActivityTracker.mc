@@ -20,6 +20,7 @@ class ActivityTracker {
     private var _totalWaveTimeField as FitContributor.Field?;
     private var _avgWaveSpeedField as FitContributor.Field?;
     private var _avgWaveLengthField as FitContributor.Field?;
+    private var _totalWaveDistanceField as FitContributor.Field?;
     
     private var _isRecording as Boolean = false;
     private var _timerRunning as Boolean = false;
@@ -105,26 +106,22 @@ class ActivityTracker {
                 // Native mapped fields for Surfing - Using general fields as workaround for 3rd party restrictions
                 _waveSessionField = _session.createField("Total Waves", 2, FitContributor.DATA_TYPE_UINT16, {
                     :mesgType => FitContributor.MESG_TYPE_SESSION, 
-                    :units => "waves",
-                    :nativeNum => 103
+                    :units => "waves"
                 });
 
                 _avgWaveSpeedField = _session.createField("Avg Wave Speed", 7, FitContributor.DATA_TYPE_FLOAT, {
                     :mesgType => FitContributor.MESG_TYPE_SESSION, 
-                    :units => "m/s",
-                    :nativeNum => 13
+                    :units => "m/s"
                 });
 
                 _maxWaveSpeedField = _session.createField("Max Wave Speed", 4, FitContributor.DATA_TYPE_FLOAT, {
                     :mesgType => FitContributor.MESG_TYPE_SESSION, 
-                    :units => "m/s",
-                    :nativeNum => 6
+                    :units => "m/s"
                 });
 
                 _totalWaveTimeField = _session.createField("Total Wave Time", 5, FitContributor.DATA_TYPE_UINT32, {
                     :mesgType => FitContributor.MESG_TYPE_SESSION, 
-                    :units => "s",
-                    :nativeNum => 8
+                    :units => "s"
                 });
 
                 _avgWaveLengthField = _session.createField("Avg Wave Length", 8, FitContributor.DATA_TYPE_FLOAT, {
@@ -134,8 +131,12 @@ class ActivityTracker {
 
                 _maxWaveLengthField = _session.createField("Max Wave Length", 6, FitContributor.DATA_TYPE_FLOAT, {
                     :mesgType => FitContributor.MESG_TYPE_SESSION, 
-                    :units => "m",
-                    :nativeNum => 5
+                    :units => "m"
+                });
+
+                _totalWaveDistanceField = _session.createField("Total Wave Distance", 9, FitContributor.DATA_TYPE_FLOAT, {
+                    :mesgType => FitContributor.MESG_TYPE_SESSION, 
+                    :units => "m"
                 });
 
                 _strokeSessionField = _session.createField("Total Strokes", 3, FitContributor.DATA_TYPE_UINT32, {
@@ -194,6 +195,16 @@ class ActivityTracker {
             if (_isRecording) {
                 _session.stop();
             }
+            // Final update of session metrics
+            if (_waveSessionField != null) { _waveSessionField.setData(_waveCount); }
+            if (_maxWaveSpeedField != null) { _maxWaveSpeedField.setData(_maxWaveSpeed); }
+            if (_totalWaveTimeField != null) { _totalWaveTimeField.setData(_totalWaveTime.toNumber()); }
+            if (_maxWaveLengthField != null) { _maxWaveLengthField.setData(_maxWaveLength); }
+            if (_totalWaveDistanceField != null) { _totalWaveDistanceField.setData(_totalWaveDistance); }
+            if (_avgWaveSpeedField != null && _totalWaveTime > 0) { _avgWaveSpeedField.setData(_totalWaveDistance / _totalWaveTime); }
+            if (_avgWaveLengthField != null && _waveCount > 0) { _avgWaveLengthField.setData(_totalWaveDistance / _waveCount); }
+            if (_strokeSessionField != null) { _strokeSessionField.setData(_paddleStrokes); }
+
             _session.save();
             System.println("Activity saved.");
             _session = null;
@@ -206,6 +217,7 @@ class ActivityTracker {
             _totalWaveTimeField = null;
             _avgWaveSpeedField = null;
             _avgWaveLengthField = null;
+            _totalWaveDistanceField = null;
 
             _isRecording = false;
             if (_timerRunning) {
@@ -258,6 +270,7 @@ class ActivityTracker {
             _totalWaveTimeField = null;
             _avgWaveSpeedField = null;
             _avgWaveLengthField = null;
+            _totalWaveDistanceField = null;
 
             _isRecording = false;
             if (_timerRunning) {
@@ -408,10 +421,13 @@ class ActivityTracker {
                         _maxWaveSpeedField.setData(_maxWaveSpeed);
                     }
                     if (_totalWaveTimeField != null) {
-                        _totalWaveTimeField.setData((_totalWaveTime * 1000).toNumber());
+                        _totalWaveTimeField.setData(_totalWaveTime.toNumber());
                     }
                     if (_maxWaveLengthField != null) {
                         _maxWaveLengthField.setData(_maxWaveLength);
+                    }
+                    if (_totalWaveDistanceField != null) {
+                        _totalWaveDistanceField.setData(_totalWaveDistance);
                     }
                     if (_avgWaveSpeedField != null && _totalWaveTime > 0) {
                         _avgWaveSpeedField.setData(_totalWaveDistance / _totalWaveTime);
