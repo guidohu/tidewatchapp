@@ -104,6 +104,24 @@ class TideWatchView extends WatchUi.View {
         mTideColor = getColorFromIndex(Application.Properties.getValue("TideColor"));
         mGraphColor = getColorFromIndex(Application.Properties.getValue("GraphColor"));
         mBaseColor = getColorFromIndex(Application.Properties.getValue("BaseColor"));
+
+        var gpsLat = Application.Properties.getValue("GpsLat");
+        var gpsLon = Application.Properties.getValue("GpsLon");
+        
+        if (gpsLat == null || gpsLon == null || (gpsLat == 0.0 && gpsLon == 0.0)) {
+            var info = Activity.getActivityInfo();
+            if (info != null && info.currentLocation != null) {
+                var latLon = info.currentLocation.toDegrees();
+                var lat = latLon[0].toFloat();
+                var lon = latLon[1].toFloat();
+                if (lat != 0.0 || lon != 0.0) {
+                    Application.Properties.setValue("GpsLat", lat);
+                    Application.Properties.setValue("GpsLon", lon);
+                    Application.Storage.deleteValue("spotName");
+                    TideWatchSettingsMenu.triggerImmediateSync(true);
+                }
+            }
+        }
         
         mFullRedrawNeeded = true;
         mGraphBufferValid = false;
@@ -392,7 +410,17 @@ class TideWatchView extends WatchUi.View {
     }
 
     function renderSyncStatus(dc as Dc, height as Number) as Void {
-        var msg = (mSyncError != null) ? "Sync Error" : "Waiting for sync...";
+        var gpsLat = Application.Properties.getValue("GpsLat");
+        var gpsLon = Application.Properties.getValue("GpsLon");
+        var msg = "";
+        
+        if (gpsLat == null || gpsLon == null || (gpsLat == 0.0 && gpsLon == 0.0)) {
+            msg = WatchUi.loadResource(Rez.Strings.NoSpotSelected) as String;
+        } else if (mSyncError != null) {
+            msg = "Sync Error";
+        } else {
+            msg = "Waiting for sync...";
+        }
         drawCenteredText(dc, height / 2, Graphics.FONT_XTINY, msg, (mSyncError != null ? Graphics.COLOR_RED : Graphics.COLOR_LT_GRAY));
     }
 

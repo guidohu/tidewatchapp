@@ -47,11 +47,11 @@ class SyncEngine {
         var gpsLat = Application.Properties.getValue("GpsLat");
         var gpsLon = Application.Properties.getValue("GpsLon");
 
-        if (gpsLat != null && gpsLat instanceof String && !gpsLat.equals("") && gpsLon != null && gpsLon instanceof String && !gpsLon.equals("")) {
+        if (gpsLat != null && gpsLon != null && (gpsLat != 0.0 || gpsLon != 0.0)) {
             mTargetLat = gpsLat.toFloat();
             mTargetLon = gpsLon.toFloat();
         } else {
-            Log.warn("Sync", "No coordinates. Sync aborted.");
+            Log.warn("Sync", "No valid coordinates. Sync aborted.");
             finishSync(false);
             return;
         }

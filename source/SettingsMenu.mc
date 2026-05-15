@@ -18,14 +18,16 @@ class TideWatchSettingsMenu extends WatchUi.Menu2 {
         Menu2.initialize({:title=>"Settings"});
         
         var spotName = Application.Storage.getValue("spotName");
-        var gpsLat = Application.Properties.getValue("GpsLat") as String;
-        var gpsLon = Application.Properties.getValue("GpsLon") as String;
+        var gpsLat = Application.Properties.getValue("GpsLat");
+        var gpsLon = Application.Properties.getValue("GpsLon");
 
         var subLabel = "";
         if (spotName != null && spotName instanceof String && !spotName.equals("")) {
             subLabel = spotName as String;
-        } else if (gpsLat != null && gpsLon != null && gpsLat instanceof String && gpsLon instanceof String && !gpsLat.equals("") && !gpsLon.equals("")) {
-            subLabel = gpsLat + ", " + gpsLon;
+        } else if (gpsLat != null && gpsLon != null && (gpsLat instanceof Float || gpsLat instanceof Double) && (gpsLon instanceof Float || gpsLon instanceof Double)) {
+            if (gpsLat != 0.0 || gpsLon != 0.0) {
+                subLabel = gpsLat.format("%.4f") + ", " + gpsLon.format("%.4f");
+            }
         }
 
         addItem(new WatchUi.MenuItem(loadStr(Rez.Strings.UpdateLocationTitle), subLabel, "UpdateLocation", {}));
@@ -268,8 +270,10 @@ class LocationOptionMenu extends WatchUi.Menu2 {
         var manualLat = Application.Properties.getValue("GpsLat");
         var manualLon = Application.Properties.getValue("GpsLon");
         var manualSub = "Not Set";
-        if (manualLat != null && manualLon != null && (manualLat as String).length() > 0 && (manualLon as String).length() > 0) {
-            manualSub = (manualLat as String) + ", " + (manualLon as String);
+        if (manualLat != null && manualLon != null && (manualLat instanceof Float || manualLat instanceof Double) && (manualLon instanceof Float || manualLon instanceof Double)) {
+            if (manualLat != 0.0 || manualLon != 0.0) {
+                manualSub = manualLat.format("%.4f") + ", " + manualLon.format("%.4f");
+            }
         }
         addItem(new WatchUi.MenuItem(TideWatchSettingsMenu.loadStr(Rez.Strings.UseManualCoordinates), manualSub, "Manual", {}));
         
@@ -327,13 +331,13 @@ class LocationOptionMenuDelegate extends WatchUi.Menu2InputDelegate {
 
             if (pos != null) {
                 var latLon = pos.toDegrees();
-                var lat = latLon[0].format("%.4f");
-                var lon = latLon[1].format("%.4f");
+                var lat = latLon[0].toFloat();
+                var lon = latLon[1].toFloat();
                 Application.Properties.setValue("GpsLat", lat);
                 Application.Properties.setValue("GpsLon", lon);
                 Application.Storage.deleteValue("spotName");
                 
-                _parentItem.setSubLabel(lat + ", " + lon);
+                _parentItem.setSubLabel(lat.format("%.4f") + ", " + lon.format("%.4f"));
                 
                 TideWatchSettingsMenu.triggerImmediateSync(true);
                 WatchUi.popView(WatchUi.SLIDE_RIGHT);
