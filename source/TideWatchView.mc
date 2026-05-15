@@ -23,18 +23,19 @@ class TideWatchView extends WatchUi.View {
     var mDisplayTimer as Timer.Timer?;
     var mFullRedrawNeeded as Boolean = true;
     var mLastUpdateMin as Number = -1;
+    var mLastCacheCheck as Number = 0;
 
     // Cache for Storage values
-    var mcTideData as Array? = null;
-    var mcTideTimes as Array? = null;
-    var mcTideExtrema as Array? = null;
-    var mcWaveData as Array? = null;
-    var mcSpotName as String? = null;
+    var mTideData as Array? = null;
+    var mTideTimes as Array? = null;
+    var mTideExtrema as Array? = null;
+    var mWaveData as Array? = null;
+    var mSpotName as String? = null;
     var mSyncError as Number? = null;
     var mWeatherError as Number? = null;
     var mErrorAt as Number? = null;
-    var mcTideUnitApi as Number? = null;
-    var mcSwellUnitApi as Number? = null;
+    var mTideUnitApi as Number? = null;
+    var mSwellUnitApi as Number? = null;
     var mLastDataUpdatedAt as Number = 0;
     var mLastSyncAttemptAt as Number = 0;
     var mLastSettingsHash as Number = 0;
@@ -177,7 +178,7 @@ class TideWatchView extends WatchUi.View {
         renderTimeSection(dc, width, height, scale, clockTime);
 
         // 2. Main Tide Display
-        if (mcTideData == null || mcTideTimes == null) {
+        if (mTideData == null || mTideTimes == null) {
             renderSyncStatus(dc, height);
             return;
         }
@@ -194,11 +195,15 @@ class TideWatchView extends WatchUi.View {
 
         // 5. Spot Name / Error
         renderFooter(dc, height, now);
+
+        // 6. Activity Recording Ring
+        renderActivityRing(dc);
     }
 
     function updateCache(now as Number) as Void {
         // 1. Only check storage every 5 seconds or if we just woke up
-        if (mFullRedrawNeeded || (now % 5 == 0)) {
+        if (mFullRedrawNeeded || (now - mLastCacheCheck >= 5)) {
+            mLastCacheCheck = now;
             var dataUpdatedAt = Application.Storage.getValue("dataUpdatedAt") as Number?;
             if (dataUpdatedAt == null) { dataUpdatedAt = 0; }
 
@@ -208,19 +213,19 @@ class TideWatchView extends WatchUi.View {
                 mGraphBufferValid = false;
                 Log.info("Data", "Refreshing cache from storage. dataUpdatedAt: " + dataUpdatedAt);
 
-                mcTideData = Application.Storage.getValue("tideData") as Array?;
-                mcTideTimes = Application.Storage.getValue("tideTimes") as Array?;
-                mcTideExtrema = Application.Storage.getValue("tideExtrema") as Array?;
-                mcWaveData = Application.Storage.getValue("waveData") as Array?;
-                mcTideUnitApi = Application.Storage.getValue("tideUnitApi") as Number?;
-                mcSwellUnitApi = Application.Storage.getValue("swellUnitApi") as Number?;
-                mcSpotName = Application.Storage.getValue("spotName") as String?;
+                mTideData = Application.Storage.getValue("tideData") as Array?;
+                mTideTimes = Application.Storage.getValue("tideTimes") as Array?;
+                mTideExtrema = Application.Storage.getValue("tideExtrema") as Array?;
+                mWaveData = Application.Storage.getValue("waveData") as Array?;
+                mTideUnitApi = Application.Storage.getValue("tideUnitApi") as Number?;
+                mSwellUnitApi = Application.Storage.getValue("swellUnitApi") as Number?;
+                mSpotName = Application.Storage.getValue("spotName") as String?;
                 mSyncError = Application.Storage.getValue("syncError") as Number?;
                 mErrorAt = Application.Storage.getValue("errorAt") as Number?;
                 mWeatherError = Application.Storage.getValue("weatherError") as Number?;
 
                 // Heavier calculations only when data changes
-                if (mcTideData != null && mcTideTimes != null) {
+                if (mTideData != null && mTideTimes != null) {
                     calculateExtrema(now, mTargetTideUnit);
                     mMinT = now - (GRAPH_PAST_HOURS * 3600);
                     mMaxT = now + (GRAPH_FUTURE_HOURS * 3600);
@@ -240,7 +245,7 @@ class TideWatchView extends WatchUi.View {
             mDateStr = todayMed.day.format("%d") + " " + todayMed.month;
             mDowStr = todayLong.day_of_week;
 
-            if (mcTideData != null && mcTideTimes != null) {
+            if (mTideData != null && mTideTimes != null) {
                 calculateCurrentTide(now, mTargetTideUnit);
                 calculateSwells(mTargetSwellUnit);
             }
@@ -251,14 +256,14 @@ class TideWatchView extends WatchUi.View {
 
     function calculateCurrentTide(now as Number, targetTideUnit as Number) as Void {
         var found = false;
-        var tTimesArray = mcTideTimes as Array;
-        var tDataArray = mcTideData as Array;
+        var tTimesArray = mTideTimes as Array;
+        var tDataArray = mTideData as Array;
         for (var i = 0; i < tTimesArray.size() - 1; i++) {
             var t1 = tTimesArray[i] as Number;
             var t2 = tTimesArray[i + 1] as Number;
             if (now >= t1 && now <= t2) {
-                var h1 = convertHeight(tDataArray[i] as Number, mcTideUnitApi, DataKeys.UNIT_METER);
-                var h2 = convertHeight(tDataArray[i + 1] as Number, mcTideUnitApi, DataKeys.UNIT_METER);
+                var h1 = UnitUtils.convertHeight(tDataArray[i] as Number, mTideUnitApi, DataKeys.UNIT_METER);
+                var h2 = UnitUtils.convertHeight(tDataArray[i + 1] as Number, mTideUnitApi, DataKeys.UNIT_METER);
                 var ratio = (now - t1).toFloat() / (t2 - t1).toFloat();
                 mCurrentHeight = h1 + (h2 - h1) * ratio;
                 mIsRising = h2 > h1;
@@ -269,21 +274,21 @@ class TideWatchView extends WatchUi.View {
         }
         if (!found) {
             if (tDataArray.size() > 0) {
-                mCurrentHeight = convertHeight(tDataArray[0] as Number, mcTideUnitApi, DataKeys.UNIT_METER);
+                mCurrentHeight = UnitUtils.convertHeight(tDataArray[0] as Number, mTideUnitApi, DataKeys.UNIT_METER);
                 mCurrentIdx = 0;
             }
         }
 
-        var dispHeight = convertHeight((mCurrentHeight * 100).toNumber(), DataKeys.UNIT_METER, targetTideUnit);
-        mDispUnit = (targetTideUnit == DataKeys.UNIT_FEET) ? "ft" : "m";
+        var dispHeight = UnitUtils.convertHeight((mCurrentHeight * 100).toNumber(), DataKeys.UNIT_METER, targetTideUnit);
+        mDispUnit = UnitUtils.getTideUnitString(targetTideUnit);
         mTideNumStr = dispHeight.format("%.2f");
     }
 
     function calculateExtrema(now as Number, targetTideUnit as Number) as Void {
         mNextExtremaStr = null;
-        if (mcTideExtrema != null) {
-            for (var i = 0; i < mcTideExtrema.size(); i++) {
-                var ext = mcTideExtrema[i] as Array;
+        if (mTideExtrema != null) {
+            for (var i = 0; i < mTideExtrema.size(); i++) {
+                var ext = mTideExtrema[i] as Array;
                 if (ext[0] > now) {
                     var extTs = ext[0] as Number;
                     var rawExtH = ext[1] as Number;
@@ -292,7 +297,7 @@ class TideWatchView extends WatchUi.View {
                     var extInfo = Gregorian.info(new Time.Moment(extTs.toNumber()), Time.FORMAT_SHORT);
                     var hourAmPm = formatHourAmPm(extInfo.hour, mUse24Hour, false);
                     var extTimeStr = Lang.format("$1$:$2$$3$", [hourAmPm[0].format(mUse24Hour ? "%02d" : "%d"), extInfo.min.format("%02d"), hourAmPm[1]]);
-                    var dispExtH = convertHeight(rawExtH, mcTideUnitApi, targetTideUnit);
+                    var dispExtH = UnitUtils.convertHeight(rawExtH, mTideUnitApi, targetTideUnit);
                     mNextExtremaStr = Lang.format("$1$: $2$$3$ $4$", [extType, dispExtH.format("%.2f"), mDispUnit, extTimeStr]);
                     break;
                 }
@@ -303,10 +308,10 @@ class TideWatchView extends WatchUi.View {
     function calculateSwells(targetSwellUnit as Number) as Void {
         mValidSwells = [];
         mSwellTexts = [];
-        if (mcWaveData != null && mcWaveData.size() > 0) {
+        if (mWaveData != null && mWaveData.size() > 0) {
             var waveIdx = mCurrentIdx;
-            if (waveIdx >= mcWaveData.size()) { waveIdx = mcWaveData.size() - 1; }
-            var currentWave = mcWaveData[waveIdx] as Array;
+            if (waveIdx >= mWaveData.size()) { waveIdx = mWaveData.size() - 1; }
+            var currentWave = mWaveData[waveIdx] as Array;
             for (var s = 0; s < 2; s++) {
                 var h = currentWave[s*3];
                 if (h != null && (h as Number) > 0) {
@@ -314,8 +319,8 @@ class TideWatchView extends WatchUi.View {
                     var pValNum = currentWave[s*3+1] as Number;
                     var dValFloat = (currentWave[s*3+2] instanceof Number) ? (currentWave[s*3+2] as Number).toFloat() : currentWave[s*3+2] as Float;
                     mValidSwells.add([hvRaw, pValNum, dValFloat]);
-                    var dispH = convertHeight(hvRaw, mcSwellUnitApi, targetSwellUnit);
-                    mSwellTexts.add(dispH.format("%.1f") + ((targetSwellUnit == DataKeys.UNIT_FEET) ? "ft" : "m") + "@" + pValNum);
+                    var dispH = UnitUtils.convertHeight(hvRaw, mSwellUnitApi, targetSwellUnit);
+                    mSwellTexts.add(dispH.format("%.1f") + UnitUtils.getTideUnitString(targetSwellUnit) + "@" + pValNum);
                 }
             }
         }
@@ -326,23 +331,23 @@ class TideWatchView extends WatchUi.View {
         mMaxH = -9999.0;
         mMinSwellH = 9999.0;
         mMaxSwellH = -9999.0;
-        var tTimesArray = mcTideTimes as Array;
-        var tDataArray = mcTideData as Array;
+        var tTimesArray = mTideTimes as Array;
+        var tDataArray = mTideData as Array;
         for (var i = 0; i < tDataArray.size(); i++) {
             var tTs = tTimesArray[i] as Number;
             if (tTs >= mMinT - 3600 && tTs <= mMaxT + 3600) {
-                var hFloat = convertHeight(tDataArray[i] as Number, mcTideUnitApi, DataKeys.UNIT_METER);
+                var hFloat = UnitUtils.convertHeight(tDataArray[i] as Number, mTideUnitApi, DataKeys.UNIT_METER);
                 if (hFloat < mMinH) { mMinH = hFloat; }
                 if (hFloat > mMaxH) { mMaxH = hFloat; }
             }
         }
-        if (mcWaveData != null) {
-            for (var i = 0; i < mcWaveData.size(); i++) {
-                var wPoint = mcWaveData[i] as Array;
+        if (mWaveData != null) {
+            for (var i = 0; i < mWaveData.size(); i++) {
+                var wPoint = mWaveData[i] as Array;
                 for (var s = 0; s < 2; s++) {
                     var hVal = wPoint[s*3];
                     if (hVal != null) {
-                        var h = convertHeight(hVal as Number, mcSwellUnitApi, DataKeys.UNIT_METER);
+                        var h = UnitUtils.convertHeight(hVal as Number, mSwellUnitApi, DataKeys.UNIT_METER);
                         if (h < mMinSwellH) { mMinSwellH = h; }
                         if (h > mMaxSwellH) { mMaxSwellH = h; }
                     }
@@ -379,8 +384,8 @@ class TideWatchView extends WatchUi.View {
             var timeStartX = (width - totalTimeW) / 2;
             
             dc.setColor(mBaseColor, Graphics.COLOR_TRANSPARENT);
-            // Date on the left (moved 3px right)
-            dc.drawText(timeStartX - (10 * scale).toNumber() + 3, timeY, Graphics.FONT_XTINY, mDateStr, Graphics.TEXT_JUSTIFY_RIGHT | Graphics.TEXT_JUSTIFY_VCENTER);
+            // Date on the left (moved 5px right)
+            dc.drawText(timeStartX - (10 * scale).toNumber() + 6, timeY, Graphics.FONT_XTINY, mDateStr, Graphics.TEXT_JUSTIFY_RIGHT | Graphics.TEXT_JUSTIFY_VCENTER);
             // Day on the right (moved 2px left)
             dc.drawText(timeStartX + totalTimeW + (10 * scale).toNumber() - 2, timeY, Graphics.FONT_XTINY, mDowStr, Graphics.TEXT_JUSTIFY_LEFT | Graphics.TEXT_JUSTIFY_VCENTER);
         }
@@ -409,8 +414,8 @@ class TideWatchView extends WatchUi.View {
             var waves = tracker.getWaveCount();
             var distance = tracker.getDistance();
             
-            var distVal = formatDistanceValue(distance);
-            var distUnit = (mDistanceUnits == DataKeys.SETTING_DISTANCE_UNIT_KM) ? "km" : "mi";
+            var distVal = UnitUtils.formatDistance(distance, mDistanceUnits);
+            var distUnit = UnitUtils.getDistanceUnitString(mDistanceUnits);
             var sessionY = height * 0.44;
             var labelYOffset = (25 * scale).toNumber();
             var sessionFont = Graphics.FONT_SMALL;
@@ -490,11 +495,11 @@ class TideWatchView extends WatchUi.View {
         // Tide Graph
         bdc.setColor(mGraphColor, Graphics.COLOR_TRANSPARENT);
         var lastX = -1, lastY = -1;
-        var tTimesArray = mcTideTimes as Array;
-        var tDataArray = mcTideData as Array;
+        var tTimesArray = mTideTimes as Array;
+        var tDataArray = mTideData as Array;
         for (var i = 0; i < tDataArray.size(); i++) {
             var x = drawWidth * (tTimesArray[i] - mMinT).toFloat() / (mMaxT - mMinT).toFloat();
-            var y = graphHeight - graphHeight * (convertHeight(tDataArray[i] as Number, mcTideUnitApi, DataKeys.UNIT_METER) - mMinH) / (mMaxH - mMinH);
+            var y = graphHeight - graphHeight * (UnitUtils.convertHeight(tDataArray[i] as Number, mTideUnitApi, DataKeys.UNIT_METER) - mMinH) / (mMaxH - mMinH);
             if (lastX >= 0 && x >= 0 && x <= drawWidth) {
                 bdc.drawLine(lastX, lastY, x.toNumber(), y.toNumber());
             }
@@ -504,9 +509,25 @@ class TideWatchView extends WatchUi.View {
     }
 
     function renderFooter(dc as Dc, height as Number, now as Number) as Void {
-        if (mcSpotName != null) {
+        if (mSpotName != null) {
             var isStale = (now - mLastDataUpdatedAt > STALE_DATA_THRESHOLD_SEC);
-            drawCenteredText(dc, height * 0.93, Graphics.FONT_XTINY, mcSpotName as String, isStale ? Graphics.COLOR_YELLOW : mBaseColor);
+            drawCenteredText(dc, height * 0.93, Graphics.FONT_XTINY, mSpotName as String, isStale ? Graphics.COLOR_YELLOW : mBaseColor);
+        }
+    }
+
+    function renderActivityRing(dc as Dc) as Void {
+        var tracker = getApp().activityTracker;
+        if (tracker != null && tracker.isRecording()) {
+            dc.setColor(Graphics.COLOR_GREEN, Graphics.COLOR_TRANSPARENT);
+            dc.setPenWidth(2);
+            var width = dc.getWidth();
+            var height = dc.getHeight();
+            
+            if (System.getDeviceSettings().screenShape == System.SCREEN_SHAPE_RECTANGLE) {
+                dc.drawRectangle(0, 0, width, height);
+            } else {
+                dc.drawCircle(width / 2, height / 2, width / 2 - 1);
+            }
         }
     }
 
@@ -569,23 +590,5 @@ class TideWatchView extends WatchUi.View {
     function drawCenteredText(dc as Dc, y as Lang.Numeric, font, text as String, color as Number) as Void {
         dc.setColor(color, Graphics.COLOR_TRANSPARENT);
         dc.drawText(dc.getWidth() / 2, y, font, text, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
-    }
-
-    function formatDistanceValue(meters as Float) as String {
-        var absMeters = (meters < 0) ? -meters : meters;
-        if (absMeters < 0.005) { absMeters = 0.0; } // Threshold to avoid -0.00
-        
-        if (mDistanceUnits == DataKeys.SETTING_DISTANCE_UNIT_KM) {
-            return (absMeters / 1000.0).format("%.2f");
-        } else {
-            return (absMeters / 1609.344).format("%.2f");
-        }
-    }
-
-    function convertHeight(rawValue as Number, apiUnit as Number?, targetUnit as Number) as Float {
-        var valFloat = rawValue.toFloat() / 100.0;
-        if (apiUnit == DataKeys.UNIT_METER && targetUnit == DataKeys.UNIT_FEET) { return valFloat * METERS_TO_FEET; }
-        if (apiUnit == DataKeys.UNIT_FEET && targetUnit == DataKeys.UNIT_METER) { return valFloat / METERS_TO_FEET; }
-        return valFloat;
     }
 }

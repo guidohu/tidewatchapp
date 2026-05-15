@@ -84,7 +84,7 @@ class StatsView extends WatchUi.View {
         var maxSpeedMs = tracker.getMaxWaveSpeed();
         var speedVal = maxSpeedMs * 3.6f; // km/h
         var sUnit = "km/h";
-        if (distUnitProp != null && (distUnitProp as Number) == 1) { // Miles
+        if (distUnitProp != null && (distUnitProp as Number) == DataKeys.SETTING_DISTANCE_UNIT_MILES) { // Miles
             speedVal = maxSpeedMs * 2.23694f;
             sUnit = "mph";
         }
@@ -114,13 +114,11 @@ class StatsView extends WatchUi.View {
         startY += lh;
 
         // Total Distance
-        var distVal = tracker.getDistance() / 1000.0f;
-        var dUnit = "km";
-        if (distUnitProp != null && (distUnitProp as Number) == 1) {
-            distVal = tracker.getDistance() * 0.000621371f;
-            dUnit = "mi";
-        }
-        dc.drawText(width / 2, startY, Graphics.FONT_XTINY, "Distance: " + distVal.format("%.2f") + dUnit, Graphics.TEXT_JUSTIFY_CENTER);
+        var distMeters = tracker.getDistance();
+        var distVal = UnitUtils.formatDistance(distMeters, distUnitProp != null ? distUnitProp as Number : DataKeys.SETTING_DISTANCE_UNIT_KM);
+        var dUnit = UnitUtils.getDistanceUnitString(distUnitProp != null ? distUnitProp as Number : DataKeys.SETTING_DISTANCE_UNIT_KM);
+        
+        dc.drawText(width / 2, startY, Graphics.FONT_XTINY, "Distance: " + distVal + dUnit, Graphics.TEXT_JUSTIFY_CENTER);
         startY += lh;
 
         // Average Wave Length
@@ -158,12 +156,21 @@ class StatsView extends WatchUi.View {
         if (latDiff == 0.0) { latDiff = 0.0001; }
         if (lonDiff == 0.0) { lonDiff = 0.0001; }
 
+        // Maintain aspect ratio: Use the same scale for both axes
+        var lonScale = boxW.toFloat() / lonDiff;
+        var latScale = boxH.toFloat() / latDiff;
+        var finalScale = (lonScale < latScale) ? lonScale : latScale;
+
+        // Center the path within the bounding box
+        var offsetX = boxX + (boxW - lonDiff * finalScale) / 2;
+        var offsetY = y + (boxH - latDiff * finalScale) / 2;
+
         dc.setColor(Graphics.COLOR_GREEN, Graphics.COLOR_TRANSPARENT);
         dc.setPenWidth(2);
         var prevX = 0; var prevY = 0;
         for (var i = 0; i < path.size(); i += 2) {
-            var px = boxX + (path[i+1] - minLon) / lonDiff * boxW;
-            var py = y + boxH - ((path[i] - minLat) / latDiff * boxH);
+            var px = offsetX + (path[i+1] - minLon) * finalScale;
+            var py = offsetY + (latDiff * finalScale) - ((path[i] - minLat) * finalScale);
             if (i > 0) { dc.drawLine(prevX, prevY, px.toNumber(), py.toNumber()); }
             prevX = px.toNumber(); prevY = py.toNumber();
         }

@@ -63,19 +63,21 @@ class StartActivityView extends WatchUi.View {
         dc.setColor(confirmColor, Graphics.COLOR_TRANSPARENT);
         dc.fillRectangle(0, 0, width, height / 2);
         dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(width / 2, height / 4, Graphics.FONT_MEDIUM, isGpsReady ? "Confirm" : "Wait for GPS", Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
+        var confirmText = WatchUi.loadResource(isGpsReady ? Rez.Strings.DialogConfirm : Rez.Strings.DialogWaitGps) as String;
+        dc.drawText(width / 2, height / 4, Graphics.FONT_MEDIUM, confirmText, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
 
         // Bottom Half (Cancel - Negative)
         dc.setColor(Graphics.COLOR_DK_RED, Graphics.COLOR_TRANSPARENT);
         dc.fillRectangle(0, height / 2, width, height / 2);
         dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(width / 2, height * 3 / 4, Graphics.FONT_MEDIUM, "Cancel", Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
+        dc.drawText(width / 2, height * 3 / 4, Graphics.FONT_MEDIUM, WatchUi.loadResource(Rez.Strings.DialogCancel) as String, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
 
         // Middle Question & GPS Status
         dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_BLACK);
-        var text = "Start Surfing?";
-        var gpsText = _gpsAccuracy >= Position.QUALITY_USABLE ? "GPS OK" : "No GPS";
-        var gpsColor = _gpsAccuracy >= Position.QUALITY_USABLE ? Graphics.COLOR_GREEN : Graphics.COLOR_RED;
+        var text = WatchUi.loadResource(Rez.Strings.DialogStartSurfing) as String;
+        var isGpsOk = _gpsAccuracy >= Position.QUALITY_USABLE;
+        var gpsText = WatchUi.loadResource(isGpsOk ? Rez.Strings.DialogGpsOk : Rez.Strings.DialogNoGps) as String;
+        var gpsColor = isGpsOk ? Graphics.COLOR_GREEN : Graphics.COLOR_RED;
         
         var dims = dc.getTextDimensions(text, Graphics.FONT_SMALL);
         var gpsDims = dc.getTextDimensions(gpsText, Graphics.FONT_XTINY);
@@ -174,17 +176,17 @@ class SaveActivityView extends WatchUi.View {
         dc.setColor(Graphics.COLOR_DK_GRAY, Graphics.COLOR_TRANSPARENT);
         dc.fillRectangle(0, 0, width, height / 2);
         dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(width / 2, height / 4, Graphics.FONT_MEDIUM, "Resume", Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
+        dc.drawText(width / 2, height / 4, Graphics.FONT_MEDIUM, WatchUi.loadResource(Rez.Strings.DialogResume) as String, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
 
         // Bottom Half (Save - Positive)
         dc.setColor(Graphics.COLOR_DK_GREEN, Graphics.COLOR_TRANSPARENT);
         dc.fillRectangle(0, height / 2, width, height / 2);
         dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(width / 2, height * 3 / 4, Graphics.FONT_MEDIUM, "Save", Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
+        dc.drawText(width / 2, height * 3 / 4, Graphics.FONT_MEDIUM, WatchUi.loadResource(Rez.Strings.DialogSave) as String, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
 
         // Middle Question
         dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_BLACK);
-        var text = "Save Activity?";
+        var text = WatchUi.loadResource(Rez.Strings.DialogSaveActivity) as String;
         var dims = dc.getTextDimensions(text, Graphics.FONT_SMALL);
         dc.fillRectangle(0, (height - dims[1]) / 2 - 5, width, dims[1] + 10);
         dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
@@ -257,17 +259,17 @@ class DiscardActivityView extends WatchUi.View {
         dc.setColor(Graphics.COLOR_DK_RED, Graphics.COLOR_TRANSPARENT);
         dc.fillRectangle(0, 0, width, height / 2);
         dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(width / 2, height / 4, Graphics.FONT_MEDIUM, "Discard", Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
+        dc.drawText(width / 2, height / 4, Graphics.FONT_MEDIUM, WatchUi.loadResource(Rez.Strings.DialogDiscard) as String, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
 
         // Bottom Half (Resume - Positive)
         dc.setColor(Graphics.COLOR_DK_GRAY, Graphics.COLOR_TRANSPARENT);
         dc.fillRectangle(0, height / 2, width, height / 2);
         dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(width / 2, height * 3 / 4, Graphics.FONT_MEDIUM, "Resume", Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
+        dc.drawText(width / 2, height * 3 / 4, Graphics.FONT_MEDIUM, WatchUi.loadResource(Rez.Strings.DialogResume) as String, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
 
         // Middle Question
         dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_BLACK);
-        var text = "Discard Activity?";
+        var text = WatchUi.loadResource(Rez.Strings.DialogDiscardActivity) as String;
         var dims = dc.getTextDimensions(text, Graphics.FONT_SMALL);
         dc.fillRectangle(0, (height - dims[1]) / 2 - 5, width, dims[1] + 10);
         dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);

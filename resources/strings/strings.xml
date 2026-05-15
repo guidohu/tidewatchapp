@@ -62,6 +62,19 @@
     <string id="FitPaddleStrokes">Paddle Strokes</string>
     <string id="FitTotalStrokes">Total Strokes</string>
 
+    <!-- Dialogs -->
+    <string id="DialogStartSurfing">Start Surfing?</string>
+    <string id="DialogGpsOk">GPS OK</string>
+    <string id="DialogNoGps">No GPS</string>
+    <string id="DialogWaitGps">Wait for GPS</string>
+    <string id="DialogConfirm">Confirm</string>
+    <string id="DialogCancel">Cancel</string>
+    <string id="DialogSaveActivity">Save Activity?</string>
+    <string id="DialogResume">Resume</string>
+    <string id="DialogSave">Save</string>
+    <string id="DialogDiscardActivity">Discard Activity?</string>
+    <string id="DialogDiscard">Discard</string>
+
     <!-- FIT Units -->
     <string id="UnitWaves">waves</string>
     <string id="UnitMs">m/s</string>
