@@ -24,12 +24,11 @@ skills/
 
 # Private Files
 TODO
-tide_watch.prg.debug.xml
+tide_watch_app.prg.debug.xml
 
 # Ignore the secret resource file
 resources/strings/secrets.xml
 
 # Local development and tool data
-scratch
-tide_watch_app.prg.debug.xml
+scratch/
 .antigravity
