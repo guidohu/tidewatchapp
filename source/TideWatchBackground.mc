@@ -3,7 +3,6 @@ import Toybox.Background;
 import Toybox.Communications;
 import Toybox.Lang;
 import Toybox.System;
-import Toybox.Position;
 import Toybox.Time;
 import Toybox.Time.Gregorian;
 import Toybox.Timer;

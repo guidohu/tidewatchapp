@@ -2,10 +2,50 @@ import Toybox.WatchUi;
 import Toybox.System;
 import Toybox.Graphics;
 import Toybox.Lang;
+import Toybox.Position;
+import Toybox.Timer;
 
 class StartActivityView extends WatchUi.View {
+    private var _gpsAccuracy as Number = Position.QUALITY_NOT_AVAILABLE;
+    private var _timer as Timer.Timer?;
+
     function initialize() {
         View.initialize();
+        _timer = new Timer.Timer();
+    }
+
+    function onPosition(info as Position.Info) as Void {
+        _gpsAccuracy = info.accuracy;
+        WatchUi.requestUpdate();
+    }
+
+    function onShow() as Void {
+        Position.enableLocationEvents(Position.LOCATION_CONTINUOUS, method(:onPosition));
+        if (_timer != null) {
+            _timer.start(method(:onTimerTick), 1000, true);
+        }
+    }
+
+    function onHide() as Void {
+        if (_timer != null) {
+            _timer.stop();
+        }
+        var app = getApp();
+        if (app.activityTracker != null && !app.activityTracker.isRecording()) {
+            Position.enableLocationEvents(Position.LOCATION_DISABLE, null);
+        }
+    }
+
+    function onTimerTick() as Void {
+        var info = Position.getInfo();
+        if (info != null && info.accuracy != null) {
+            _gpsAccuracy = info.accuracy;
+        }
+        WatchUi.requestUpdate();
+    }
+
+    function getGpsAccuracy() as Number {
+        return _gpsAccuracy;
     }
 
     function onUpdate(dc) as Void {
@@ -17,10 +57,13 @@ class StartActivityView extends WatchUi.View {
         dc.clear();
         
         // Top Half (Confirm - Positive)
-        dc.setColor(Graphics.COLOR_DK_GREEN, Graphics.COLOR_TRANSPARENT);
+        var isGpsReady = _gpsAccuracy >= Position.QUALITY_USABLE;
+        var confirmColor = isGpsReady ? Graphics.COLOR_DK_GREEN : Graphics.COLOR_DK_GRAY;
+        
+        dc.setColor(confirmColor, Graphics.COLOR_TRANSPARENT);
         dc.fillRectangle(0, 0, width, height / 2);
         dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(width / 2, height / 4, Graphics.FONT_MEDIUM, "Confirm", Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
+        dc.drawText(width / 2, height / 4, Graphics.FONT_MEDIUM, isGpsReady ? "Confirm" : "Wait for GPS", Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
 
         // Bottom Half (Cancel - Negative)
         dc.setColor(Graphics.COLOR_DK_RED, Graphics.COLOR_TRANSPARENT);
@@ -28,19 +71,34 @@ class StartActivityView extends WatchUi.View {
         dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
         dc.drawText(width / 2, height * 3 / 4, Graphics.FONT_MEDIUM, "Cancel", Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
 
-        // Middle Question
+        // Middle Question & GPS Status
         dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_BLACK);
         var text = "Start Surfing?";
+        var gpsText = _gpsAccuracy >= Position.QUALITY_USABLE ? "GPS OK" : "No GPS";
+        var gpsColor = _gpsAccuracy >= Position.QUALITY_USABLE ? Graphics.COLOR_GREEN : Graphics.COLOR_RED;
+        
         var dims = dc.getTextDimensions(text, Graphics.FONT_SMALL);
-        dc.fillRectangle(0, (height - dims[1]) / 2 - 5, width, dims[1] + 10);
+        var gpsDims = dc.getTextDimensions(gpsText, Graphics.FONT_XTINY);
+        
+        var spacing = 2;
+        var totalH = dims[1] + gpsDims[1] + spacing;
+        
+        dc.fillRectangle(0, (height - totalH) / 2 - 5, width, totalH + 10);
+        
         dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(width / 2, height / 2, Graphics.FONT_SMALL, text, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
+        dc.drawText(width / 2, height / 2 - (gpsDims[1] + spacing) / 2, Graphics.FONT_SMALL, text, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
+        
+        dc.setColor(gpsColor, Graphics.COLOR_TRANSPARENT);
+        dc.drawText(width / 2, height / 2 + (dims[1] + spacing) / 2, Graphics.FONT_XTINY, gpsText, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
     }
 }
 
 class StartActivityDelegate extends WatchUi.BehaviorDelegate {
-    function initialize() {
+    private var _view as StartActivityView;
+
+    function initialize(view as StartActivityView) {
         BehaviorDelegate.initialize();
+        _view = view;
     }
 
     function onTap(evt as WatchUi.ClickEvent) as Boolean {
@@ -74,6 +132,18 @@ class StartActivityDelegate extends WatchUi.BehaviorDelegate {
     }
 
     private function confirm() as Void {
+        var accuracy = _view.getGpsAccuracy();
+        // Double check with getInfo() in case the view's cache is slightly behind
+        var info = Position.getInfo();
+        if (info != null && info.accuracy != null && info.accuracy > accuracy) {
+            accuracy = info.accuracy;
+        }
+
+        if (accuracy < Position.QUALITY_USABLE) {
+            System.println("GPS not ready (Accuracy: " + accuracy + "), ignoring confirm.");
+            return;
+        }
+
         var app = getApp();
         if (app.activityTracker != null) {
             app.activityTracker.startRecording();

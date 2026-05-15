@@ -199,6 +199,10 @@ class ActivityTracker {
         return _isRecording;
     }
     
+    function isActivityActive() as Boolean {
+        return _session != null;
+    }
+    
     function saveSession() as Void {
         if (_session != null) {
             if (_isRecording) {

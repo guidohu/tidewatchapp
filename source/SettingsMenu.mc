@@ -7,6 +7,7 @@ import Toybox.Time;
 import Toybox.Background;
 import Toybox.Application.Storage;
 import Toybox.Application.Properties;
+import Toybox.Position;
 
 class TideWatchSettingsMenu extends WatchUi.Menu2 {
     /**
@@ -229,7 +230,8 @@ class TideWatchSettingsMenuDelegate extends WatchUi.Menu2InputDelegate {
     function onSelect(item as WatchUi.MenuItem) as Void {
         var id = item.getId() as String;
         if (id.equals("UpdateLocation")) {
-            WatchUi.pushView(new LocationOptionMenu(item), new LocationOptionMenuDelegate(item), WatchUi.SLIDE_LEFT);
+            var menu = new LocationOptionMenu(item);
+            WatchUi.pushView(menu, new LocationOptionMenuDelegate(item, menu.watchItem), WatchUi.SLIDE_LEFT);
         } else if (id.equals("TideDatum")) {
             WatchUi.pushView(new DatumMenu(id, item), new PropertyMenuDelegate(id, item, true), WatchUi.SLIDE_LEFT);
         } else if (id.equals("BaseColor") || id.equals("TideColor") || id.equals("GraphColor")) {
@@ -258,6 +260,8 @@ class TideWatchSettingsMenuDelegate extends WatchUi.Menu2InputDelegate {
  * Sub-menu for choosing location update method.
  */
 class LocationOptionMenu extends WatchUi.Menu2 {
+    public var watchItem as WatchUi.MenuItem;
+
     function initialize(parentItem as WatchUi.MenuItem) {
         Menu2.initialize({:title=>TideWatchSettingsMenu.loadStr(Rez.Strings.UpdateLocationTitle)});
         
@@ -270,14 +274,19 @@ class LocationOptionMenu extends WatchUi.Menu2 {
         addItem(new WatchUi.MenuItem(TideWatchSettingsMenu.loadStr(Rez.Strings.UseManualCoordinates), manualSub, "Manual", {}));
         
         var gpsSub = "No signal";
-        var info = Toybox.Position.getInfo();
-        if (info != null && info.position != null) {
-            var latLon = info.position.toDegrees();
-            if (latLon != null && latLon.size() == 2) {
-                gpsSub = latLon[0].format("%.4f") + ", " + latLon[1].format("%.4f");
-            }
+        var info = Position.getInfo();
+        var pos = (info != null) ? info.position : null;
+        if (pos == null) {
+            var actInfo = Activity.getActivityInfo();
+            pos = (actInfo != null) ? actInfo.currentLocation : null;
         }
-        addItem(new WatchUi.MenuItem(TideWatchSettingsMenu.loadStr(Rez.Strings.UseWatchLocation), gpsSub, "Watch", {}));
+
+        if (pos != null) {
+            var latLon = pos.toDegrees();
+            gpsSub = latLon[0].format("%.4f") + ", " + latLon[1].format("%.4f");
+        }
+        watchItem = new WatchUi.MenuItem(TideWatchSettingsMenu.loadStr(Rez.Strings.UseWatchLocation), gpsSub, "Watch", {});
+        addItem(watchItem);
     }
 }
 
@@ -286,37 +295,59 @@ class LocationOptionMenu extends WatchUi.Menu2 {
  */
 class LocationOptionMenuDelegate extends WatchUi.Menu2InputDelegate {
     private var _parentItem as WatchUi.MenuItem;
-    function initialize(parentItem as WatchUi.MenuItem) {
+    private var _watchItem as WatchUi.MenuItem;
+    private var _lastPos as Position.Location? = null;
+
+    function initialize(parentItem as WatchUi.MenuItem, watchItem as WatchUi.MenuItem) {
         Menu2InputDelegate.initialize();
         _parentItem = parentItem;
+        _watchItem = watchItem;
+
+        // Start a one-shot fix immediately
+        Position.enableLocationEvents(Position.LOCATION_ONE_SHOT, method(:onPosition));
     }
     
     /**
      * Handles location selection. 
-     * If 'Watch' is chosen, it attempts to get current GPS coordinates.
      */
     function onSelect(item as WatchUi.MenuItem) as Void {
         if (item.getId().equals("Manual")) {
             item.setSubLabel(WatchUi.loadResource(Rez.Strings.SetInConnectIQ) as String);
             WatchUi.requestUpdate();
         } else if (item.getId().equals("Watch")) {
-            var info = Toybox.Position.getInfo();
-            if (info != null && info.position != null) {
-                var latLon = info.position.toDegrees();
-                if (latLon != null && latLon.size() == 2) {
-                    var lat = latLon[0].format("%.4f");
-                    var lon = latLon[1].format("%.4f");
-                    Application.Properties.setValue("GpsLat", lat);
-                    Application.Properties.setValue("GpsLon", lon);
-                    Application.Storage.deleteValue("spotName");
-                    _parentItem.setSubLabel(lat + ", " + lon);
-                    
-                    TideWatchSettingsMenu.triggerImmediateSync(true);
-                    WatchUi.popView(WatchUi.SLIDE_RIGHT);
-                    return;
-                }
+            var pos = _lastPos;
+            if (pos == null) {
+                var info = Position.getInfo();
+                pos = (info != null) ? info.position : null;
             }
-            item.setSubLabel("No signal");
+            if (pos == null) {
+                var actInfo = Activity.getActivityInfo();
+                pos = (actInfo != null) ? actInfo.currentLocation : null;
+            }
+
+            if (pos != null) {
+                var latLon = pos.toDegrees();
+                var lat = latLon[0].format("%.4f");
+                var lon = latLon[1].format("%.4f");
+                Application.Properties.setValue("GpsLat", lat);
+                Application.Properties.setValue("GpsLon", lon);
+                Application.Storage.deleteValue("spotName");
+                
+                _parentItem.setSubLabel(lat + ", " + lon);
+                
+                TideWatchSettingsMenu.triggerImmediateSync(true);
+                WatchUi.popView(WatchUi.SLIDE_RIGHT);
+            }
+        }
+    }
+
+    function onPosition(info as Position.Info) as Void {
+        if (info != null && info.position != null) {
+            _lastPos = info.position;
+            var latLon = info.position.toDegrees();
+            var lat = latLon[0].format("%.4f");
+            var lon = latLon[1].format("%.4f");
+            _watchItem.setSubLabel(lat + ", " + lon);
             WatchUi.requestUpdate();
         }
     }

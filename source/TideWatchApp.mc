@@ -5,11 +5,14 @@ import Toybox.System;
 import Toybox.Time;
 import Toybox.Time.Gregorian;
 import Toybox.WatchUi;
+import Toybox.Position;
+import Toybox.Sensor;
 
 (:background)
 class TideWatchApp extends Application.AppBase {
 
     var activityTracker as ActivityTracker?;
+    var mainView as TideWatchView?;
     var isSyncing as Boolean = false;
 
     function initialize() {
@@ -27,6 +30,10 @@ class TideWatchApp extends Application.AppBase {
     function onStop(state as Dictionary?) as Void {
         if (activityTracker != null) {
             activityTracker.deinitialize();
+            // Force disable all sensors and location when exiting as a safety measure
+            // These are moved inside the check because they are restricted in background process
+            Position.enableLocationEvents(Position.LOCATION_DISABLE, null);
+            Sensor.setEnabledSensors([]);
         }
     }
 
@@ -36,9 +43,9 @@ class TideWatchApp extends Application.AppBase {
             return;
         }
 
-        // Only sync if data is missing or older than 5 minutes
+        // Only sync if data is missing or older than 30 minutes
         var lastUpdate = Application.Storage.getValue("dataUpdatedAt");
-        if (lastUpdate != null && lastUpdate instanceof Number && (Time.now().value() - (lastUpdate as Number)) < 300) {
+        if (lastUpdate != null && lastUpdate instanceof Number && (Time.now().value() - (lastUpdate as Number)) < 1800) {
             System.println("Data is fresh, skipping foreground sync.");
             return;
         }
@@ -50,6 +57,9 @@ class TideWatchApp extends Application.AppBase {
     }
 
     function onSettingsChanged() {
+        if (mainView != null) {
+            mainView.loadSettings();
+        }
         TideWatchSettingsMenu.triggerImmediateSync(true);
         WatchUi.requestUpdate();
     }
@@ -65,8 +75,8 @@ class TideWatchApp extends Application.AppBase {
             scheduleNextBackgroundEvent(null);
         }
         activityTracker = new ActivityTracker();
-        var view = new TideWatchView();
-        return [ view, new TideWatchDelegate(view) ] as [WatchUi.Views, WatchUi.InputDelegates];
+        mainView = new TideWatchView();
+        return [ mainView, new TideWatchDelegate(mainView) ] as [WatchUi.Views, WatchUi.InputDelegates];
     }
 
     function onBackgroundData(data as Application.PersistableType) as Void {
@@ -88,6 +98,17 @@ class TideWatchApp extends Application.AppBase {
             }
             
             var earliest = Time.now().add(new Time.Duration(interval));
+            
+            // Don't reschedule if we already have a successful sync scheduled for the future
+            var lastTime = Background.getLastTemporalEventTime();
+            if (lastTime != null && interval == Constants.SYNC_INTERVAL_SUCCESS_SEC) {
+                var nextExpected = lastTime.add(new Time.Duration(Constants.SYNC_INTERVAL_SUCCESS_SEC));
+                if (nextExpected.value() > Time.now().value()) {
+                    System.println("Valid future sync already scheduled, skipping.");
+                    return;
+                }
+            }
+            
             scheduleNextBackgroundEvent(earliest);
         }
     }

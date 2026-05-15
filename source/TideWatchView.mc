@@ -74,14 +74,42 @@ class TideWatchView extends WatchUi.View {
     var mGraphBufferValid as Boolean = false;
 
     var mTimer as Timer.Timer?;
+    var mTargetTideUnit as Number = DataKeys.UNIT_METER;
+    var mTargetSwellUnit as Number = DataKeys.UNIT_METER;
 
     function initialize() {
         View.initialize();
+        loadSettings();
+    }
+
+    function loadSettings() as Void {
+        var tideUnits = Application.Properties.getValue("TideUnits");
+        var swellUnits = Application.Properties.getValue("SwellUnits");
+        mTargetTideUnit = (tideUnits == DataKeys.SETTING_UNIT_FEET) ? DataKeys.UNIT_FEET : DataKeys.UNIT_METER;
+        mTargetSwellUnit = (swellUnits == DataKeys.SETTING_UNIT_FEET) ? DataKeys.UNIT_FEET : DataKeys.UNIT_METER;
+        
+        var timeFormatVal = Application.Properties.getValue("TimeFormat");
+        mUse24Hour = (timeFormatVal == null || timeFormatVal == DataKeys.TIME_FORMAT_24_H);
+        
+        var distUnits = Application.Properties.getValue("DistanceUnits");
+        mDistanceUnits = (distUnits != null) ? distUnits as Number : DataKeys.SETTING_DISTANCE_UNIT_KM;
+        
+        var showDate = Application.Properties.getValue("ShowDate");
+        mShowDate = (showDate != null && showDate == true);
+        
+        mShowSwellGraph = Application.Properties.getValue("ShowSwellGraph");
+        mShowSwellSummary = Application.Properties.getValue("ShowSwellSummary");
+        
+        mTideColor = getColorFromIndex(Application.Properties.getValue("TideColor"));
+        mGraphColor = getColorFromIndex(Application.Properties.getValue("GraphColor"));
+        mBaseColor = getColorFromIndex(Application.Properties.getValue("BaseColor"));
+        
+        mFullRedrawNeeded = true;
+        mGraphBufferValid = false;
     }
 
     function onShow() as Void {
-        mTimer = new Timer.Timer();
-        mTimer.start(method(:onTimerTick), 1000, true);
+        loadSettings(); // Ensure fresh settings on show
         
         mDisplayTimer = new Timer.Timer();
         resetDisplayTimer();
@@ -95,12 +123,22 @@ class TideWatchView extends WatchUi.View {
             mDisplayTimer.stop();
             mDisplayTimer.start(method(:onDisplayTimeout), DISPLAY_TIMEOUT_SEC * 1000, false);
         }
+        
+        if (mTimer == null) {
+            mTimer = new Timer.Timer();
+            mTimer.start(method(:onTimerTick), 1000, true);
+        }
+        
         mDisplayOn = true;
         mFullRedrawNeeded = true;
     }
 
     function onDisplayTimeout() as Void {
         mDisplayOn = false;
+        if (mTimer != null) {
+            mTimer.stop();
+            mTimer = null;
+        }
         WatchUi.requestUpdate();
     }
 
@@ -110,7 +148,9 @@ class TideWatchView extends WatchUi.View {
     }
 
     function onTimerTick() as Void {
-        WatchUi.requestUpdate();
+        if (mDisplayOn) {
+            WatchUi.requestUpdate();
+        }
     }
 
     function onUpdate(dc as Graphics.Dc) as Void {
@@ -122,10 +162,7 @@ class TideWatchView extends WatchUi.View {
         }
 
         var clockTime = System.getClockTime();
-        mLastUpdateMin = clockTime.min;
         
-        
-        mFullRedrawNeeded = false;
         updateCache(now);
 
         // --- DRAWING ---
@@ -160,61 +197,56 @@ class TideWatchView extends WatchUi.View {
     }
 
     function updateCache(now as Number) as Void {
-        var tideUnits = Application.Properties.getValue("TideUnits");
-        var swellUnits = Application.Properties.getValue("SwellUnits");
-        var targetTideUnit = (tideUnits == DataKeys.SETTING_UNIT_FEET) ? DataKeys.UNIT_FEET : DataKeys.UNIT_METER;
-        var targetSwellUnit = (swellUnits == DataKeys.SETTING_UNIT_FEET) ? DataKeys.UNIT_FEET : DataKeys.UNIT_METER;
-        var timeFormatVal = Application.Properties.getValue("TimeFormat");
-        var distUnits = Application.Properties.getValue("DistanceUnits");
-        mDistanceUnits = (distUnits != null) ? distUnits as Number : DataKeys.SETTING_DISTANCE_UNIT_KM;
-        
-        mUse24Hour = (timeFormatVal == null || timeFormatVal == DataKeys.TIME_FORMAT_24_H);
-        var showDate = Application.Properties.getValue("ShowDate");
-        mShowDate = (showDate != null && showDate == true);
-        mShowSwellGraph = Application.Properties.getValue("ShowSwellGraph");
-        mShowSwellSummary = Application.Properties.getValue("ShowSwellSummary");
-        mTideColor = getColorFromIndex(Application.Properties.getValue("TideColor"));
-        mGraphColor = getColorFromIndex(Application.Properties.getValue("GraphColor"));
-        mBaseColor = getColorFromIndex(Application.Properties.getValue("BaseColor"));
+        // 1. Only check storage every 5 seconds or if we just woke up
+        if (mFullRedrawNeeded || (now % 5 == 0)) {
+            var dataUpdatedAt = Application.Storage.getValue("dataUpdatedAt") as Number?;
+            if (dataUpdatedAt == null) { dataUpdatedAt = 0; }
 
-        var dataUpdatedAt = Application.Storage.getValue("dataUpdatedAt") as Number?;
-        if (dataUpdatedAt == null) { dataUpdatedAt = 0; }
+            if (mFullRedrawNeeded || now - mLastLazyDataUpdate >= Constants.DATA_UPDATE_INTERVAL_SEC || dataUpdatedAt != mLastDataUpdatedAt) {
+                mLastLazyDataUpdate = now;
+                mLastDataUpdatedAt = dataUpdatedAt;
+                mGraphBufferValid = false;
+                Log.info("Data", "Refreshing cache from storage. dataUpdatedAt: " + dataUpdatedAt);
 
-        if (now - mLastLazyDataUpdate >= Constants.DATA_UPDATE_INTERVAL_SEC || dataUpdatedAt != mLastDataUpdatedAt) {
-            mLastLazyDataUpdate = now;
-            mLastDataUpdatedAt = dataUpdatedAt;
-            mGraphBufferValid = false; // Data changed, invalidate graph
-            Log.info("Data", "Refreshing cache from storage. dataUpdatedAt: " + dataUpdatedAt);
+                mcTideData = Application.Storage.getValue("tideData") as Array?;
+                mcTideTimes = Application.Storage.getValue("tideTimes") as Array?;
+                mcTideExtrema = Application.Storage.getValue("tideExtrema") as Array?;
+                mcWaveData = Application.Storage.getValue("waveData") as Array?;
+                mcTideUnitApi = Application.Storage.getValue("tideUnitApi") as Number?;
+                mcSwellUnitApi = Application.Storage.getValue("swellUnitApi") as Number?;
+                mcSpotName = Application.Storage.getValue("spotName") as String?;
+                mSyncError = Application.Storage.getValue("syncError") as Number?;
+                mErrorAt = Application.Storage.getValue("errorAt") as Number?;
+                mWeatherError = Application.Storage.getValue("weatherError") as Number?;
 
-            mcTideData = Application.Storage.getValue("tideData") as Array?;
-            mcTideTimes = Application.Storage.getValue("tideTimes") as Array?;
-            mcTideExtrema = Application.Storage.getValue("tideExtrema") as Array?;
-            mcWaveData = Application.Storage.getValue("waveData") as Array?;
-            mcTideUnitApi = Application.Storage.getValue("tideUnitApi") as Number?;
-            mcSwellUnitApi = Application.Storage.getValue("swellUnitApi") as Number?;
-            mcSpotName = Application.Storage.getValue("spotName") as String?;
-            mSyncError = Application.Storage.getValue("syncError") as Number?;
-            mErrorAt = Application.Storage.getValue("errorAt") as Number?;
-            mWeatherError = Application.Storage.getValue("weatherError") as Number?;
+                // Heavier calculations only when data changes
+                if (mcTideData != null && mcTideTimes != null) {
+                    calculateExtrema(now, mTargetTideUnit);
+                    mMinT = now - (GRAPH_PAST_HOURS * 3600);
+                    mMaxT = now + (GRAPH_FUTURE_HOURS * 3600);
+                    calculateGraphBounds();
+                }
+            }
         }
 
+        // 2. Battery and Clock-based metrics (every frame while active)
         mBattery = System.getSystemStats().battery;
-        var todayMed = Gregorian.info(Time.now(), Time.FORMAT_MEDIUM);
-        var todayLong = Gregorian.info(Time.now(), Time.FORMAT_LONG);
-        mDateStr = todayMed.day.format("%d") + " " + todayMed.month;
-        mDowStr = todayLong.day_of_week;
+        
+        var clockTime = System.getClockTime();
+        if (mFullRedrawNeeded || clockTime.min != mLastUpdateMin) {
+            mLastUpdateMin = clockTime.min;
+            var todayMed = Gregorian.info(Time.now(), Time.FORMAT_MEDIUM);
+            var todayLong = Gregorian.info(Time.now(), Time.FORMAT_LONG);
+            mDateStr = todayMed.day.format("%d") + " " + todayMed.month;
+            mDowStr = todayLong.day_of_week;
 
-        mMinH = 9999.0; mMaxH = -9999.0;
-        mMinSwellH = 9999.0; mMaxSwellH = -9999.0;
-        mMinT = now - GRAPH_PAST_HOURS * Constants.SECONDS_IN_HOUR;
-        mMaxT = now + GRAPH_FUTURE_HOURS * Constants.SECONDS_IN_HOUR;
-
-        if (mcTideData != null && mcTideTimes != null) {
-            calculateCurrentTide(now, targetTideUnit);
-            calculateExtrema(now, targetTideUnit);
-            calculateSwells(targetSwellUnit);
-            calculateGraphBounds();
+            if (mcTideData != null && mcTideTimes != null) {
+                calculateCurrentTide(now, mTargetTideUnit);
+                calculateSwells(mTargetSwellUnit);
+            }
         }
+        
+        mFullRedrawNeeded = false;
     }
 
     function calculateCurrentTide(now as Number, targetTideUnit as Number) as Void {
@@ -290,6 +322,10 @@ class TideWatchView extends WatchUi.View {
     }
 
     function calculateGraphBounds() as Void {
+        mMinH = 9999.0;
+        mMaxH = -9999.0;
+        mMinSwellH = 9999.0;
+        mMaxSwellH = -9999.0;
         var tTimesArray = mcTideTimes as Array;
         var tDataArray = mcTideData as Array;
         for (var i = 0; i < tDataArray.size(); i++) {
@@ -343,10 +379,10 @@ class TideWatchView extends WatchUi.View {
             var timeStartX = (width - totalTimeW) / 2;
             
             dc.setColor(mBaseColor, Graphics.COLOR_TRANSPARENT);
-            // Date on the left
-            dc.drawText(timeStartX - (10 * scale).toNumber(), timeY, Graphics.FONT_XTINY, mDateStr, Graphics.TEXT_JUSTIFY_RIGHT | Graphics.TEXT_JUSTIFY_VCENTER);
-            // Day on the right
-            dc.drawText(timeStartX + totalTimeW + (10 * scale).toNumber(), timeY, Graphics.FONT_XTINY, mDowStr, Graphics.TEXT_JUSTIFY_LEFT | Graphics.TEXT_JUSTIFY_VCENTER);
+            // Date on the left (moved 3px right)
+            dc.drawText(timeStartX - (10 * scale).toNumber() + 3, timeY, Graphics.FONT_XTINY, mDateStr, Graphics.TEXT_JUSTIFY_RIGHT | Graphics.TEXT_JUSTIFY_VCENTER);
+            // Day on the right (moved 2px left)
+            dc.drawText(timeStartX + totalTimeW + (10 * scale).toNumber() - 2, timeY, Graphics.FONT_XTINY, mDowStr, Graphics.TEXT_JUSTIFY_LEFT | Graphics.TEXT_JUSTIFY_VCENTER);
         }
     }
 

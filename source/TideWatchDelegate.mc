@@ -42,9 +42,12 @@ class TideWatchDelegate extends WatchUi.BehaviorDelegate {
     function onSwipe(swipeEvent as WatchUi.SwipeEvent) as Boolean {
         if (checkWake()) { return true; }
         if (swipeEvent.getDirection() == WatchUi.SWIPE_DOWN) {
-            var view = new StatsView();
-            WatchUi.pushView(view, new StatsDelegate(view), WatchUi.SLIDE_DOWN);
-            return true;
+            var app = getApp();
+            if (app.activityTracker != null && app.activityTracker.isActivityActive()) {
+                var view = new StatsView();
+                WatchUi.pushView(view, new StatsDelegate(view), WatchUi.SLIDE_DOWN);
+                return true;
+            }
         }
         return false;
     }
@@ -57,7 +60,8 @@ class TideWatchDelegate extends WatchUi.BehaviorDelegate {
                 app.activityTracker.pauseRecording();
                 WatchUi.pushView(new SaveActivityView(), new SaveActivityDelegate(), WatchUi.SLIDE_UP);
             } else {
-                WatchUi.pushView(new StartActivityView(), new StartActivityDelegate(), WatchUi.SLIDE_UP);
+                var view = new StartActivityView();
+                WatchUi.pushView(view, new StartActivityDelegate(view), WatchUi.SLIDE_UP);
             }
             return true;
         }
