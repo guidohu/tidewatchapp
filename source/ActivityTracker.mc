@@ -216,14 +216,7 @@ class ActivityTracker {
                 _session.stop();
             }
             // Final update of session metrics
-            if (_waveSessionField != null) { _waveSessionField.setData(_waveCount); }
-            if (_maxWaveSpeedField != null) { _maxWaveSpeedField.setData(_maxWaveSpeed); }
-            if (_totalWaveTimeField != null) { _totalWaveTimeField.setData(_totalWaveTime.toNumber()); }
-            if (_maxWaveLengthField != null) { _maxWaveLengthField.setData(_maxWaveLength); }
-            if (_totalWaveDistanceField != null) { _totalWaveDistanceField.setData(_totalWaveDistance); }
-            if (_avgWaveSpeedField != null && _totalWaveTime > 0) { _avgWaveSpeedField.setData(_totalWaveDistance / _totalWaveTime); }
-            if (_avgWaveLengthField != null && _waveCount > 0) { _avgWaveLengthField.setData(_totalWaveDistance / _waveCount); }
-            if (_strokeSessionField != null) { _strokeSessionField.setData(_paddleStrokes); }
+            updateFitFields();
 
             _session.save();
             System.println("Activity saved.");
@@ -444,12 +437,6 @@ class ActivityTracker {
                 _currentWaveMaxSpeed = currentSpeed;
                 _currentWaveDistance = 0.0f; // Reset to 0, will accumulate from next stable sample
 
-                if (_waveField != null) {
-                    _waveField.setData(_waveCount);
-                }
-                if (_waveSessionField != null) {
-                    _waveSessionField.setData(_waveCount);
-                }
                 Log.info("Activity", "Wave started! Count: " + _waveCount + " (Motion Energy: " + _maxMotionEnergyRecent.format("%.1f") + ")");
             }
         } else {
@@ -464,25 +451,6 @@ class ActivityTracker {
                     _maxWaveLength = _currentWaveDistance;
                 }
 
-                // Push session updates
-                if (_maxWaveSpeedField != null) {
-                    _maxWaveSpeedField.setData(_maxWaveSpeed);
-                }
-                if (_totalWaveTimeField != null) {
-                    _totalWaveTimeField.setData(_totalWaveTime.toNumber());
-                }
-                if (_maxWaveLengthField != null) {
-                    _maxWaveLengthField.setData(_maxWaveLength);
-                }
-                if (_totalWaveDistanceField != null) {
-                    _totalWaveDistanceField.setData(_totalWaveDistance);
-                }
-                if (_avgWaveSpeedField != null && _totalWaveTime > 0) {
-                    _avgWaveSpeedField.setData(_totalWaveDistance / _totalWaveTime);
-                }
-                if (_avgWaveLengthField != null && _waveCount > 0) {
-                    _avgWaveLengthField.setData(_totalWaveDistance / _waveCount);
-                }
                 Log.info("Activity", "Wave ended. Dist: " + _currentWaveDistance.format("%.1f") + "m");
             }
             _highSpeedTime = 0;
@@ -535,12 +503,8 @@ class ActivityTracker {
         _strokeAccumulator += (cadence.toFloat() / 60.0f) * 2.0f;
         _paddleStrokes = _strokeAccumulator.toNumber();
         
-        if (_strokeField != null) {
-            _strokeField.setData(_paddleStrokes);
-        }
-        if (_strokeSessionField != null) {
-            _strokeSessionField.setData(_paddleStrokes);
-        }
+        // --- FIT Updates ---
+        updateFitFields();
 
         // --- Adaptive GPS Logic ---
         if (sensorInfo != null && sensorInfo.accel != null) {
@@ -588,6 +552,54 @@ class ActivityTracker {
             _gpsGoodSignalSec++;
         } else {
             _gpsGoodSignalSec = 0;
+        }
+    }
+
+    private function updateFitFields() as Void {
+        if (_session == null || !_isRecording) { return; }
+
+        // 1. Record Level Fields (Instantaneous/Frequent updates)
+        if (_waveField != null) {
+            _waveField.setData(_waveCount.toNumber());
+        }
+        if (_strokeField != null) {
+            _strokeField.setData(_paddleStrokes.toNumber());
+        }
+
+        // 2. Session Level Fields (Aggregated metrics)
+        // Calculate dynamic totals that include the current wave if active
+        var dynamicWaveDistance = _totalWaveDistance + (_inWave ? _currentWaveDistance : 0.0f);
+        var dynamicMaxWaveLength = (_inWave && _currentWaveDistance > _maxWaveLength) ? _currentWaveDistance : _maxWaveLength;
+        
+        // Note: _totalWaveTime is already incremented every second if _inWave, so it's already "dynamic"
+        
+        if (_waveSessionField != null) {
+            _waveSessionField.setData(_waveCount.toNumber());
+        }
+        if (_strokeSessionField != null) {
+            _strokeSessionField.setData(_paddleStrokes.toNumber());
+        }
+        if (_maxWaveSpeedField != null) {
+            _maxWaveSpeedField.setData(_maxWaveSpeed.toFloat());
+        }
+        if (_totalWaveTimeField != null) {
+            _totalWaveTimeField.setData(_totalWaveTime.toNumber());
+        }
+        if (_maxWaveLengthField != null) {
+            _maxWaveLengthField.setData(dynamicMaxWaveLength.toFloat());
+        }
+        if (_totalWaveDistanceField != null) {
+            _totalWaveDistanceField.setData(dynamicWaveDistance.toFloat());
+        }
+
+        // Calculated Averages (Session level)
+        if (_avgWaveSpeedField != null && _totalWaveTime > 0) {
+            var avgSpeed = dynamicWaveDistance / _totalWaveTime.toFloat();
+            _avgWaveSpeedField.setData(avgSpeed.toFloat());
+        }
+        if (_avgWaveLengthField != null && _waveCount > 0) {
+            var avgLength = dynamicWaveDistance / _waveCount.toFloat();
+            _avgWaveLengthField.setData(avgLength.toFloat());
         }
     }
 }
