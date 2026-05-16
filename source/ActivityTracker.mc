@@ -69,6 +69,7 @@ class ActivityTracker {
     private var _lastStoredTime as Number = 0;
     private var _lastValidGPSDistance as Float = 0.0f;
     private var _lastValidGPSTime as Number = 0;
+    private var _waitingForStableReset as Boolean = true;
 
 
 
@@ -174,8 +175,11 @@ class ActivityTracker {
             var info = Activity.getActivityInfo();
             if (info != null && info.elapsedDistance != null) {
                 _lastValidGPSDistance = info.elapsedDistance.toFloat();
+                _lastStoredDistance = info.elapsedDistance.toFloat();
             }
             _lastValidGPSTime = Time.now().value();
+            _gpsGoodSignalSec = 0;
+            _waitingForStableReset = true;
             
             System.println("Activity started.");
         }
@@ -260,6 +264,8 @@ class ActivityTracker {
             _lastStoredTime = 0;
             _lastValidGPSDistance = 0.0f;
             _lastValidGPSTime = 0;
+            _gpsGoodSignalSec = 0;
+            _waitingForStableReset = true;
 
 
             _inWave = false;
@@ -314,6 +320,8 @@ class ActivityTracker {
             _lastStoredTime = 0;
             _lastValidGPSDistance = 0.0f;
             _lastValidGPSTime = 0;
+            _gpsGoodSignalSec = 0;
+            _waitingForStableReset = true;
 
 
             _inWave = false;
@@ -388,31 +396,43 @@ class ActivityTracker {
         
         // --- GPS Jump Protection & Metric Updates ---
         var now = Time.now().value();
-        var deltaDist = (elapsedDistance - _lastValidGPSDistance).abs();
-        var deltaTime = now - _lastValidGPSTime;
         var isSaneUpdate = false;
 
         if (isGPSSignalingStable) {
-            if (deltaTime > 0) {
-                var avgSpeed = deltaDist / deltaTime;
-                // Sanity check: speed must be < 25m/s (90km/h) for both instant and average
-                if (avgSpeed < 25.0f && currentSpeed < 25.0f) {
-                    isSaneUpdate = true;
-                    if (_inWave) {
-                        _currentWaveDistance += deltaDist;
-                        if (currentSpeed > _currentWaveMaxSpeed) {
-                            _currentWaveMaxSpeed = currentSpeed;
+            if (_waitingForStableReset) {
+                _lastValidGPSDistance = elapsedDistance;
+                _lastValidGPSTime = now;
+                _lastStoredDistance = elapsedDistance;
+                _lastStoredTime = now;
+                _waitingForStableReset = false;
+                Log.info("Activity", "GPS baseline reset (Stable fix acquired).");
+            } else {
+                var deltaDist = (elapsedDistance - _lastValidGPSDistance).abs();
+                var deltaTime = now - _lastValidGPSTime;
+                
+                if (deltaTime > 0) {
+                    var avgSpeed = deltaDist / deltaTime;
+                    // Sanity check: speed must be < 25m/s (90km/h) for both instant and average
+                    if (avgSpeed < 25.0f && currentSpeed < 25.0f) {
+                        isSaneUpdate = true;
+                        if (_inWave) {
+                            _currentWaveDistance += deltaDist;
+                            if (currentSpeed > _currentWaveMaxSpeed) {
+                                _currentWaveMaxSpeed = currentSpeed;
+                            }
+                            if (currentSpeed > _maxWaveSpeed) {
+                                _maxWaveSpeed = currentSpeed;
+                            }
                         }
-                        if (currentSpeed > _maxWaveSpeed) {
-                            _maxWaveSpeed = currentSpeed;
-                        }
+                    } else {
+                        Log.info("Activity", Lang.format("GPS Jump suppressed: avg $1$m/s, inst $2$m/s", [avgSpeed.format("%.1f"), currentSpeed.format("%.1f")]));
                     }
-                } else {
-                    Log.info("Activity", Lang.format("GPS Jump suppressed: avg $1$m/s, inst $2$m/s", [avgSpeed.format("%.1f"), currentSpeed.format("%.1f")]));
                 }
+                _lastValidGPSDistance = elapsedDistance;
+                _lastValidGPSTime = now;
             }
-            _lastValidGPSDistance = elapsedDistance;
-            _lastValidGPSTime = now;
+        } else {
+            _waitingForStableReset = true;
         }
 
         // Time still: < 0.5km/h (approx 0.138 m/s)
