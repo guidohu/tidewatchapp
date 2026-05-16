@@ -107,22 +107,26 @@ class ActivityTracker {
                 // Native mapped fields for Surfing - Using general fields as workaround for 3rd party restrictions
                 _waveSessionField = _session.createField("Total Waves", 2, FitContributor.DATA_TYPE_UINT16, {
                     :mesgType => FitContributor.MESG_TYPE_SESSION, 
-                    :units => "waves"
+                    :units => "waves",
+                    :nativeNum => 199
                 });
 
                 _avgWaveSpeedField = _session.createField("Avg Wave Speed", 7, FitContributor.DATA_TYPE_FLOAT, {
                     :mesgType => FitContributor.MESG_TYPE_SESSION, 
-                    :units => "m/s"
+                    :units => "m/s",
+                    :nativeNum => 195
                 });
 
                 _maxWaveSpeedField = _session.createField("Max Wave Speed", 4, FitContributor.DATA_TYPE_FLOAT, {
                     :mesgType => FitContributor.MESG_TYPE_SESSION, 
-                    :units => "m/s"
+                    :units => "m/s",
+                    :nativeNum => 194
                 });
 
                 _totalWaveTimeField = _session.createField("Total Wave Time", 5, FitContributor.DATA_TYPE_UINT32, {
                     :mesgType => FitContributor.MESG_TYPE_SESSION, 
-                    :units => "s"
+                    :units => "s",
+                    :nativeNum => 198
                 });
 
                 _avgWaveLengthField = _session.createField("Avg Wave Length", 8, FitContributor.DATA_TYPE_FLOAT, {
@@ -132,17 +136,20 @@ class ActivityTracker {
 
                 _maxWaveLengthField = _session.createField("Max Wave Length", 6, FitContributor.DATA_TYPE_FLOAT, {
                     :mesgType => FitContributor.MESG_TYPE_SESSION, 
-                    :units => "m"
+                    :units => "m",
+                    :nativeNum => 196
                 });
 
                 _totalWaveDistanceField = _session.createField("Total Wave Distance", 9, FitContributor.DATA_TYPE_FLOAT, {
                     :mesgType => FitContributor.MESG_TYPE_SESSION, 
-                    :units => "m"
+                    :units => "m",
+                    :nativeNum => 197
                 });
 
                 _strokeSessionField = _session.createField("Total Strokes", 3, FitContributor.DATA_TYPE_UINT32, {
                     :mesgType => FitContributor.MESG_TYPE_SESSION, 
-                    :units => "strokes"
+                    :units => "strokes",
+                    :nativeNum => 41
                 });
             } catch (e) {
                 System.println("Failed to create session: " + e.getErrorMessage());
