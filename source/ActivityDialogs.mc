@@ -57,7 +57,7 @@ class StartActivityView extends WatchUi.View {
         dc.clear();
         
         // Top Half (Confirm - Positive)
-        var isGpsReady = _gpsAccuracy >= Position.QUALITY_USABLE;
+        var isGpsReady = _gpsAccuracy >= Position.QUALITY_GOOD;
         var confirmColor = isGpsReady ? Graphics.COLOR_DK_GREEN : Graphics.COLOR_DK_GRAY;
         
         dc.setColor(confirmColor, Graphics.COLOR_TRANSPARENT);
@@ -75,7 +75,7 @@ class StartActivityView extends WatchUi.View {
         // Middle Question & GPS Status
         dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_BLACK);
         var text = WatchUi.loadResource(Rez.Strings.DialogStartSurfing) as String;
-        var isGpsOk = _gpsAccuracy >= Position.QUALITY_USABLE;
+        var isGpsOk = _gpsAccuracy >= Position.QUALITY_GOOD;
         var gpsText = WatchUi.loadResource(isGpsOk ? Rez.Strings.DialogGpsOk : Rez.Strings.DialogNoGps) as String;
         var gpsColor = isGpsOk ? Graphics.COLOR_GREEN : Graphics.COLOR_RED;
         
@@ -141,7 +141,7 @@ class StartActivityDelegate extends WatchUi.BehaviorDelegate {
             accuracy = info.accuracy;
         }
 
-        if (accuracy < Position.QUALITY_USABLE) {
+        if (accuracy < Position.QUALITY_GOOD) {
             System.println("GPS not ready (Accuracy: " + accuracy + "), ignoring confirm.");
             return;
         }

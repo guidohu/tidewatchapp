@@ -44,6 +44,7 @@ class ActivityTracker {
     // Current Wave State
     private var _currentWaveMaxSpeed as Float = 0.0f;
     private var _currentWaveDistance as Float = 0.0f;
+    private var _potentialWaveMaxSpeed as Float = 0.0f;
 
     // New metrics
     private var _timeStillSec as Number = 0;
@@ -149,8 +150,7 @@ class ActivityTracker {
 
                 _strokeSessionField = _session.createField("Total Strokes", 3, FitContributor.DATA_TYPE_UINT32, {
                     :mesgType => FitContributor.MESG_TYPE_SESSION, 
-                    :units => "strokes",
-                    :nativeNum => 41
+                    :units => "strokes"
                 });
             } catch (e) {
                 System.println("Failed to create session: " + e.getErrorMessage());
@@ -260,6 +260,7 @@ class ActivityTracker {
             _totalWaveDistance = 0.0f;
             _currentWaveMaxSpeed = 0.0f;
             _currentWaveDistance = 0.0f;
+            _potentialWaveMaxSpeed = 0.0f;
             _lastStoredDistance = 0.0f;
             _lastStoredTime = 0;
             _lastValidGPSDistance = 0.0f;
@@ -392,7 +393,7 @@ class ActivityTracker {
         
         // GPS Reliability: Accuracy must be usable and signal stable for 5 seconds
         var currentAccuracy = info.currentLocationAccuracy != null ? info.currentLocationAccuracy : Position.QUALITY_NOT_AVAILABLE;
-        var isGPSSignalingStable = (currentAccuracy >= Position.QUALITY_USABLE) && (_gpsGoodSignalSec >= 5);
+        var isGPSSignalingStable = (currentAccuracy >= Position.QUALITY_GOOD) && (_gpsGoodSignalSec >= 5);
         
         // --- GPS Jump Protection & Metric Updates ---
         var now = Time.now().value();
@@ -444,6 +445,10 @@ class ActivityTracker {
         if (currentSpeed > speedThreshold && isGPSSignalingStable && isSaneUpdate) {
             _highSpeedTime++;
             
+            if (currentSpeed > _potentialWaveMaxSpeed) {
+                _potentialWaveMaxSpeed = currentSpeed;
+            }
+
             // Motion verification: A wave takeoff should have at least 250mG or 2.5m/s^2 of "energy"
             var motionThreshold = (mag != null && mag > 100) ? 250.0f : 2.5f;
             var motionVerified = (_maxMotionEnergyRecent > motionThreshold);
@@ -454,7 +459,10 @@ class ActivityTracker {
                 _waveCount++;
                 
                 // Reset current wave metrics
-                _currentWaveMaxSpeed = currentSpeed;
+                _currentWaveMaxSpeed = _potentialWaveMaxSpeed;
+                if (_currentWaveMaxSpeed > _maxWaveSpeed) {
+                    _maxWaveSpeed = _currentWaveMaxSpeed;
+                }
                 _currentWaveDistance = 0.0f; // Reset to 0, will accumulate from next stable sample
 
                 Log.info("Activity", "Wave started! Count: " + _waveCount + " (Motion Energy: " + _maxMotionEnergyRecent.format("%.1f") + ")");
@@ -475,6 +483,7 @@ class ActivityTracker {
             }
             _highSpeedTime = 0;
             _maxMotionEnergyRecent = 0.0f; // Reset motion peak while waiting for next potential wave
+            _potentialWaveMaxSpeed = 0.0f;
         }
 
         // Track metrics while in wave
@@ -489,7 +498,7 @@ class ActivityTracker {
         }
         
         // --- Path Tracking (Smarter Distance-Based Sampling) ---
-        if (currentAccuracy >= Position.QUALITY_USABLE && info.currentLocation != null) {
+        if (currentAccuracy >= Position.QUALITY_GOOD && info.currentLocation != null) {
             var distMoved = (elapsedDistance - _lastStoredDistance).abs();
             var timeSinceLast = now - _lastStoredTime;
 
@@ -518,9 +527,13 @@ class ActivityTracker {
         
         // --- Paddle Strokes ---
         var cadence = info.currentCadence != null ? info.currentCadence : 0;
-        
-        // Convert cadence (Strokes Per Minute) to strokes per second and multiply by 2 (for both arms)
-        _strokeAccumulator += (cadence.toFloat() / 60.0f) * 2.0f;
+        if (cadence > 0) {
+            // Convert cadence (Strokes Per Minute) to strokes per second and multiply by 2 (for both arms)
+            _strokeAccumulator += (cadence.toFloat() / 60.0f) * 2.0f;
+        } else if (!_inWave && currentSpeed > 0.4f && currentSpeed < speedThreshold) {
+            // Estimate strokes based on paddling time. Roughly 1 stroke every 2 seconds (0.5 per second).
+            _strokeAccumulator += 0.5f;
+        }
         _paddleStrokes = _strokeAccumulator.toNumber();
         
         // --- FIT Updates ---
@@ -568,7 +581,7 @@ class ActivityTracker {
 
     function onPosition(info as Position.Info) as Void {
         _lastGPSAccuracy = info.accuracy;
-        if (_lastGPSAccuracy >= Position.QUALITY_USABLE) {
+        if (_lastGPSAccuracy >= Position.QUALITY_GOOD) {
             _gpsGoodSignalSec++;
         } else {
             _gpsGoodSignalSec = 0;
