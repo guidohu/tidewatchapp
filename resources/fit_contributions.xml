@@ -12,7 +12,7 @@
                   dataLabel="@Strings.FitMaxWaveSpeed" 
                   sortOrder="1" 
                   precision="2" 
-                  unitLabel="@Strings.UnitMs" />
+                  unitLabel="@Strings.UnitKmh" />
 
         <fitField id="6" 
                   displayInActivitySummary="true"
@@ -33,7 +33,7 @@
                   dataLabel="@Strings.FitAvgWaveSpeed" 
                   sortOrder="4" 
                   precision="2" 
-                  unitLabel="@Strings.UnitMs" />
+                  unitLabel="@Strings.UnitKmh" />
 
         <fitField id="8" 
                   displayInActivitySummary="true"
@@ -51,6 +51,10 @@
 
         <fitField id="0" dataLabel="@Strings.FitWavesSurfed" sortOrder="7" unitLabel="@Strings.UnitWaves" />
         <fitField id="1" dataLabel="@Strings.FitPaddleStrokes" sortOrder="8" unitLabel="@Strings.UnitStrokes" />
-        <fitField id="3" dataLabel="@Strings.FitTotalStrokes" sortOrder="9" unitLabel="@Strings.UnitStrokes" />
+        <fitField id="3" 
+                  displayInActivitySummary="true"
+                  dataLabel="@Strings.FitTotalStrokes" 
+                  sortOrder="9" 
+                  unitLabel="@Strings.UnitStrokes" />
     </fitContributions>
 </resources>

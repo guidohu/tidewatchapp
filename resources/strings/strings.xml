@@ -78,6 +78,7 @@
     <!-- FIT Units -->
     <string id="UnitWaves">waves</string>
     <string id="UnitMs">m/s</string>
+    <string id="UnitKmh">km/h</string>
     <string id="UnitMetersShort">m</string>
     <string id="UnitSecondsShort">s</string>
     <string id="UnitStrokes">strokes</string>

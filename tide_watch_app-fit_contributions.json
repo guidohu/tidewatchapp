@@ -17,7 +17,7 @@
     "lap-visible" : false,
     "chart-title-key" : null,
     "label-key" : "FitMaxWaveSpeed",
-    "unit-label-key" : "UnitMs",
+    "unit-label-key" : "UnitKmh",
     "sort-order" : 1,
     "precision" : 2,
     "fill-color" : null
@@ -50,7 +50,7 @@
     "lap-visible" : false,
     "chart-title-key" : null,
     "label-key" : "FitAvgWaveSpeed",
-    "unit-label-key" : "UnitMs",
+    "unit-label-key" : "UnitKmh",
     "sort-order" : 4,
     "precision" : 2,
     "fill-color" : null
@@ -101,7 +101,7 @@
   }, {
     "id" : 3,
     "chart-visible" : false,
-    "activity-visible" : false,
+    "activity-visible" : true,
     "lap-visible" : false,
     "chart-title-key" : null,
     "label-key" : "FitTotalStrokes",
@@ -115,7 +115,7 @@
       "FitTotalWaves" : "Total Waves",
       "UnitWaves" : "waves",
       "FitMaxWaveSpeed" : "Max Wave Speed",
-      "UnitMs" : "m/s",
+      "UnitKmh" : "km/h",
       "FitLongestWave" : "Longest Wave",
       "UnitMetersShort" : "m",
       "FitTotalWaveTime" : "Total Wave Time",

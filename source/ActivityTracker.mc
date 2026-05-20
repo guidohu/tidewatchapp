@@ -115,13 +115,13 @@ class ActivityTracker {
 
                 _avgWaveSpeedField = _session.createField("Avg Wave Speed", 7, FitContributor.DATA_TYPE_FLOAT, {
                     :mesgType => FitContributor.MESG_TYPE_SESSION, 
-                    :units => "m/s",
+                    :units => "km/h",
                     :nativeNum => 195
                 });
 
                 _maxWaveSpeedField = _session.createField("Max Wave Speed", 4, FitContributor.DATA_TYPE_FLOAT, {
                     :mesgType => FitContributor.MESG_TYPE_SESSION, 
-                    :units => "m/s",
+                    :units => "km/h",
                     :nativeNum => 194
                 });
 
@@ -613,7 +613,7 @@ class ActivityTracker {
             _strokeSessionField.setData(_paddleStrokes.toNumber());
         }
         if (_maxWaveSpeedField != null) {
-            _maxWaveSpeedField.setData(_maxWaveSpeed.toFloat());
+            _maxWaveSpeedField.setData((_maxWaveSpeed * 3.6f).toFloat());
         }
         if (_totalWaveTimeField != null) {
             _totalWaveTimeField.setData(_totalWaveTime.toNumber());
@@ -628,7 +628,7 @@ class ActivityTracker {
         // Calculated Averages (Session level)
         if (_avgWaveSpeedField != null && _totalWaveTime > 0) {
             var avgSpeed = dynamicWaveDistance / _totalWaveTime.toFloat();
-            _avgWaveSpeedField.setData(avgSpeed.toFloat());
+            _avgWaveSpeedField.setData((avgSpeed * 3.6f).toFloat());
         }
         if (_avgWaveLengthField != null && _waveCount > 0) {
             var avgLength = dynamicWaveDistance / _waveCount.toFloat();
