@@ -1,6 +1,7 @@
 import Toybox.Application;
 import Toybox.Background;
 import Toybox.Lang;
+import Toybox.Math;
 import Toybox.System;
 import Toybox.Time;
 import Toybox.Time.Gregorian;
@@ -81,6 +82,8 @@ class TideWatchApp extends Application.AppBase {
         // Store AppId for background service since Rez isn't accessible there
         Application.Storage.setValue("AppId", WatchUi.loadResource(Rez.Strings.AppId));
 
+        getOrCreateAnonymousIdentifier();
+
         // Trigger foreground sync on startup
         triggerForegroundSync();
 
@@ -90,6 +93,31 @@ class TideWatchApp extends Application.AppBase {
         activityTracker = new ActivityTracker();
         mainView = new TideWatchView();
         return [ mainView, new TideWatchDelegate(mainView) ] as [WatchUi.Views, WatchUi.InputDelegates];
+    }
+
+    /**
+     * Retrieves or generates a pseudo-random anonymous user identifier.
+     */
+    function getOrCreateAnonymousIdentifier() {
+        var userId = Application.Storage.getValue("anonymous_user_id");
+        
+        if (userId == null) {
+            var chars = ["0","1","2","3","4","5","6","7","8","9","a","b","c","d","e","f"];
+            var uuid = "";
+            
+            // Generate a 32-character hex string (UUIDv4 style: 8-4-4-4-12)
+            for (var i = 0; i < 32; i++) {
+                if (i == 8 || i == 12 || i == 16 || i == 20) {
+                    uuid += "-";
+                }
+                var idx = Math.rand() % 16;
+                uuid += chars[idx];
+            }
+            
+            userId = uuid;
+            Application.Storage.setValue("anonymous_user_id", userId);
+        }
+        return userId;
     }
 
     function onBackgroundData(data as Application.PersistableType) as Void {

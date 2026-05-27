@@ -356,6 +356,13 @@ class ActivityTracker {
         return 0.0f;
     }
 
+    function hasValidGPS() as Boolean {
+        var info = Activity.getActivityInfo();
+        if (info == null) { return false; }
+        var acc = info.currentLocationAccuracy;
+        return acc != null && acc >= Position.QUALITY_USABLE;
+    }
+
     function onTimerTick() as Void {
         if (!_isRecording) { return; }
         
@@ -393,6 +400,9 @@ class ActivityTracker {
         
         // GPS Reliability: Accuracy must be usable and signal stable for 5 seconds
         var currentAccuracy = info.currentLocationAccuracy != null ? info.currentLocationAccuracy : Position.QUALITY_NOT_AVAILABLE;
+        if (currentAccuracy < Position.QUALITY_GOOD) {
+            _gpsGoodSignalSec = 0;
+        }
         var isGPSSignalingStable = (currentAccuracy >= Position.QUALITY_GOOD) && (_gpsGoodSignalSec >= 5);
         
         // --- GPS Jump Protection & Metric Updates ---
@@ -540,41 +550,50 @@ class ActivityTracker {
         updateFitFields();
 
         // --- Adaptive GPS Logic ---
+        var exitLull = false;
+        var exitReason = "";
+        
         if (sensorInfo != null && sensorInfo.accel != null) {
             var accel = sensorInfo.accel as Array<Number>;
             mag = Math.sqrt(accel[0]*accel[0] + accel[1]*accel[1] + accel[2]*accel[2]).toFloat();
             
-            // Detect burst (take-off): acceleration magnitude > 1.5G (approx 15000 in raw if unit is milli-G)
-            // Monkey C raw accel units depend on device, but often it's milli-G. 
-            // 1G = 1000 or 9.8 depending on API version. 
-            // We'll use a relative increase check.
+            // Detect burst (take-off): acceleration magnitude > 1.5G
             if (_lastAccelMagnitude > 0 && (mag / _lastAccelMagnitude) > 1.5f && _isLullMode) {
-                Log.info("Activity", "Movement burst detected! Ramping up GPS.");
-                _isLullMode = false;
-                Position.enableLocationEvents(Position.LOCATION_CONTINUOUS, method(:onPosition));
+                exitLull = true;
+                exitReason = "Movement burst (accel)";
             }
             _lastAccelMagnitude = mag;
         }
 
-        // Enter lull mode if speed is low for 2 minutes
-        if (!_isLullMode && currentSpeed < 0.5f) {
-            if (_lullStartTime == 0) {
-                _lullStartTime = Time.now().value();
-            } else if (Time.now().value() - _lullStartTime > 120) {
-                Log.info("Activity", "Entering GPS Lull Mode to save battery.");
-                _isLullMode = true;
-                // Use EXTENDED if available (every 5-10s), otherwise keep continuous but we've logged it
-                if (Position has :LOCATION_EXTENDED) {
-                    Position.enableLocationEvents(Position.LOCATION_EXTENDED, method(:onPosition));
-                } else {
-                    // Fallback: stay continuous but we could potentially lower frequency if API allowed
-                }
+        if (_isLullMode) {
+            if (currentAccuracy < Position.QUALITY_USABLE) {
+                exitLull = true;
+                exitReason = "GPS signal lost/poor";
+            } else if (currentSpeed >= 1.0f) {
+                exitLull = true;
+                exitReason = "Movement detected (speed)";
             }
-        } else if (currentSpeed >= 1.0f) {
-            _lullStartTime = 0;
-            if (_isLullMode) {
+
+            if (exitLull) {
+                Log.info("Activity", "Leaving GPS Lull Mode (" + exitReason + "). Ramping up GPS.");
                 _isLullMode = false;
+                _lullStartTime = 0;
                 Position.enableLocationEvents(Position.LOCATION_CONTINUOUS, method(:onPosition));
+            }
+        } else {
+            // Enter lull mode if speed is low for 2 minutes AND we have usable GPS signal
+            if (currentSpeed < 0.5f && currentAccuracy >= Position.QUALITY_USABLE) {
+                if (_lullStartTime == 0) {
+                    _lullStartTime = Time.now().value();
+                } else if (Time.now().value() - _lullStartTime > 120) {
+                    Log.info("Activity", "Entering GPS Lull Mode to save battery.");
+                    _isLullMode = true;
+                    if (Position has :LOCATION_EXTENDED) {
+                        Position.enableLocationEvents(Position.LOCATION_EXTENDED, method(:onPosition));
+                    }
+                }
+            } else {
+                _lullStartTime = 0;
             }
         }
     }

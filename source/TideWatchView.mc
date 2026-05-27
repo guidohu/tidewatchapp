@@ -537,7 +537,10 @@ class TideWatchView extends WatchUi.View {
     }
 
     function renderFooter(dc as Dc, height as Number, now as Number) as Void {
-        if (mSpotName != null) {
+        var tracker = getApp().activityTracker;
+        if (tracker != null && tracker.isRecording() && !tracker.hasValidGPS()) {
+            drawCenteredText(dc, height * 0.93, Graphics.FONT_XTINY, "No GPS", Graphics.COLOR_RED);
+        } else if (mSpotName != null) {
             var isStale = (now - mLastDataUpdatedAt > STALE_DATA_THRESHOLD_SEC);
             drawCenteredText(dc, height * 0.93, Graphics.FONT_XTINY, mSpotName as String, isStale ? Graphics.COLOR_YELLOW : mBaseColor);
         }
@@ -546,15 +549,19 @@ class TideWatchView extends WatchUi.View {
     function renderActivityRing(dc as Dc) as Void {
         var tracker = getApp().activityTracker;
         if (tracker != null && tracker.isRecording()) {
-            dc.setColor(Graphics.COLOR_GREEN, Graphics.COLOR_TRANSPARENT);
-            dc.setPenWidth(2);
             var width = dc.getWidth();
             var height = dc.getHeight();
+            var scale = width / SCREEN_WIDTH_REFERENCE;
+            var penWidth = (4 * scale).toNumber();
+            if (penWidth < 2) { penWidth = 2; }
+            
+            dc.setColor(tracker.hasValidGPS() ? Graphics.COLOR_GREEN : Graphics.COLOR_RED, Graphics.COLOR_TRANSPARENT);
+            dc.setPenWidth(penWidth);
             
             if (System.getDeviceSettings().screenShape == System.SCREEN_SHAPE_RECTANGLE) {
-                dc.drawRectangle(0, 0, width, height);
+                dc.drawRectangle(penWidth / 2, penWidth / 2, width - penWidth, height - penWidth);
             } else {
-                dc.drawCircle(width / 2, height / 2, width / 2 - 1);
+                dc.drawCircle(width / 2, height / 2, width / 2 - penWidth / 2 - 1);
             }
         }
     }
