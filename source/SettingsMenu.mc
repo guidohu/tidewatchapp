@@ -33,7 +33,8 @@ class TideWatchSettingsMenu extends WatchUi.Menu2 {
 
         addItem(new WatchUi.MenuItem(loadStr(Rez.Strings.UpdateLocationTitle), subLabel, "UpdateLocation", {}));
 
-        var tideDatum = Application.Properties.getValue("TideDatum") as Number;
+        var tideDatumVal = Application.Properties.getValue("TideDatum");
+        var tideDatum = (tideDatumVal != null) ? tideDatumVal as Number : DataKeys.DATUM_STATION_DEFAULT;
         var datumStr = "";
         if (tideDatum == DataKeys.DATUM_MSL) { datumStr = loadStr(Rez.Strings.DatumMSL); }
         else if (tideDatum == DataKeys.DATUM_MLLW) { datumStr = loadStr(Rez.Strings.DatumMLLW); }
@@ -41,35 +42,45 @@ class TideWatchSettingsMenu extends WatchUi.Menu2 {
         else { datumStr = loadStr(Rez.Strings.DatumStationDefault); }
         addItem(new WatchUi.MenuItem(loadStr(Rez.Strings.TideDatumTitle), datumStr, "TideDatum", {}));
 
-        var tideUnit = Application.Properties.getValue("TideUnits") as Number;
+        var tideUnitVal = Application.Properties.getValue("TideUnits");
+        var tideUnit = (tideUnitVal != null) ? tideUnitVal as Number : DataKeys.SETTING_UNIT_METERS;
         addItem(new WatchUi.MenuItem(loadStr(Rez.Strings.TideUnitsTitle), getUnitName(tideUnit), "TideUnits", {}));
 
-        var swellUnit = Application.Properties.getValue("SwellUnits") as Number;
+        var swellUnitVal = Application.Properties.getValue("SwellUnits");
+        var swellUnit = (swellUnitVal != null) ? swellUnitVal as Number : DataKeys.SETTING_UNIT_FEET;
         addItem(new WatchUi.MenuItem(loadStr(Rez.Strings.SwellUnitsTitle), getUnitName(swellUnit), "SwellUnits", {}));
 
-        var distUnit = Application.Properties.getValue("DistanceUnits") as Number;
+        var distUnitVal = Application.Properties.getValue("DistanceUnits");
+        var distUnit = (distUnitVal != null) ? distUnitVal as Number : DataKeys.SETTING_DISTANCE_UNIT_KM;
         var distUnitStr = distUnit == DataKeys.SETTING_DISTANCE_UNIT_MILES ? loadStr(Rez.Strings.UnitsMiles) : loadStr(Rez.Strings.UnitsKilometers);
         addItem(new WatchUi.MenuItem(loadStr(Rez.Strings.DistanceUnitsTitle), distUnitStr, "DistanceUnits", {}));
 
-        var showSwell = Application.Properties.getValue("ShowSwellGraph") as Boolean;
+        var showSwellVal = Application.Properties.getValue("ShowSwellGraph");
+        var showSwell = (showSwellVal != null) ? showSwellVal as Boolean : false;
         addItem(new WatchUi.ToggleMenuItem(loadStr(Rez.Strings.ShowSwellGraphTitle), null, "ShowSwellGraph", showSwell, {}));
 
-        var showSummary = Application.Properties.getValue("ShowSwellSummary") as Boolean;
+        var showSummaryVal = Application.Properties.getValue("ShowSwellSummary");
+        var showSummary = (showSummaryVal != null) ? showSummaryVal as Boolean : false;
         addItem(new WatchUi.ToggleMenuItem(loadStr(Rez.Strings.ShowSwellSummaryTitle), null, "ShowSwellSummary", showSummary, {}));
 
-        var showDate = Application.Properties.getValue("ShowDate") as Boolean;
+        var showDateVal = Application.Properties.getValue("ShowDate");
+        var showDate = (showDateVal != null) ? showDateVal as Boolean : true;
         addItem(new WatchUi.ToggleMenuItem(loadStr(Rez.Strings.ShowDateTitle), null, "ShowDate", showDate, {}));
 
-        var timeFormat = Application.Properties.getValue("TimeFormat") as Number;
+        var timeFormatVal = Application.Properties.getValue("TimeFormat");
+        var timeFormat = (timeFormatVal != null) ? timeFormatVal as Number : DataKeys.TIME_FORMAT_24_H;
         addItem(new WatchUi.MenuItem(loadStr(Rez.Strings.TimeFormatTitle), getTimeFormatName(timeFormat), "TimeFormat", {}));
 
-        var baseColor = Application.Properties.getValue("BaseColor") as Number;
+        var baseColorVal = Application.Properties.getValue("BaseColor");
+        var baseColor = (baseColorVal != null) ? baseColorVal as Number : DataKeys.SETTING_COLOR_WHITE;
         addItem(new WatchUi.MenuItem(loadStr(Rez.Strings.BaseColorTitle), getColorName(baseColor), "BaseColor", {}));
 
-        var tideColor = Application.Properties.getValue("TideColor") as Number;
+        var tideColorVal = Application.Properties.getValue("TideColor");
+        var tideColor = (tideColorVal != null) ? tideColorVal as Number : 0;
         addItem(new WatchUi.MenuItem(loadStr(Rez.Strings.TideColorTitle), getColorName(tideColor), "TideColor", {}));
 
-        var graphColor = Application.Properties.getValue("GraphColor") as Number;
+        var graphColorVal = Application.Properties.getValue("GraphColor");
+        var graphColor = (graphColorVal != null) ? graphColorVal as Number : 0;
         addItem(new WatchUi.MenuItem(loadStr(Rez.Strings.GraphColorTitle), getColorName(graphColor), "GraphColor", {}));
 
         var apiKeyStr = "Not Set";

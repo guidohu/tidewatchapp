@@ -56,7 +56,8 @@ class SyncEngine {
             return;
         }
 
-        var datumProp = Application.Properties.getValue("TideDatum") as Number;
+        var datumPropVal = Application.Properties.getValue("TideDatum");
+        var datumProp = (datumPropVal != null) ? datumPropVal as Number : 0; // Default to 0 (Station Default)
         if (datumProp == DataKeys.DATUM_MSL) { mDatumStr = "MSL"; }
         else if (datumProp == DataKeys.DATUM_MLLW) { mDatumStr = "MLLW"; }
         else if (datumProp == DataKeys.DATUM_LAT) { mDatumStr = "LAT"; }

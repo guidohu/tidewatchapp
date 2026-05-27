@@ -84,9 +84,12 @@ class TideWatchView extends WatchUi.View {
     }
 
     function loadSettings() as Void {
-        var tideUnits = Application.Properties.getValue("TideUnits");
-        var swellUnits = Application.Properties.getValue("SwellUnits");
+        var tideUnitsVal = Application.Properties.getValue("TideUnits");
+        var tideUnits = (tideUnitsVal != null) ? tideUnitsVal as Number : 0; // Default to 0 (Meters)
         mTargetTideUnit = (tideUnits == DataKeys.SETTING_UNIT_FEET) ? DataKeys.UNIT_FEET : DataKeys.UNIT_METER;
+
+        var swellUnitsVal = Application.Properties.getValue("SwellUnits");
+        var swellUnits = (swellUnitsVal != null) ? swellUnitsVal as Number : 1; // Default to 1 (Feet)
         mTargetSwellUnit = (swellUnits == DataKeys.SETTING_UNIT_FEET) ? DataKeys.UNIT_FEET : DataKeys.UNIT_METER;
         
         var timeFormatVal = Application.Properties.getValue("TimeFormat");
@@ -98,12 +101,20 @@ class TideWatchView extends WatchUi.View {
         var showDate = Application.Properties.getValue("ShowDate");
         mShowDate = (showDate != null && showDate == true);
         
-        mShowSwellGraph = Application.Properties.getValue("ShowSwellGraph");
-        mShowSwellSummary = Application.Properties.getValue("ShowSwellSummary");
+        var showSwellGraphVal = Application.Properties.getValue("ShowSwellGraph");
+        mShowSwellGraph = (showSwellGraphVal != null) ? showSwellGraphVal as Boolean : false;
+
+        var showSwellSummaryVal = Application.Properties.getValue("ShowSwellSummary");
+        mShowSwellSummary = (showSwellSummaryVal != null) ? showSwellSummaryVal as Boolean : false;
         
-        mTideColor = getColorFromIndex(Application.Properties.getValue("TideColor"));
-        mGraphColor = getColorFromIndex(Application.Properties.getValue("GraphColor"));
-        mBaseColor = getColorFromIndex(Application.Properties.getValue("BaseColor"));
+        var tideColorVal = Application.Properties.getValue("TideColor");
+        mTideColor = getColorFromIndex(tideColorVal != null ? tideColorVal as Number : 0);
+
+        var graphColorVal = Application.Properties.getValue("GraphColor");
+        mGraphColor = getColorFromIndex(graphColorVal != null ? graphColorVal as Number : 0);
+
+        var baseColorVal = Application.Properties.getValue("BaseColor");
+        mBaseColor = getColorFromIndex(baseColorVal != null ? baseColorVal as Number : 4);
 
         var gpsLat = Application.Properties.getValue("GpsLat");
         var gpsLon = Application.Properties.getValue("GpsLon");
