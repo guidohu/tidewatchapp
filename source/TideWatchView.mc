@@ -522,7 +522,15 @@ class TideWatchView extends WatchUi.View {
 
     function renderGraphToBuffer(w as Number, h as Number) as Void {
         if (mGraphBuffer == null) {
-            mGraphBuffer = new Graphics.BufferedBitmap({ :width => w, :height => h });
+            var options = { :width => w, :height => h };
+            if (Graphics has :createBufferedBitmap) {
+                var ref = Graphics.createBufferedBitmap(options);
+                if (ref != null) {
+                    mGraphBuffer = ref.get() as Graphics.BufferedBitmap;
+                }
+            } else {
+                mGraphBuffer = new Graphics.BufferedBitmap(options);
+            }
         }
         var bdc = mGraphBuffer.getDc();
         bdc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_BLACK);

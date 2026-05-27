@@ -41,13 +41,16 @@ class TideWatchDelegate extends WatchUi.BehaviorDelegate {
 
     function onSwipe(swipeEvent as WatchUi.SwipeEvent) as Boolean {
         if (checkWake()) { return true; }
-        if (swipeEvent.getDirection() == WatchUi.SWIPE_DOWN) {
+        var dir = swipeEvent.getDirection();
+        if (dir == WatchUi.SWIPE_DOWN) {
             var app = getApp();
             if (app.activityTracker != null && app.activityTracker.isActivityActive()) {
                 var view = new StatsView();
                 WatchUi.pushView(view, new StatsDelegate(view), WatchUi.SLIDE_DOWN);
                 return true;
             }
+        } else if (dir == WatchUi.SWIPE_RIGHT) {
+            return onMenu();
         }
         return false;
     }
