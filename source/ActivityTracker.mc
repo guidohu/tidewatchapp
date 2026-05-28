@@ -57,11 +57,6 @@ class ActivityTracker {
     private var _avgHR as Number? = null;
     private var _maxHR as Number? = null;
 
-    // Adaptive GPS
-    private var _isLullMode as Boolean = false;
-    private var _lullStartTime as Number = 0;
-    private var _lastAccelMagnitude as Float = 0.0f;
-
     // Smarter Wave Detection State
     private var _lastGPSAccuracy as Number = Position.QUALITY_NOT_AVAILABLE;
     private var _gpsGoodSignalSec as Number = 0;
@@ -165,7 +160,6 @@ class ActivityTracker {
             _timer.start(method(:onTimerTick), 1000, true);
             
             // Explicitly enable GPS to ensure location and speed data are available
-            _isLullMode = false;
             Position.enableLocationEvents(Position.LOCATION_CONTINUOUS, method(:onPosition));
             
             _isRecording = true;
@@ -373,7 +367,7 @@ class ActivityTracker {
         if (_heartbeatCount >= 60) {
             _heartbeatCount = 0;
             var stats = System.getSystemStats();
-            Log.info("Activity", Lang.format("Heartbeat - Mem: $1$/$2$, GPS: $3$, Lull: $4$", [stats.usedMemory, stats.totalMemory, info.currentLocationAccuracy, _isLullMode]));
+            Log.info("Activity", Lang.format("Heartbeat - Mem: $1$/$2$, GPS: $3$", [stats.usedMemory, stats.totalMemory, info.currentLocationAccuracy]));
         }
         
         // --- Motion Energy Calculation ---
@@ -548,54 +542,6 @@ class ActivityTracker {
         
         // --- FIT Updates ---
         updateFitFields();
-
-        // --- Adaptive GPS Logic ---
-        var exitLull = false;
-        var exitReason = "";
-        
-        if (sensorInfo != null && sensorInfo.accel != null) {
-            var accel = sensorInfo.accel as Array<Number>;
-            mag = Math.sqrt(accel[0]*accel[0] + accel[1]*accel[1] + accel[2]*accel[2]).toFloat();
-            
-            // Detect burst (take-off): acceleration magnitude > 1.5G
-            if (_lastAccelMagnitude > 0 && (mag / _lastAccelMagnitude) > 1.5f && _isLullMode) {
-                exitLull = true;
-                exitReason = "Movement burst (accel)";
-            }
-            _lastAccelMagnitude = mag;
-        }
-
-        if (_isLullMode) {
-            if (currentAccuracy < Position.QUALITY_USABLE) {
-                exitLull = true;
-                exitReason = "GPS signal lost/poor";
-            } else if (currentSpeed >= 1.0f) {
-                exitLull = true;
-                exitReason = "Movement detected (speed)";
-            }
-
-            if (exitLull) {
-                Log.info("Activity", "Leaving GPS Lull Mode (" + exitReason + "). Ramping up GPS.");
-                _isLullMode = false;
-                _lullStartTime = 0;
-                Position.enableLocationEvents(Position.LOCATION_CONTINUOUS, method(:onPosition));
-            }
-        } else {
-            // Enter lull mode if speed is low for 2 minutes AND we have usable GPS signal
-            if (currentSpeed < 0.5f && currentAccuracy >= Position.QUALITY_USABLE) {
-                if (_lullStartTime == 0) {
-                    _lullStartTime = Time.now().value();
-                } else if (Time.now().value() - _lullStartTime > 120) {
-                    Log.info("Activity", "Entering GPS Lull Mode to save battery.");
-                    _isLullMode = true;
-                    if (Position has :LOCATION_EXTENDED) {
-                        Position.enableLocationEvents(Position.LOCATION_EXTENDED, method(:onPosition));
-                    }
-                }
-            } else {
-                _lullStartTime = 0;
-            }
-        }
     }
 
     function onPosition(info as Position.Info) as Void {
