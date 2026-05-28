@@ -49,7 +49,7 @@ class TideWatchDelegate extends WatchUi.BehaviorDelegate {
                 WatchUi.pushView(view, new StatsDelegate(view), WatchUi.SLIDE_DOWN);
                 return true;
             }
-        } else if (dir == WatchUi.SWIPE_RIGHT) {
+        } else if (dir == WatchUi.SWIPE_LEFT) {
             return onMenu();
         }
         return false;
