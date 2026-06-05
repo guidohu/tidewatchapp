@@ -8,6 +8,8 @@ import Toybox.Timer;
 class StartActivityView extends WatchUi.View {
     private var _gpsAccuracy as Number = Position.QUALITY_NOT_AVAILABLE;
     private var _timer as Timer.Timer?;
+    private var _gpsLostSignalSec as Number = 0;
+    private var _gpsRestarting as Boolean = false;
 
     function initialize() {
         View.initialize();
@@ -21,6 +23,8 @@ class StartActivityView extends WatchUi.View {
 
     function onShow() as Void {
         Position.enableLocationEvents(Position.LOCATION_CONTINUOUS, method(:onPosition));
+        _gpsLostSignalSec = 0;
+        _gpsRestarting = false;
         if (_timer != null) {
             _timer.start(method(:onTimerTick), 1000, true);
         }
@@ -34,13 +38,36 @@ class StartActivityView extends WatchUi.View {
         if (app.activityTracker != null && !app.activityTracker.isRecording()) {
             Position.enableLocationEvents(Position.LOCATION_DISABLE, null);
         }
+        _gpsLostSignalSec = 0;
+        _gpsRestarting = false;
     }
 
     function onTimerTick() as Void {
-        var info = Position.getInfo();
-        if (info != null && info.accuracy != null) {
-            _gpsAccuracy = info.accuracy;
+        if (_gpsRestarting) {
+            Position.enableLocationEvents(Position.LOCATION_CONTINUOUS, method(:onPosition));
+            _gpsRestarting = false;
+            _gpsLostSignalSec = 0;
+            System.println("StartActivityView: GPS events re-enabled.");
         }
+
+        var info = Position.getInfo();
+        var accuracy = Position.QUALITY_NOT_AVAILABLE;
+        if (info != null && info.accuracy != null) {
+            accuracy = info.accuracy;
+            _gpsAccuracy = accuracy;
+        }
+
+        if (accuracy < Position.QUALITY_USABLE) {
+            _gpsLostSignalSec++;
+            if (_gpsLostSignalSec >= 20) {
+                System.println("StartActivityView: GPS signal lost for 20s. Restarting GPS events...");
+                Position.enableLocationEvents(Position.LOCATION_DISABLE, null);
+                _gpsRestarting = true;
+            }
+        } else {
+            _gpsLostSignalSec = 0;
+        }
+
         WatchUi.requestUpdate();
     }
 
