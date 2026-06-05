@@ -568,8 +568,9 @@ class ActivityTracker {
             // Convert cadence (Strokes Per Minute) to strokes per second and multiply by 2 (for both arms)
             _strokeAccumulator += (cadence.toFloat() / 60.0f) * 2.0f;
         } else if (!_inWave && currentSpeed > 0.4f && currentSpeed < speedThreshold) {
-            // Estimate strokes based on paddling time. Roughly 1 stroke every 2 seconds (0.5 per second).
-            _strokeAccumulator += 0.5f;
+            // Estimate strokes based on speed. Assumes an average Distance Per Stroke (DPS) of 0.9 meters.
+            // Stroke frequency = speed / DPS.
+            _strokeAccumulator += (currentSpeed / 0.9f);
         }
         _paddleStrokes = _strokeAccumulator.toNumber();
         
