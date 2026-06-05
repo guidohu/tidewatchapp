@@ -2,12 +2,12 @@ import Toybox.WatchUi;
 import Toybox.System;
 import Toybox.Lang;
 
-class TideWatchDelegate extends WatchUi.BehaviorDelegate {
+class TideWatchDelegate extends WatchUi.InputDelegate {
 
     private var _view as TideWatchView;
 
     function initialize(view as TideWatchView) {
-        BehaviorDelegate.initialize();
+        InputDelegate.initialize();
         _view = view;
     }
 
@@ -26,21 +26,30 @@ class TideWatchDelegate extends WatchUi.BehaviorDelegate {
         
         var key = keyEvent.getKey();
         if (key == WatchUi.KEY_ENTER || key == WatchUi.KEY_START) {
-            return onSelect();
+            return handleActionStartStop();
         } else if (key == WatchUi.KEY_ESC) {
-            return onBack();
+            return handleActionBack();
+        } else if (key == WatchUi.KEY_MENU) {
+            return handleActionMenu();
         }
         return false;
     }
 
-    function onMenu() as Boolean {
+    function onTap(clickEvent as WatchUi.ClickEvent) as Boolean {
         if (checkWake()) { return true; }
-        WatchUi.pushView(new TideWatchSettingsMenu(), new TideWatchSettingsMenuDelegate(), WatchUi.SLIDE_UP);
-        return true;
+        
+        var app = getApp();
+        if (app.activityTracker != null && app.activityTracker.isRecording()) {
+            System.println("TideWatchDelegate: Ignoring onTap because activity is recording.");
+            return true; // Consume the event, ignoring it
+        }
+        
+        return handleActionStartStop();
     }
 
     function onSwipe(swipeEvent as WatchUi.SwipeEvent) as Boolean {
         if (checkWake()) { return true; }
+        
         var dir = swipeEvent.getDirection();
         if (dir == WatchUi.SWIPE_DOWN) {
             var app = getApp();
@@ -50,13 +59,14 @@ class TideWatchDelegate extends WatchUi.BehaviorDelegate {
                 return true;
             }
         } else if (dir == WatchUi.SWIPE_LEFT) {
-            return onMenu();
+            return handleActionMenu();
+        } else if (dir == WatchUi.SWIPE_RIGHT) {
+            return handleActionBack();
         }
         return false;
     }
 
-    function onSelect() as Boolean {
-        if (checkWake()) { return true; }
+    function handleActionStartStop() as Boolean {
         var app = getApp();
         if (app.activityTracker != null) {
             if (app.activityTracker.isRecording()) {
@@ -71,8 +81,12 @@ class TideWatchDelegate extends WatchUi.BehaviorDelegate {
         return false;
     }
 
-    function onBack() as Boolean {
-        if (checkWake()) { return true; }
+    function handleActionMenu() as Boolean {
+        WatchUi.pushView(new TideWatchSettingsMenu(), new TideWatchSettingsMenuDelegate(), WatchUi.SLIDE_UP);
+        return true;
+    }
+
+    function handleActionBack() as Boolean {
         var app = getApp();
         if (app.activityTracker != null) {
             if (app.activityTracker.isRecording()) {
@@ -81,6 +95,6 @@ class TideWatchDelegate extends WatchUi.BehaviorDelegate {
                 return true;
             }
         }
-        return false; // Close app
+        return false; // Let the OS close the app
     }
 }

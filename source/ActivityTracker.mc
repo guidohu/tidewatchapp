@@ -67,7 +67,7 @@ class ActivityTracker {
     private var _lastValidGPSTime as Number = 0;
     private var _waitingForStableReset as Boolean = true;
     private var _gpsLostSignalSec as Number = 0;
-    private var _gpsRestarting as Boolean = false;
+    private var _gpsRestartTimer as Number = 0;
 
 
 
@@ -177,7 +177,7 @@ class ActivityTracker {
             _gpsGoodSignalSec = 0;
             _waitingForStableReset = true;
             _gpsLostSignalSec = 0;
-            _gpsRestarting = false;
+            _gpsRestartTimer = 0;
             
             System.println("Activity started.");
         }
@@ -199,7 +199,7 @@ class ActivityTracker {
             _inWave = false;
             _highSpeedTime = 0;
             _gpsLostSignalSec = 0;
-            _gpsRestarting = false;
+            _gpsRestartTimer = 0;
 
             _isRecording = false;
             System.println("Activity paused.");
@@ -268,7 +268,7 @@ class ActivityTracker {
             _gpsGoodSignalSec = 0;
             _waitingForStableReset = true;
             _gpsLostSignalSec = 0;
-            _gpsRestarting = false;
+            _gpsRestartTimer = 0;
 
 
             _inWave = false;
@@ -326,7 +326,7 @@ class ActivityTracker {
             _gpsGoodSignalSec = 0;
             _waitingForStableReset = true;
             _gpsLostSignalSec = 0;
-            _gpsRestarting = false;
+            _gpsRestartTimer = 0;
 
 
             _inWave = false;
@@ -370,11 +370,13 @@ class ActivityTracker {
     function onTimerTick() as Void {
         if (!_isRecording) { return; }
         
-        if (_gpsRestarting) {
-            Position.enableLocationEvents(Position.LOCATION_CONTINUOUS, method(:onPosition));
-            _gpsRestarting = false;
-            _gpsLostSignalSec = 0;
-            Log.info("Activity", "GPS events re-enabled.");
+        if (_gpsRestartTimer > 0) {
+            _gpsRestartTimer--;
+            if (_gpsRestartTimer == 0) {
+                Position.enableLocationEvents(Position.LOCATION_CONTINUOUS, method(:onPosition));
+                _gpsLostSignalSec = 0;
+                Log.info("Activity", "GPS events re-enabled.");
+            }
         }
         
         var info = Activity.getActivityInfo();
@@ -412,11 +414,14 @@ class ActivityTracker {
         // GPS Reliability: Accuracy must be usable and signal stable for 5 seconds
         var currentAccuracy = info.currentLocationAccuracy != null ? info.currentLocationAccuracy : Position.QUALITY_NOT_AVAILABLE;
         if (currentAccuracy < Position.QUALITY_USABLE) {
-            _gpsLostSignalSec++;
-            if (_gpsLostSignalSec >= 20) {
-                Log.info("Activity", "GPS signal lost for 20s. Restarting GPS events to recover...");
-                Position.enableLocationEvents(Position.LOCATION_DISABLE, null);
-                _gpsRestarting = true;
+            if (_gpsRestartTimer == 0) {
+                _gpsLostSignalSec++;
+                if (_gpsLostSignalSec >= 60) {
+                    Log.info("Activity", "GPS signal lost for 60s. Restarting GPS events to recover...");
+                    Position.enableLocationEvents(Position.LOCATION_DISABLE, null);
+                    _gpsRestartTimer = 3;
+                    _gpsLostSignalSec = 0;
+                }
             }
         } else {
             _gpsLostSignalSec = 0;
