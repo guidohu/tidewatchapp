@@ -162,7 +162,7 @@ class ActivityTracker {
             _timer.start(method(:onTimerTick), 1000, true);
             
             // Explicitly enable GPS to ensure location and speed data are available
-            Position.enableLocationEvents(Position.LOCATION_CONTINUOUS, method(:onPosition));
+            enableBestGPS(method(:onPosition));
             
             _isRecording = true;
             _timerRunning = true;
@@ -361,10 +361,10 @@ class ActivityTracker {
     }
 
     function hasValidGPS() as Boolean {
-        var info = Activity.getActivityInfo();
-        if (info == null) { return false; }
-        var acc = info.currentLocationAccuracy;
-        return acc != null && acc >= Position.QUALITY_USABLE;
+        if (_gpsRestartTimer > 0) { return false; }
+        var info = Position.getInfo();
+        var acc = (info != null && info.accuracy != null) ? info.accuracy : Position.QUALITY_NOT_AVAILABLE;
+        return acc >= Position.QUALITY_USABLE;
     }
 
     function onTimerTick() as Void {
@@ -373,7 +373,7 @@ class ActivityTracker {
         if (_gpsRestartTimer > 0) {
             _gpsRestartTimer--;
             if (_gpsRestartTimer == 0) {
-                Position.enableLocationEvents(Position.LOCATION_CONTINUOUS, method(:onPosition));
+                enableBestGPS(method(:onPosition));
                 _gpsLostSignalSec = 0;
                 Log.info("Activity", "GPS events re-enabled.");
             }
@@ -412,7 +412,8 @@ class ActivityTracker {
         var elapsedDistance = info.elapsedDistance != null ? info.elapsedDistance : 0.0f;
         
         // GPS Reliability: Accuracy must be usable and signal stable for 5 seconds
-        var currentAccuracy = info.currentLocationAccuracy != null ? info.currentLocationAccuracy : Position.QUALITY_NOT_AVAILABLE;
+        var posInfo = Position.getInfo();
+        var currentAccuracy = (posInfo != null && posInfo.accuracy != null) ? posInfo.accuracy : Position.QUALITY_NOT_AVAILABLE;
         if (currentAccuracy < Position.QUALITY_USABLE) {
             if (_gpsRestartTimer == 0) {
                 _gpsLostSignalSec++;

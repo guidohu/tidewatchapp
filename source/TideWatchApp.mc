@@ -167,6 +167,32 @@ function getApp() as TideWatchApp {
     return Application.getApp() as TideWatchApp;
 }
 
+function enableBestGPS(listener as Method(info as Position.Info) as Void) as Void {
+    var options = {
+        :acquisitionType => Position.LOCATION_CONTINUOUS
+    };
+    var configured = false;
+    
+    if (Position has :hasConfigurationSupport) {
+        if (Position has :CONFIGURATION_GPS_GLONASS_GALILEO_BEIDOU_L1_L5 && Position.hasConfigurationSupport(Position.CONFIGURATION_GPS_GLONASS_GALILEO_BEIDOU_L1_L5)) {
+            options[:configuration] = Position.CONFIGURATION_GPS_GLONASS_GALILEO_BEIDOU_L1_L5;
+            configured = true;
+        } else if (Position has :CONFIGURATION_GPS_GALILEO && Position.hasConfigurationSupport(Position.CONFIGURATION_GPS_GALILEO)) {
+            options[:configuration] = Position.CONFIGURATION_GPS_GALILEO;
+            configured = true;
+        } else if (Position has :CONFIGURATION_GPS_GLONASS && Position.hasConfigurationSupport(Position.CONFIGURATION_GPS_GLONASS)) {
+            options[:configuration] = Position.CONFIGURATION_GPS_GLONASS;
+            configured = true;
+        }
+    }
+    
+    if (configured) {
+        Position.enableLocationEvents(options, listener);
+    } else {
+        Position.enableLocationEvents(Position.LOCATION_CONTINUOUS, listener);
+    }
+}
+
 function scheduleNextBackgroundEvent(earliestTime as Time.Moment?) as Void {
     if (Toybox has :Background) {
         try { 

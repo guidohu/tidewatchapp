@@ -22,7 +22,7 @@ class StartActivityView extends WatchUi.View {
     }
 
     function onShow() as Void {
-        Position.enableLocationEvents(Position.LOCATION_CONTINUOUS, method(:onPosition));
+        enableBestGPS(method(:onPosition));
         _gpsLostSignalSec = 0;
         _gpsRestartTimer = 0;
         if (_timer != null) {
@@ -46,7 +46,7 @@ class StartActivityView extends WatchUi.View {
         if (_gpsRestartTimer > 0) {
             _gpsRestartTimer--;
             if (_gpsRestartTimer == 0) {
-                Position.enableLocationEvents(Position.LOCATION_CONTINUOUS, method(:onPosition));
+                enableBestGPS(method(:onPosition));
                 _gpsLostSignalSec = 0;
                 System.println("StartActivityView: GPS events re-enabled.");
             }
